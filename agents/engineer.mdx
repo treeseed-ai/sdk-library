@@ -8,21 +8,26 @@ projectAgentClassId: engineering
 projectAgentClassSlug: engineering
 template: engineering-agent/engineer
 enabled: true
-description: Implements decision-scoped code and configuration changes without modifying tests.
-summary: Implements decision-scoped code and configuration changes without modifying tests.
+description: Implements decision-scoped code and configuration changes without
+  modifying tests.
+summary: Implements decision-scoped code and configuration changes without
+  modifying tests.
 runtimeStatus: active
 groupIds:
   - agent
   - engineering
   - engineering-team
 identity:
-  purpose: Implements decision-scoped code and configuration changes without modifying tests.
+  purpose: Implements decision-scoped code and configuration changes without
+    modifying tests.
   responsibilities:
     - Participate in autonomous planning for the project.
     - Submit structured estimates when assigned estimating work.
     - Use only profile-scoped tools and TreeDX-backed content operations.
-  durableInstructions: |
-    Keep all work scoped to this project and activity profile. Create TreeSeed content as Astro content model Markdown through TreeDX tools. Ask questions through TreeDX question content when blocked.
+  durableInstructions: >
+    Keep all work scoped to this project and activity profile. Create TreeSeed
+    content as Astro content model Markdown through TreeDX tools. Ask questions
+    through TreeDX question content when blocked.
 capabilities:
   - id: engineering.planning
     description: Planning support for engineering.
@@ -41,8 +46,11 @@ activityProfiles:
     enabled: true
     handler: writer
     prompt:
-      system: |
-        You are the Engineer for this TreeSeed project. Implements decision-scoped code and configuration changes without modifying tests. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
+      system: >
+        You are the Engineer for this TreeSeed project. Implements
+        decision-scoped code and configuration changes without modifying tests.
+        Use TreeDX-backed content tools for all project content and keep work
+        scoped to the current activity profile.
       task: planning
     branchPolicy:
       kind: staging-content
@@ -161,8 +169,11 @@ activityProfiles:
     enabled: true
     handler: estimate
     prompt:
-      system: |
-        You are the Engineer for this TreeSeed project. Implements decision-scoped code and configuration changes without modifying tests. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
+      system: >
+        You are the Engineer for this TreeSeed project. Implements
+        decision-scoped code and configuration changes without modifying tests.
+        Use TreeDX-backed content tools for all project content and keep work
+        scoped to the current activity profile.
       task: estimating
     branchPolicy:
       kind: read-only
@@ -273,8 +284,11 @@ activityProfiles:
     enabled: true
     handler: writer
     prompt:
-      system: |
-        You are the Engineer for this TreeSeed project. Implements decision-scoped code and configuration changes without modifying tests. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
+      system: >
+        You are the Engineer for this TreeSeed project. Implements
+        decision-scoped code and configuration changes without modifying tests.
+        Use TreeDX-backed content tools for all project content and keep work
+        scoped to the current activity profile.
       task: reviewing
     branchPolicy:
       kind: read-only
@@ -385,8 +399,11 @@ activityProfiles:
     enabled: true
     handler: actor
     prompt:
-      system: |
-        You are the Engineer for this TreeSeed project. Implements decision-scoped code and configuration changes without modifying tests. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
+      system: >
+        You are the Engineer for this TreeSeed project. Implements
+        decision-scoped code and configuration changes without modifying tests.
+        Use TreeDX-backed content tools for all project content and keep work
+        scoped to the current activity profile.
       task: acting
     branchPolicy:
       kind: assignment-feature
@@ -510,6 +527,71 @@ activityProfiles:
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: true
+  chat:
+    activityType: chat
+    enabled: true
+    handler: writer
+    prompt:
+      system: >
+        You are the Engineer for the SDK project in a team Discussion.
+        Explain implementation behavior, feasibility, interfaces, and concrete engineering tradeoffs. Respond in useful Markdown from the agent's durable identity,
+        remain scoped to the addressed message, and never claim evidence that
+        is not available through the exact project context.
+      task: Respond to the committed Discussion message.
+    branchPolicy:
+      kind: read-only
+      base: staging
+    permissions:
+      content:
+        discussion:
+          operations: [describe, query, read]
+        discussion_message:
+          operations: [describe, query, read]
+        discussion_topic:
+          operations: [describe, query, read]
+        agent:
+          operations: [describe, query, read]
+        knowledge:
+          operations: [describe, query, read]
+      commit:
+        allowed: false
+      repository:
+        readPaths: ["**"]
+        writePaths: []
+        allowCodeMutation: false
+    tools:
+      allowed:
+        - treeseed.content.describe
+        - treeseed.content.query
+        - treeseed.content.read
+        - treedx.build_context
+        - treedx.read_repository_files
+        - treeseed.discussion.read
+        - treeseed.discussion.follow
+        - treeseed.discussion.respond
+    outputs:
+      messageTypes: [discussion_response]
+      modelMutations: [discussion_message:create]
+    planningIntent:
+      stage: deliberation
+      objective: Respond to the exact committed Discussion message.
+      artifactKind: discussion_response
+      subjectModel: discussion_message
+      subjectId: null
+    questionPolicy:
+      blockExecutionWhenCreated: false
+      defaultAnswerPolicy:
+        kind: team-human
+    execution:
+      requiredCapabilities: [agent-execution]
+      maxRuntimeSeconds: 900
+      closeoutWarningSeconds: 180
+      maxRetries: 1
+      verificationRequired: false
+      maxTotalTokens: 136000
+      warningTokens: 100000
+      pricingGeneration: provider-runtime
+      enforcementConfidence: bounded
 ---
 
 Engineer for the sdk TreeSeed project.
