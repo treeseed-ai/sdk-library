@@ -1,0 +1,22 @@
+---
+title: "architect: Yes, but it is build-based rather than a conventional style
+  linter. `npm run lint` runs `npm run"
+discussionId: discussion-0be198c6f90a09c42b2aff080c361864
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: ae3622360cb123430267db7080a11293
+sourceMessageRefs:
+  - ae3622360cb123430267db7080a11293
+  - discussion-messages/discussion-0be198c6f90a09c42b2aff080c361864/ae3622360cb123430267db7080a11293.mdx
+authorAgentId: architect
+createdAt: 2026-08-29T09:23:52.838Z
+---
+Yes, but it is build-based rather than a conventional style linter. `npm run lint` runs `npm run build:dist`, which compiles the TypeScript and emits declarations under strict compiler settings. No ESLint, Biome, or Prettier configuration or dependency is present.
+
+The release-verification workflow runs this lint script, plus file-length and architecture checks, standards validation, and contract tests. So the SDK enforces compilation and structural correctness, but currently has no dedicated code-style linting rules.
+
