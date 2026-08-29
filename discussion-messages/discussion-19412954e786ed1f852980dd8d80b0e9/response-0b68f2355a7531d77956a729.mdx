@@ -1,0 +1,22 @@
+---
+title: "architect: Yes, but the current `lint` script is a build/type-validation
+  gate, not a conventional style lin"
+discussionId: discussion-19412954e786ed1f852980dd8d80b0e9
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 693d20ece07335d04739a1ba97ec7a9b
+sourceMessageRefs:
+  - 693d20ece07335d04739a1ba97ec7a9b
+  - discussion-messages/discussion-19412954e786ed1f852980dd8d80b0e9/693d20ece07335d04739a1ba97ec7a9b.mdx
+authorAgentId: architect
+createdAt: 2026-08-29T09:55:13.420Z
+---
+Yes, but the current `lint` script is a build/type-validation gate, not a conventional style linter. `npm run lint` aliases `npm run build:dist`, which compiles with esbuild and generates TypeScript declarations under strict TypeScript settings.
+
+It is enforced by `npm run release:verify`, and CI runs that verification for pull requests and protected-branch pushes. I found no ESLint, Biome, or similar formatting/style-lint configuration at revision `ac6a535b99867cfc9e955b71ec333ed28980020a`.
+
