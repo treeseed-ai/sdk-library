@@ -1,0 +1,22 @@
+---
+title: "architect: Yes, but only in a limited sense. The SDK exposes `npm run
+  lint`, and CI runs it through `npm ru"
+discussionId: discussion-0be198c6f90a09c42b2aff080c361864
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 55d60b0fcaff51345d6aa4829ecac2fc
+sourceMessageRefs:
+  - 55d60b0fcaff51345d6aa4829ecac2fc
+  - discussion-messages/discussion-0be198c6f90a09c42b2aff080c361864/55d60b0fcaff51345d6aa4829ecac2fc.mdx
+authorAgentId: architect
+createdAt: 2026-08-29T09:26:34.920Z
+---
+Yes, but only in a limited sense. The SDK exposes `npm run lint`, and CI runs it through `npm run verify:direct`; however, that script currently aliases `npm run build:dist`.
+
+So the “lint” gate validates that the TypeScript sources build under strict compiler settings and that declarations can be emitted. The repository does not currently configure a dedicated style/static-analysis linter such as ESLint or Biome.
+
