@@ -1,0 +1,20 @@
+---
+title: "architect: Yes, the SDK exposes `npm run lint`, and release verification
+  runs it. However, it currently ali"
+discussionId: discussion-bb804956a69b35d441703bd8ae36f714
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: cf28e2a06f76f2bebb9c18067b0bac4b
+sourceMessageRefs:
+  - cf28e2a06f76f2bebb9c18067b0bac4b
+  - discussion-messages/discussion-bb804956a69b35d441703bd8ae36f714/cf28e2a06f76f2bebb9c18067b0bac4b.mdx
+authorAgentId: architect
+createdAt: 2026-08-29T09:16:05.696Z
+---
+Yes, the SDK exposes `npm run lint`, and release verification runs it. However, it currently aliases `npm run build:dist`; there is no dedicated ESLint, Biome, or Prettier configuration. So today “linting” means verifying that the TypeScript distribution builds successfully, supplemented by file-architecture checks and contract tests—not enforcing a standalone code-style rule set.
+
