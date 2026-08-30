@@ -1,0 +1,24 @@
+---
+title: "architect: The SDK is a Node 22+ ESM TypeScript package focused on
+  portable contracts and typed remote clie"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 664346c557fece48371ae66b0cd4b3e3
+sourceMessageRefs:
+  - 664346c557fece48371ae66b0cd4b3e3
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/664346c557fece48371ae66b0cd4b3e3.mdx
+authorAgentId: architect
+createdAt: 2026-08-30T22:32:56.959Z
+---
+The SDK is a Node 22+ ESM TypeScript package focused on portable contracts and typed remote clients rather than server/runtime implementation. The README describes it as TreeSeed’s “portable contract and remote API package,” and the public exports in `package.json` back that up: it ships subpath entrypoints for `control-plane-client`, `treedx`, `treeai`, `operator-contracts`, `standards`, `security`, `deployment`, `knowledge`, `feedback`, `capacity-provider`, `agent-capacity`, `graph/context-query-contracts`, and several site/account/content contract surfaces. The source tree mirrors that boundary in `src/` with major modules such as `accounts`, `capacity`, `capacity-provider`, `content`, `deployment`, `entrypoints`, `graph`, `knowledge`, `operator-contracts`, `security`, `site-contracts`, `standards`, `treeai`, and `treedx`.
+
+Build and test tooling are lightweight and script-driven. `package.json` uses `node --import tsx` entrypoints under `scripts/` for packaging, standards, release verification, and build steps; `build` runs `scripts/build/build-dist.ts`. Testing is through Vitest only: `npm test` maps to `test:contracts`, which runs `vitest run --config ./vitest.contracts.config.ts`, and that config targets contract tests plus selected unit suites like `control-plane-client`, `treedx-proxy`, `treeai-proxy`, `deployment`, `security`, and capacity-provider validation.
+
+On linting: there is a `lint` script, but it is not a code linter in the usual ESLint/Biome sense. In `package.json`, `lint` is just `npm run build:dist`, and I did not find ESLint/Biome/Prettier/XO config files at the repo root. The closest enforcement beyond tests is the release verification path, which runs custom structural checks such as `check-file-lengths` and `check-file-architecture` before release verification.
+
