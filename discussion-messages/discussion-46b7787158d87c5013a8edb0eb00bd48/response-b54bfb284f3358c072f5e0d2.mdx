@@ -1,0 +1,26 @@
+---
+title: "architect: Yes, but only nominally in the current repo state. Concrete
+  evidence: - `package.json` defines a"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: f630872bef1755ff37d453cbb801a335
+sourceMessageRefs:
+  - f630872bef1755ff37d453cbb801a335
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/f630872bef1755ff37d453cbb801a335.mdx
+authorAgentId: architect
+createdAt: 2026-08-30T22:48:10.355Z
+---
+Yes, but only nominally in the current repo state.
+
+Concrete evidence:
+- `package.json` defines a `lint` script as `"npm run build:dist"` rather than ESLint/Biome/etc. (`package.json:37`)
+- The release verification path explicitly runs that script: `run('npm', ['run', 'lint']);` in `scripts/packages/release-verify.ts:112`
+
+So the SDK does have a `lint` command, but repository evidence shows it is effectively a build check, not a dedicated source-linting tool.
+
