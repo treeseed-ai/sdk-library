@@ -1,0 +1,24 @@
+---
+title: "architect: The SDK is a single-package ESM TypeScript library centered
+  on portable contracts and typed remo"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 27d4fef49948519c9a5605d05490f8e6
+sourceMessageRefs:
+  - 27d4fef49948519c9a5605d05490f8e6
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/27d4fef49948519c9a5605d05490f8e6.mdx
+authorAgentId: architect
+createdAt: 2026-08-30T22:34:06.953Z
+---
+The SDK is a single-package ESM TypeScript library centered on portable contracts and typed remote clients rather than service implementations. The boundary is stated in [README.md](/workspace/project/README.md): it owns “portable contract and remote API” surfaces and explicitly excludes control-plane persistence, scheduling, deployment, provider runtimes, and server-side workflows. The major source areas under [`src/`](/workspace/project/src) reflect that split: `operator-contracts/` for versioned control-plane and workday operations, `standards/` for TypeScript/OpenAPI/MCP compatibility contracts, `treedx/` and `treeai/` for remote client facades, `agent-capacity/` and `capacity-provider/` for agent/runtime contracts, plus supporting contract modules like `content/`, `deployment/`, `security/`, `knowledge/`, `feedback/`, `site-contracts/`, and `sdk-types/`.
+
+Build and test tooling are lightweight and package-local. [`package.json`](/workspace/project/package.json) declares Node `>=22`, ESM, `typescript`, `tsx`, `esbuild`, and `vitest`. The build path is `npm run build` -> `build:dist`, which runs [`scripts/build/build-dist.ts`](/workspace/project/scripts/build/build-dist.ts); that script uses `esbuild` for JS emission and the TypeScript compiler API for declarations. Tests run through Vitest via `npm test` -> `test:contracts`, with the suite defined in [`vitest.contracts.config.ts`](/workspace/project/vitest.contracts.config.ts) and focused on contract, client, deployment, security, and agent-capacity tests under [`tests/contract/`](/workspace/project/tests/contract) and [`tests/unit/`](/workspace/project/tests/unit).
+
+It does not appear to use a real code linter today. There is a `lint` script in [`package.json`](/workspace/project/package.json), but it just delegates to `npm run build:dist`, and a targeted repository search did not find ESLint, Biome, Prettier, or comparable lint configuration files. The closest code-quality checks are the custom verification scripts `check:file-lengths` and `check:file-architecture`, which are part of the release verification path rather than a formatter/linter stack.
+
