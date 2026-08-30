@@ -1,0 +1,34 @@
+---
+title: "architect: The SDK is a single-package Node 22+/ESM TypeScript library
+  centered on portable contracts plus "
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 263d202dea7c8f12b055f1bce528de19
+sourceMessageRefs:
+  - 263d202dea7c8f12b055f1bce528de19
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/263d202dea7c8f12b055f1bce528de19.mdx
+authorAgentId: architect
+createdAt: 2026-08-30T22:23:41.473Z
+---
+The SDK is a single-package Node 22+/ESM TypeScript library centered on portable contracts plus typed remote clients, not a multi-package monorepo. `package.json` describes it as “Portable TreeSeed contracts, standards, and typed remote control-plane clients,” and `README.md` is explicit that it owns versioned contracts, operation catalogs, and proxy clients, while not owning persistence, scheduling, deployment, provider runtimes, or server-side workflows.
+
+Concretely, `src/` is organized by exported domain rather than by framework layer. The biggest modules are:
+
+- `src/operator-contracts/`: the control-plane operation catalog, command tree, OAuth/MCP bindings, inbox/workday contracts, and operation builders. This looks like the core public contract surface.
+- `src/standards/`: canonicalization, contract bundles, compatibility attestation/composition, plus TypeScript/OpenAPI/MCP-specific standards support.
+- `src/treedx/` and `src/treeai/`: typed proxy contract/client layers for TreeDX and TreeAI.
+- `src/capacity-provider/`, `src/capacity/`, and `src/agent-capacity/`: provider, capacity, and assignment/policy contracts and validation.
+- `src/security/`, `src/secrets-capability/`, `src/content/`, `src/knowledge/`, `src/feedback/`, `src/accounts/`, `src/deployment/`, `src/development/`, `src/graph/`, `src/site-contracts/`, and `src/model-registry/`: narrower contract or validation domains.
+
+The export map in `package.json` reinforces that architecture: there is no root catch-all export, only explicit subpath exports such as `./control-plane-client`, `./operator-contracts`, `./standards/*`, `./treedx`, `./treeai`, `./capacity-provider`, `./knowledge`, `./security`, and `./graph/context-query-contracts`.
+
+Build and verification are script-driven rather than toolchain-heavy. `build` runs `node --import tsx ./scripts/build/build-dist.ts`, so packaging is custom and uses `tsx` plus `esbuild`. Testing is via Vitest only: `npm test` maps to `npm run test:contracts`, which runs `vitest run --config ./vitest.contracts.config.ts`. That config targets a focused suite under `tests/contract/...` and selected `tests/unit/...` files, especially for operator contracts, standards, deployment/development, control-plane client, TreeDX/TreeAI proxying, security, secrets capability, and agent-capacity. Release verification is stricter than ordinary test: `verify:direct` runs `release:verify`, which chains file-length and file-architecture checks plus package/standards verification scripts under `scripts/verification/`, `scripts/packages/`, and `scripts/standards/`.
+
+It does not appear to use a real linter such as ESLint or Biome. I found no ESLint/Biome/Prettier config in the repo root, and the `lint` script in `package.json` is just `npm run build:dist`. So the current enforcement model is custom verification scripts and focused tests, not conventional code linting.
+
