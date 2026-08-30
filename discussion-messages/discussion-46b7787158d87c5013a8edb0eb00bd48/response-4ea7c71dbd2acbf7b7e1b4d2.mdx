@@ -1,0 +1,26 @@
+---
+title: "architect: The SDK is a single-package Node 22+ ESM library centered on
+  portable contracts and typed remote"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 1abab6c3bc17b25c2d4ecb07863c8fcd
+sourceMessageRefs:
+  - 1abab6c3bc17b25c2d4ecb07863c8fcd
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/1abab6c3bc17b25c2d4ecb07863c8fcd.mdx
+authorAgentId: architect
+createdAt: 2026-08-30T22:42:26.405Z
+---
+The SDK is a single-package Node 22+ ESM library centered on portable contracts and typed remote clients, not server/runtime implementation. The root manifest defines it as `@treeseed/sdk` with the description “Portable TreeSeed contracts, standards, and typed remote control-plane clients” ([package.json](/workspace/project/package.json:2)), and the README reinforces the boundary: it provides versioned control-plane contracts plus typed TreeSeed/TreeDX client conduits, while persistence, scheduling, deployment, provider runtimes, and server-side workflows live elsewhere ([README.md](/workspace/project/README.md:3), [README.md](/workspace/project/README.md:45)).
+
+The major modules are visible both in the source tree and export map. Under `src/`, the package is split into domain modules such as `accounts`, `capacity`, `capacity-provider`, `content`, `deployment`, `feedback`, `graph`, `guarantees`, `knowledge`, `operator-contracts`, `security`, `site-contracts`, `standards`, `treeai`, and `treedx` ([package.json](/workspace/project/package.json:66), repository dirs under `src/`). The public API is deliberately subpath-based rather than a catch-all root export, with concrete exports for areas like `./control-plane-client`, `./operator-contracts`, `./knowledge`, `./treedx`, `./treeai`, `./capacity-provider`, and standards surfaces for TypeScript, OpenAPI, and MCP ([package.json](/workspace/project/package.json:66), [README.md](/workspace/project/README.md:45)).
+
+Build and test tooling are lightweight and script-driven. Build uses `tsx` to run TypeScript build scripts and `esbuild` as a dependency, with `npm run build` delegating to `node --import tsx ./scripts/build/build-dist.ts` ([package.json](/workspace/project/package.json:21), [package.json](/workspace/project/package.json:47)). Testing uses Vitest, with the main `npm test` path narrowed to `npm run test:contracts`, which runs `vitest run --config ./vitest.contracts.config.ts`; contract tests live under `tests/contract`, and there are also unit tests for clients and operator contracts such as `tests/unit/control-plane-client.test.ts`, `tests/unit/treedx-proxy.test.ts`, and `tests/unit/treeai-proxy.test.ts` ([package.json](/workspace/project/package.json:29), [README.md](/workspace/project/README.md:58), [tests/unit/control-plane-client.test.ts](/workspace/project/tests/unit/control-plane-client.test.ts:1)).
+
+On linting: there is a `lint` script, but it is not a conventional code linter. The script is currently `npm run build:dist`, and I did not find any ESLint config at the repository root; the verification path instead emphasizes build output plus custom structural checks such as `check:file-lengths` and `check:file-architecture` ([package.json](/workspace/project/package.json:24), [package.json](/workspace/project/package.json:32)). So the repo does expose a `lint` command, but based on source evidence it functions as a build/verification gate rather than ESLint-style static linting.
+
