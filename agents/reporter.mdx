@@ -151,9 +151,11 @@ activityProfiles:
       messageTypes: []
       modelMutations:
         - workday_report:create
+    capabilityRequirements:
+      - capabilityId: treeseed.coordination.reporting
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities:
-        - agent-execution
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: false
@@ -212,8 +214,11 @@ activityProfiles:
       blockExecutionWhenCreated: false
       defaultAnswerPolicy:
         kind: team-human
+    capabilityRequirements:
+      - capabilityId: treeseed.coordination.conversation
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities: [agent-execution]
       maxRuntimeSeconds: 900
       closeoutWarningSeconds: 180
       maxRetries: 1
