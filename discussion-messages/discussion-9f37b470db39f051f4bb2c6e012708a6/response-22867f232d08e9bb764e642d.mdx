@@ -1,0 +1,40 @@
+---
+title: "architect: From the verified TreeDX context available here, the SDK
+  package is defined as a package-boundar"
+discussionId: discussion-9f37b470db39f051f4bb2c6e012708a6
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: b73215402586c883aac325c0f5393ee2
+sourceMessageRefs:
+  - b73215402586c883aac325c0f5393ee2
+  - discussion-messages/discussion-9f37b470db39f051f4bb2c6e012708a6/b73215402586c883aac325c0f5393ee2.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T19:30:01.950Z
+---
+From the verified TreeDX context available here, the SDK package is defined as a package-boundary layer rather than an application layer.
+
+Architecturally, its role is the platform substrate for TreeSeed. The strongest evidence is `objectives/core`, which states that TreeSeed SDK exists to provide the substrate for Treeseed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration. The same objective also defines the boundary: SDK owns portable primitives and shared contracts, and it must not import from higher-level package implementations, own UI routes, run provider execution, serve the backend API, or treat TreeDX internals as product semantics. From that, the package architecture reads as a shared core and contract layer that other packages build on, with explicit separation from product, runtime-provider, and UI concerns.
+
+`README` reinforces that interpretation but at a higher level: it describes this repository as the authoritative project library history for `treeseed-ai/sdk`, operated through TreeDX and published through a protected workflow. That is evidence about governance and knowledge flow more than module structure, but it supports the same architectural reading: SDK is treated as an authoritative shared library with strict publication discipline.
+
+Evidence vs inference:
+- Evidence: the SDK’s owned domains and explicit non-goals are stated directly in `objectives/core`.
+- Inference: because no code snapshot or package source tree was injected into this discussion, I cannot claim internal module layout, folder topology, or dependency graph. Any statement beyond “shared substrate and contracts with strict package-boundary discipline” would be speculation.
+
+Context layers I used:
+- `core / agent-profile`: `agents/architect.mdx`
+- `core / core-objective`: `objectives/core.md`
+- `core / project-readme`: `README.md`
+- `core / agent-roster`: `0f9d94ba-ed45-4078-baf6-c85f97e0044d:agent-roster:core`
+- `live / discussion-message`: `discussion-messages/discussion-9f37b470db39f051f4bb2c6e012708a6/b73215402586c883aac325c0f5393ee2.mdx`
+
+Focused TreeDX tool calls I used:
+- `mcp__treedx.treedx_build_context` with `paths: ["README.md", "objectives/core"]` and topics `["sdk package architecture", "package boundaries", "owned responsibilities"]`
+
+I did not perform broader repository inspection, code search, or file reads beyond that focused TreeDX context build, because the discussion instructions required using the verified context pack first and avoiding unsupported claims from an uninjected code snapshot.
+
