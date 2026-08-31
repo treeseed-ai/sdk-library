@@ -1,0 +1,24 @@
+---
+title: "architect: From the inspected TreeDX library and source, this repository
+  is a single-package TypeScript SDK"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: b29bea493c6af9fdafd1e65342631ebd
+sourceMessageRefs:
+  - b29bea493c6af9fdafd1e65342631ebd
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/b29bea493c6af9fdafd1e65342631ebd.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T04:46:14.465Z
+---
+From the inspected TreeDX library and source, this repository is a single-package TypeScript SDK that positions itself as TreeSeed’s portable contract and remote-client layer, not an implementation host. The project objective says the SDK is the “programmatic platform substrate” for TreeSeed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration, while explicitly avoiding ownership of higher-level package implementations or TreeDX product semantics (`/workspace/.treedx/library/objectives/core.md`). The README matches that boundary: it describes `@treeseed/sdk` as the portable contract and remote API package for API, CLI, agent, browser, and external integrations, and says the package does not own persistence, scheduling, repository mutation, content publication, deployment, provider runtimes, or server-side workflows ([README.md](/workspace/project/README.md)). That boundary is reflected in the exported entrypoints in [package.json](/workspace/project/package.json): security, development, deployment, standards, operator contracts, guarantees, site contracts, control-plane and TreeDX clients, knowledge, feedback, capacity-provider, graph contracts, and agent/capacity types. The `src/` tree reinforces the same structure with domain-focused modules such as `src/operator-contracts`, `src/treedx`, `src/treeai`, `src/capacity-provider`, `src/standards`, `src/site-contracts`, `src/knowledge`, `src/feedback`, `src/security`, and `src/graph` (source listing inspected via `find src -maxdepth 2 -type f`).
+
+Its linting setup is atypical in a deliberate way: there is no ESLint, Biome, or Prettier config in the repository root, and the `lint` script is just `npm run build:dist` rather than a conventional static-style pass ([package.json](/workspace/project/package.json)). The actual policy enforcement lives in custom verification scripts. `check:file-lengths` runs [scripts/verification/check-file-lengths.ts](/workspace/project/scripts/verification/check-file-lengths.ts), which enforces a 500-line hard cap and warns above 350 lines for handwritten code. `check:file-architecture` runs [scripts/verification/check-file-architecture.ts](/workspace/project/scripts/verification/check-file-architecture.ts), which enforces naming and structure rules such as no redundant `TreeSeed` branding in symbols or filenames, no generic numbered partitions, no tests under `scripts/`, no duplicate `test` and `tests` roots, no raw `/v1/` control-plane routes outside the authoritative operator catalog, and no direct TreeDX transport leakage through the TreeSeed proxy facade. TypeScript strictness is also part of the quality bar: [tsconfig.json](/workspace/project/tsconfig.json) enables `strict`, uses ESM with `moduleResolution: "Bundler"`, and includes `src`, `scripts`, and `tests`.
+
+CI treats those checks as part of a broader verification gate rather than as a separate formatter/linter stage. In [.github/workflows/verify.yml](/workspace/project/.github/workflows/verify.yml), the main job runs `npm run verify:direct`, which expands to `release:verify`; in [package.json](/workspace/project/package.json), that means `check:file-lengths` plus `scripts/packages/release-verify.ts`, followed by packaging and, on `staging`, compatibility attestation, SBOM generation, release evidence, and custody verification. So the evidence-based summary is: this SDK is organized around stable portable contracts and typed remote clients, and its “linting” model is repository-specific policy verification plus strict TypeScript, not a standard ESLint/Prettier stack. Inference: the team appears to treat architectural boundary enforcement as more important than code-style tooling, which is why custom verification scripts are first-class release gates rather than optional local hygiene.
+
