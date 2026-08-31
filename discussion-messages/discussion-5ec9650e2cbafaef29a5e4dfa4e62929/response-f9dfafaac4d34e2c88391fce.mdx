@@ -1,0 +1,38 @@
+---
+title: "architect: The SDK package is structured as a boundary package, not an
+  owning runtime. Project knowledge st"
+discussionId: discussion-5ec9650e2cbafaef29a5e4dfa4e62929
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 38320a753616b941f5c007392839a960
+sourceMessageRefs:
+  - 38320a753616b941f5c007392839a960
+  - discussion-messages/discussion-5ec9650e2cbafaef29a5e4dfa4e62929/38320a753616b941f5c007392839a960.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T19:21:57.219Z
+---
+The SDK package is structured as a boundary package, not an owning runtime. Project knowledge states that it exists to provide the platform substrate and shared contracts for TreeSeed while preserving the package boundary, and that it must not own UI routes, backend API service behavior, provider execution, or TreeDX product semantics (`objectives/core`). The repository README says the same thing in runtime terms: `@treeseed/sdk` is the portable contract and remote API package, and it explicitly does **not** own control-plane persistence, scheduling, repository mutation, content publication, deployment, provider runtimes, or server-side workflows ([README.md:5](README.md:5), [README.md:7](README.md:7)).
+
+The major boundaries are:
+
+- **Contract definitions and validation**: the package defines wire-level models, operation descriptors, and validation logic in domain modules such as `src/content/contracts.ts`, `src/knowledge/contracts.ts`, `src/platform/contracts.ts`, and the shared control-plane descriptor model in [src/operator-contracts/control-plane-operation.ts:3](src/operator-contracts/control-plane-operation.ts:3). That descriptor type carries the stable contract metadata: REST binding, schema ids, capability, auth mode, scopes, risk class, confirmation policy, idempotency, concurrency, surfaces, and optional upstream mapping ([src/operator-contracts/control-plane-operation.ts:20](src/operator-contracts/control-plane-operation.ts:20), [src/operator-contracts/control-plane-operation.ts:50](src/operator-contracts/control-plane-operation.ts:50)). The catalog validator enforces invariants like unique operation ids, REST/path consistency, scope rules, audit requirements for mutations, and receipts for mutations ([src/operator-contracts/control-plane-operation.ts:126](src/operator-contracts/control-plane-operation.ts:126)).
+- **Operation catalog as the package spine**: `CONTROL_PLANE_OPERATIONS` is the central published operation tree. It groups the system into bounded areas such as projects, accounts, teams, discussions, knowledge, governance, planning, estimates, TreeDX proxy operations, and provider operations ([src/operator-contracts/control-plane-operations.ts:89](src/operator-contracts/control-plane-operations.ts:89), [src/operator-contracts/control-plane-operations.ts:100](src/operator-contracts/control-plane-operations.ts:100), [src/operator-contracts/control-plane-operations.ts:163](src/operator-contracts/control-plane-operations.ts:163), [src/operator-contracts/control-plane-operations.ts:168](src/operator-contracts/control-plane-operations.ts:168), [src/operator-contracts/control-plane-operations.ts:188](src/operator-contracts/control-plane-operations.ts:188)). This is the contract authority that downstream clients consume rather than rebuilding routes or request shapes themselves.
+- **Typed remote clients**: the `ControlPlaneClient` is the generic transport boundary. It only invokes authoritative catalog bindings, validates path/query/body through the binding schemas, renders the REST path, sends the request, and parses the response back through the output schema ([src/entrypoints/clients/control-plane-client.ts:187](src/entrypoints/clients/control-plane-client.ts:187), [src/entrypoints/clients/control-plane-client.ts:200](src/entrypoints/clients/control-plane-client.ts:200)). That is the concrete contract flow from descriptor to runtime call. The README’s “callers do not construct control-plane paths” is directly reflected in this implementation ([README.md:38](README.md:38), [src/entrypoints/clients/control-plane-client.ts:213](src/entrypoints/clients/control-plane-client.ts:213)).
+- **Service-specific facades over the control plane**: TreeDX and capacity-provider access are intentionally mediated, not exposed as first-class independent transports. `TreeSeedTreeDxClient` binds only `CONTROL_PLANE_OPERATIONS.treedx` and rejects operations outside that proxy catalog ([src/treedx/client.ts:16](src/treedx/client.ts:16), [src/treedx/client.ts:51](src/treedx/client.ts:51), [src/treedx/client.ts:64](src/treedx/client.ts:64)). The TreeDX contract module further validates that proxied TreeDX operations map to authoritative upstream OpenAPI operations and do not expose private upstream operations ([src/treedx/contract.ts:29](src/treedx/contract.ts:29), [src/treedx/contract.ts:41](src/treedx/contract.ts:41)). Likewise, `ProviderProtocolClient` is not a separate domain model; it is a specialized facade that still invokes `CONTROL_PLANE_OPERATIONS.providers.*` through `ControlPlaneClient` ([src/capacity-provider/client.ts:45](src/capacity-provider/client.ts:45), [src/capacity-provider/client.ts:69](src/capacity-provider/client.ts:69), [src/capacity-provider/client.ts:101](src/capacity-provider/client.ts:101)).
+- **Published subpath boundary**: the package export map exposes narrowly scoped subpaths like `./platform`, `./operator-contracts`, `./treedx`, `./treeai`, `./capacity-provider`, `./knowledge`, and `./graph/context-query-contracts`, rather than a root catch-all. That matches the README statement that imports must use documented subpaths so ownership stays explicit (`package.json`, [README.md:63](README.md:63), [README.md:73](README.md:73)).
+
+The contract flow through the system is therefore:
+
+1. Domain contract modules and operation builders define typed schemas and descriptors.
+2. Those bindings are assembled into `CONTROL_PLANE_OPERATIONS`, which is the authoritative catalog for consumers ([src/operator-contracts/control-plane-operations.ts:89](src/operator-contracts/control-plane-operations.ts:89)).
+3. `ControlPlaneClient.invoke()` accepts one of those bindings, validates input against the binding schema, derives the wire request from the descriptor, and validates the response back into the contract shape ([src/entrypoints/clients/control-plane-client.ts:200](src/entrypoints/clients/control-plane-client.ts:200)).
+4. Higher-level facades such as `TreeSeedTreeDxClient` and `ProviderProtocolClient` narrow that catalog to allowed operation subsets and preserve the same contract-first flow ([src/treedx/client.ts:40](src/treedx/client.ts:40), [src/capacity-provider/client.ts:77](src/capacity-provider/client.ts:77)).
+5. Tests verify the boundary rules rather than server behavior, including catalog validation, auth/scope/risk metadata, client rejection of forged bindings, and TreeDX/provider proxy behavior (`tests/unit/control-plane-client.test.ts`, `tests/unit/treedx-proxy.test.ts`, `tests/unit/operator-contracts/control-plane-operation.test.ts`, `tests/unit/agent-capacity/capacity/providers/capacity-provider.test.ts`).
+
+Inference: the package is organized around “shared contract authority plus typed remote invocation,” with the control-plane catalog as the central seam. Direct evidence supports that conclusion from the objective, README, export map, operation descriptor model, control-plane catalog, and the transport clients cited above.
+
