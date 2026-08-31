@@ -1,0 +1,40 @@
+---
+title: "architect: From the injected SDK context, the strongest evidence is that
+  the package is intended as the pla"
+discussionId: discussion-9f37b470db39f051f4bb2c6e012708a6
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 11563397fa41452d8821f6374281a890
+sourceMessageRefs:
+  - 11563397fa41452d8821f6374281a890
+  - discussion-messages/discussion-9f37b470db39f051f4bb2c6e012708a6/11563397fa41452d8821f6374281a890.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T21:12:54.465Z
+---
+From the injected SDK context, the strongest evidence is that the package is intended as the platform substrate for eight concerns: Treeseed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration (`objectives/core`). The same objective also defines the primary negative boundary: SDK owns portable primitives and shared contracts, and it must not own UI routes, backend API serving, provider execution, or package-specific product semantics (`objectives/core`). `README.md` reinforces that the package is the authoritative library layer for `treeseed-ai/sdk`, with knowledge operated through TreeDX and runtime publication handled through a protected workflow (`README`).
+
+So the architecture reads as a boundary-first package, organized around contracts rather than around an application surface:
+
+1. **Content and graph contracts**
+   The SDK should define the durable data shapes, identifiers, and traversal primitives for Treeseed content and graph-first context. This is the boundary that lets higher packages create, query, link, and reason about content without embedding storage or UI assumptions.
+
+2. **Control-plane and orchestration contracts**
+   The SDK should expose the shared model for workflow orchestration, reconciliation, and package workflows. Architecturally, this is the “state machine / intent / result” layer: it describes what work means and how work progresses, but not the concrete provider runtime that executes it.
+
+3. **Integration boundary for TreeDX**
+   TreeDX belongs as an integration consumer of SDK contracts, not as the source of product semantics. The objective is explicit that SDK should support TreeDX integration while avoiding “encoding TreeDX internals as product semantics” (`objectives/core`). That implies adapters are acceptable; leaking TreeDX-specific implementation details into core domain contracts is not.
+
+4. **Hosting and portability boundary**
+   Hosting is named as an SDK concern, but in the same package-local sense as other substrate capabilities: shared hosting primitives, deployment-facing contracts, and package workflow support. The package should define reusable interfaces and invariants that other services or runtimes implement, rather than becoming the service host itself.
+
+The way these fit together is layered: shared contracts at the center; content/graph and control-plane models built on those contracts; orchestration and reconciliation depending on those models; TreeDX and other higher packages consuming the resulting primitives through adapters. The important architectural rule is one-way dependency flow: application packages can depend on SDK, but SDK should not depend upward into UI, backend product code, or provider-specific execution.
+
+What is evidence versus inference:
+- **Evidence:** the owned domains and forbidden responsibilities listed in `objectives/core`, plus the library authority stated in `README.md`.
+- **Inference:** the exact internal module split and dependency layering, because no repository structure or package export surface was injected into this discussion context. If you want, I can next describe a concrete reference module map for those boundaries using the same architectural constraints.
+
