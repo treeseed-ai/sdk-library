@@ -1,0 +1,33 @@
+---
+title: "architect: The SDK repository is a single published ESM package,
+  `@treeseed/sdk`, not a multi-package monor"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: c4dafc99d49cdba1d8fe85dc36f15c85
+sourceMessageRefs:
+  - c4dafc99d49cdba1d8fe85dc36f15c85
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/c4dafc99d49cdba1d8fe85dc36f15c85.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T09:37:57.777Z
+---
+The SDK repository is a single published ESM package, `@treeseed/sdk`, not a multi-package monorepo. Per the repo README and TreeDX core objective, it is the portable contract and typed remote-client layer for TreeSeed: it owns versioned control-plane contracts, typed client entrypoints, TreeDX proxy bindings, capacity-provider and agent-capacity contracts, shared standards, and deterministic validation, while explicitly not owning persistence, scheduling, repository mutation, content publication, deployment execution, provider runtimes, backend API implementation, or TreeDX transport internals (`README.md`, `/workspace/.treedx/library/objectives/core.md`).
+
+Major code areas are organized under `src/` by concern rather than by package manager workspaces. The main surface areas visible in the export map and directory layout are:
+- `src/operator-contracts` for the versioned control-plane operation catalog and inbox/workday communication contracts.
+- `src/entrypoints/clients`, `src/treedx`, and `src/treeai` for typed remote clients and proxy facades.
+- `src/accounts`, `src/content`, `src/knowledge`, `src/feedback`, `src/graph`, `src/security`, `src/deployment`, and `src/development` for portable request/response and helper contracts.
+- `src/capacity`, `src/capacity-provider`, and `src/agent-capacity` for capacity-provider, assignment, policy, and validation contracts.
+- `src/standards`, `contracts/`, and `src/site-contracts` for TypeScript/OpenAPI/MCP standards and related contract artifacts.
+
+Architecturally, the boundaries are enforced both by documentation and by repository checks. The README says consumers must import documented subpaths only, with “no root catch-all export,” and `package.json` exposes a curated subpath map such as `./control-plane-client`, `./operator-contracts`, `./treedx`, `./capacity-provider`, and `./graph/context-query-contracts`. The file-architecture verifier also blocks raw `/v1/` control-plane routes outside the authoritative operator catalog, blocks raw TreeDX `/api/v1` routes in `src/treedx`, and rejects direct TreeDX transport exposure from the TreeSeed proxy layer (`scripts/verification/check-file-architecture.ts`).
+
+Linting and verification are custom-script driven rather than ESLint-based. `npm run lint` delegates to `npm run build:dist`, so the baseline “lint” gate is a build of the published distribution. `npm test` runs only the focused contract/client Vitest suite in `vitest.contracts.config.ts`, covering contract tests plus selected unit tests for deployment, development, operator contracts, control-plane client, TreeDX proxy, TreeAI proxy, security, secrets capability, and agent-capacity. The stronger release gate is `npm run verify:direct`, which runs file-length and file-architecture policy checks, builds standards artifacts, runs standards acceptance, scans `dist` for forbidden source references, verifies clean publish artifacts, and then runs the release test suite (`package.json`, `scripts/packages/release-verify.ts`, `scripts/verification/check-file-lengths.ts`).
+
+CI reflects the same boundary. `.github/workflows/verify.yml` runs on PRs plus `staging` and `main`, installs with `npm ci`, runs `npm run verify:direct`, packs the artifact, and on `staging` additionally seals compatibility, SBOM, release-evidence, and custody artifacts. `publish.yml` only promotes an exact reviewed `staging` commit to the `production` environment, which matches the AGENTS.md branch/deployment policy.
+
