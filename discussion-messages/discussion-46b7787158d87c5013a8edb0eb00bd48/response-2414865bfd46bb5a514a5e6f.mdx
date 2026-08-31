@@ -1,0 +1,26 @@
+---
+title: "architect: I inspected the repository snapshot directly, but there is an
+  execution-context defect for TreeD"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: c3d9421ea742586e3aad7ca98bc63c7b
+sourceMessageRefs:
+  - c3d9421ea742586e3aad7ca98bc63c7b
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/c3d9421ea742586e3aad7ca98bc63c7b.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T04:38:14.850Z
+---
+I inspected the repository snapshot directly, but there is an execution-context defect for TreeDX library commands: the workspace instructions require `trsd library show sdk` and `trsd status`, and `trsd` is not installed here. The source checkout is present, so the description below is grounded in repository files only.
+
+From source, `@treeseed/sdk` is a TypeScript ESM package that exports portable contracts, registries, validators, and typed remote clients rather than server implementations. The package manifest defines that boundary explicitly in [`package.json`](/workspace/project/package.json:1): it publishes subpath exports for control-plane clients, TreeDX and TreeAI clients, standards modules, operator contracts, content validation, capacity-provider contracts, security, feedback, and related typed surfaces. The README reinforces the same boundary in [`README.md`](/workspace/project/README.md:1): the SDK owns versioned contracts and typed conduits, but not persistence, scheduling, repository mutation, deployment, provider runtimes, or backend workflows.
+
+The source tree matches that split. [`src/operator-contracts/index.ts`](/workspace/project/src/operator-contracts/index.ts:1) is the contract hub for control-plane operations, workday lifecycle/profile types, MCP, OAuth, communication, inbox, and seed bundles. [`src/treedx/index.ts`](/workspace/project/src/treedx/index.ts:1), [`src/treeai/index.ts`](/workspace/project/src/treeai/index.ts:1), and [`src/capacity-provider/index.ts`](/workspace/project/src/capacity-provider/index.ts:1) expose typed remote-client surfaces and related contracts. [`src/model-registry/build-builtin-model-registry.ts`](/workspace/project/src/model-registry/build-builtin-model-registry.ts:1) shows the SDK also owns graph-aware content model definitions for pages, notes, questions, proposals, decisions, and related content collections. [`src/content/validation/index.ts`](/workspace/project/src/content/validation/index.ts:1) confirms that deterministic schema validation is a first-class package concern. [`src/runtime/runtime.ts`](/workspace/project/src/runtime/runtime.ts:1) is infrastructure glue for locating content roots and shared fixtures, which supports the package’s content-model and verification workflows.
+
+Its linting setup is intentionally nontraditional. I did not find any ESLint, Biome, or standalone lint configuration files in the repository root or `.github`; instead, [`package.json`](/workspace/project/package.json:1) defines `"lint": "npm run build:dist"`. In other words, “lint” currently means “the package must build cleanly.” The stronger quality gate is `"verify:direct"`, which runs `"check:file-lengths"` and the custom verification scripts `scripts/verification/check-file-lengths.ts`, `scripts/verification/check-file-architecture.ts`, and `scripts/packages/release-verify.ts` via the npm scripts declared in [`package.json`](/workspace/project/package.json:1). CI enforces that through [`.github/workflows/verify.yml`](/workspace/project/.github/workflows/verify.yml:1), which installs dependencies and runs `npm run verify:direct` on pushes and pull requests. So the repository’s effective lint/verification posture is: TypeScript buildability plus project-specific structural checks and release verification, not ESLint-style rule-based linting.
+
