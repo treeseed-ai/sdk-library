@@ -1,0 +1,66 @@
+---
+title: "architect: The SDK package is structured as a portable
+  contract-and-client boundary, not as an implementati"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: f566415997b7538488b3ba23f790bc37
+sourceMessageRefs:
+  - f566415997b7538488b3ba23f790bc37
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/f566415997b7538488b3ba23f790bc37.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T15:21:12.395Z
+---
+The SDK package is structured as a portable contract-and-client boundary, not as an implementation runtime. That matches both the project objective in `objectives/core.md` at ref `2d96d8f0e9806707e87fbac9aa2481f9c793f012` and the package README: the SDK owns shared contracts, typed remote clients, validation, and standards, while explicitly not owning control-plane persistence, provider execution, backend workflows, UI routes, or direct TreeDX product semantics.
+
+The current repository layout supports that split:
+
+- `src/operator-contracts` is the center of gravity. It defines the versioned control-plane operation catalog, command/workday contracts, OAuth and MCP metadata, and the exported `CONTROL_PLANE_OPERATIONS` tree. The `control-plane-operations.ts` file shows one authoritative catalog driving REST, CLI, and MCP surfaces through per-operation `surfaces` declarations.
+- `src/entrypoints/clients/control-plane-client.ts` is the generic typed transport. It only invokes catalog bindings, validates path/query/body against the binding schema, and handles OAuth headers, idempotency keys, optimistic concurrency, RFC 9457-style problem details, and cancellation. The client intentionally rejects ad hoc path construction outside the catalog.
+- Domain contracts live in package-local modules such as `src/content`, `src/knowledge`, `src/feedback`, `src/platform`, `src/security`, `src/deployment`, `src/graph`, `src/accounts`, `src/secrets-capability`, `src/agent-capacity`, and `src/capacity-provider`. These are portable types, schemas, validators, and protocol helpers, not service implementations.
+- Integration facades are separate:
+  - `src/treedx` exposes the TreeSeed-scoped TreeDX proxy client and service-contract receipt logic.
+  - `src/treeai` exposes both direct and control-plane-proxied TreeAI access.
+  - `src/capacity-provider` exposes the provider protocol client plus capability and sandbox contracts.
+  - `src/model-registry` and `src/entrypoints/models` define built-in content/model metadata for graph-first and content-backed workflows.
+
+The dependency boundary is strict in two directions. First, public entrypoints are explicit subpath exports in `package.json`; there is no root catch-all export. Second, release verification enforces that the published package does not leak `src` references or local workspace links. `scripts/packages/release-verify.ts` checks for forbidden local dependency specifiers, scans `dist` for source-path leakage, and verifies only the packed export closure. The contract test `tests/contract/operator-contracts/public-boundary.test.ts` reinforces this by asserting that public modules expose catalog-bound clients and human contracts, but not internal authoring/deployment helpers.
+
+Generated contracts are treated as first-class release artifacts rather than incidental build output. `scripts/standards/build-contract-bundle.ts` assembles a deterministic standards bundle under `.treeseed/standards` that includes:
+
+- TypeScript public API contract
+- OpenAPI contract from `docs/api/openapi.json`
+- Control-plane catalog contract
+- MCP catalog input derived from the control-plane catalog
+- TreeDX service contract receipt
+- TreeAI service contract receipt
+- Guarantee verifier contract
+
+That script also packs the npm artifact and binds the bundle to the exact git commit and tarball digest. So the SDK’s generated surface is not just `dist`; it is the combination of `dist` plus signed/digested contract evidence describing what the package exports and what upstream contracts it adopted.
+
+On TreeDX specifically, the SDK does not expose direct TreeDX infrastructure access as product API. `src/treedx/contract.ts` imports authoritative upstream metadata from `@treeseed/treedx`, validates that every adopted proxy operation matches the upstream OpenAPI version and digests, and forbids selected private TreeDX operations from the public proxy mapping. `src/treedx/client.ts` then binds only `CONTROL_PLANE_OPERATIONS.treedx` operations into a `TreeSeedTreeDxClient`. The unit test `tests/unit/treedx-proxy.test.ts` confirms two important boundaries: all public proxy operations map to the accepted TreeDX contract, and the client only invokes project-scoped control-plane routes like `/v1/dx/projects/{projectId}/...`, not arbitrary upstream TreeDX endpoints. That is the cleanest statement of the architecture: the SDK carries TreeDX payload authority, but the API owns TreeDX transport and trust boundaries.
+
+The API integration follows from that same model. The API is expected to implement the REST routes and MCP resources/tools described by `CONTROL_PLANE_OPERATIONS`; the SDK gives it and its consumers one shared catalog and one set of validators. The SDK therefore couples to the API contractually, not operationally. Evidence for that is the pervasive use of `surfaces: ['rest', 'cli', 'mcp_tool', 'mcp_resource']` in the operation catalog and the README statement that callers do not construct control-plane paths manually.
+
+CLI integration is also catalog-first. The SDK does not contain a CLI executable here, but the operation catalog marks which operations are CLI-available, and the client provides the persistence-free transport layer the CLI can wrap. The README explicitly says token and profile persistence belong to the consuming CLI or host, not the SDK. So the CLI dependency is: CLI owns UX and credential storage; SDK owns typed operations, validation, and transport semantics.
+
+Agent integration appears in two layers:
+
+- Human and agent workflow contracts in `src/operator-contracts` and `src/agent-capacity`, including workday profiles, lifecycle contracts, and communication addressing.
+- Capacity-provider protocol support in `src/capacity-provider/client.ts`, which uses the same control-plane catalog to register providers, rotate credentials, manage availability, claim assignments, respond to discussion notifications, and report usage.
+
+This is consistent with the SDK objective: agents and providers consume shared protocol primitives here, while orchestration and execution remain outside the package. `tests/unit/operator-contracts/workday-profile.test.ts`, `tests/unit/operator-contracts/workday-lifecycle.test.ts`, and the capacity-provider client surface back that up.
+
+TreeAI is the one place where the SDK deliberately supports two integration modes. `src/treeai/client.ts` supports:
+- direct upstream transport via explicit service endpoints and bearer token resolution
+- control-plane proxy transport via node-scoped `CONTROL_PLANE_OPERATIONS`
+
+That is different from TreeDX, where the README says direct transport remains confined to trusted control-plane infrastructure. My inference is that TreeAI is intentionally modeled as an externally consumable service surface, while TreeDX is intentionally narrowed to a project-scoped control-plane proxy.
+
+In short: the SDK package is a contract kernel. Its major modules are organized around operation catalogs, typed transport, domain-specific portable contracts, and tightly bounded service facades. Its main architectural rule is that shared protocol truth lives here, but runtime authority stays in the API, CLI host, agent runner, or TreeDX/TreeAI services.
+
