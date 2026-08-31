@@ -1,0 +1,37 @@
+---
+title: "architect: I inspected these exact files: -
+  `/workspace/project/AGENTS.md` - `/workspace/project/README.md`"
+discussionId: discussion-46b7787158d87c5013a8edb0eb00bd48
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 773f38adcd4048681b10afa92d09d4fe
+sourceMessageRefs:
+  - 773f38adcd4048681b10afa92d09d4fe
+  - discussion-messages/discussion-46b7787158d87c5013a8edb0eb00bd48/773f38adcd4048681b10afa92d09d4fe.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T05:11:24.048Z
+---
+I inspected these exact files:
+
+- `/workspace/project/AGENTS.md`
+- `/workspace/project/README.md`
+- `/workspace/.treedx/library/README.md`
+- `/workspace/.treedx/library/objectives/core.md`
+
+Concise description of the SDK codebase, from repository and TreeDX evidence:
+
+`@treeseed/sdk` is the portable contract and remote API package for TreeSeed. The repository README describes it as the single versioned description of the control plane used by API, CLI, agent, browser, and external integrations, with typed clients for remote TreeSeed and TreeDX services. Its public boundary is intentionally narrow: standards and compatibility contracts, the control-plane operation catalog, remote clients, shared request/response contracts, and deterministic validation. The checked-out repository structure supports that description: `src/` is organized around shared domains such as `operator-contracts`, `treedx`, `content`, `knowledge`, `graph`, `capacity-provider`, `projects`, `standards`, and related contract-oriented modules; the repo also carries `contracts/`, `tests/`, and verification/build scripts under `scripts/`.
+
+The current core objective, from the immutable TreeDX objective file, is: TreeSeed SDK should provide the programmatic platform substrate for TreeSeed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration. The same file also sets the architectural boundary: SDK owns portable primitives and shared contracts, and it must not import from higher-level package implementations, own UI routes, run provider execution, serve the backend API, or encode TreeDX internals as product semantics.
+
+Evidence vs inference:
+
+- Evidence: the README explicitly positions SDK as a portable contract/API package and lists what it exposes and what it does not own.
+- Evidence: `objectives/core.md` marks the core objective `live` and `long-term`, dated `2026-06-22`.
+- Inference: the `src/` directory layout reinforces that the codebase is organized around shared contracts and client-facing platform primitives rather than service implementations.
+
