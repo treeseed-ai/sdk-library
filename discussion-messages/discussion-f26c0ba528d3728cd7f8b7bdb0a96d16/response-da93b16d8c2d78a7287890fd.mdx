@@ -1,0 +1,31 @@
+---
+title: "architect: I could not consult TreeDX content paths in this execution
+  context. The required local `trsd` co"
+discussionId: discussion-f26c0ba528d3728cd7f8b7bdb0a96d16
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: ffe5f60e24301c84877344861cb22e59
+sourceMessageRefs:
+  - ffe5f60e24301c84877344861cb22e59
+  - discussion-messages/discussion-f26c0ba528d3728cd7f8b7bdb0a96d16/ffe5f60e24301c84877344861cb22e59.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T11:26:44.243Z
+---
+I could not consult TreeDX content paths in this execution context. The required local `trsd` commands failed because `trsd` is not installed, and all assignment-scoped TreeDX MCP calls I tried (`treedx_build_context`, `treedx_list_paths`, `treedx_search_files`) returned the same execution defect: `TreeDX MCP relay environment is incomplete.` So the architecture summary below is grounded in repository evidence only, not TreeDX content reads.
+
+From the repository, the SDK is structured as a portable contract-and-client package rather than an implementation runtime. The package README defines the boundary directly: `@treeseed/sdk` is the “portable contract and remote API package” for TreeSeed and TreeDX, and it explicitly does not own persistence, scheduling, repository mutation, content publication, deployment, provider runtimes, or server-side workflows ([README.md](/workspace/project/README.md)). That boundary is reinforced by [package.json](/workspace/project/package.json), which exposes a deliberately segmented public surface through explicit subpath exports only, with no root catch-all export. The exported areas group into a few architectural layers:
+
+- Contract catalogs and shared types. `src/operator-contracts/index.ts` re-exports command-tree, workday, OAuth, MCP, inbox, communication, and control-plane operation contracts, which indicates that the SDK’s center of gravity is versioned protocol description rather than business logic ([src/operator-contracts/index.ts](/workspace/project/src/operator-contracts/index.ts)).
+- Typed remote clients over those contracts. `src/entrypoints/clients/control-plane-client.ts` implements a generic control-plane client that validates operation bindings against the authoritative catalog before dispatch. `src/treedx/client.ts` then builds the TreeDX client as a control-plane-backed proxy, not as a direct TreeDX transport client; it only permits operations that belong to the TreeSeed TreeDX proxy catalog ([src/entrypoints/clients/control-plane-client.ts](/workspace/project/src/entrypoints/clients/control-plane-client.ts), [src/treedx/client.ts](/workspace/project/src/treedx/client.ts)).
+- TreeDX adoption as a constrained facade. `src/treedx/contract.ts` shows that the SDK imports authoritative upstream TreeDX OpenAPI contracts, maps them into the TreeSeed control-plane catalog, and explicitly rejects private upstream operations from the public proxy surface. That is strong evidence that TreeDX is treated as an external service contract, mediated through TreeSeed-owned control-plane boundaries ([src/treedx/contract.ts](/workspace/project/src/treedx/contract.ts), [src/treedx/index.ts](/workspace/project/src/treedx/index.ts)).
+- Content and knowledge model infrastructure. `src/model-registry/build-builtin-model-registry.ts` builds builtin model definitions for content collections such as pages, notes, questions, proposals, decisions, and objectives, including graph metadata, reference edges, and field registries. `src/graph/context-query-contracts.ts` adds declarative context-query compilation for graph-oriented planning, research, implementation, review, and release use cases. This suggests the SDK owns the portable schema/query layer for content and graph-first context, not the storage engine behind it ([src/model-registry/build-builtin-model-registry.ts](/workspace/project/src/model-registry/build-builtin-model-registry.ts), [src/graph/context-query-contracts.ts](/workspace/project/src/graph/context-query-contracts.ts)).
+- Validation and standards. `src/content/validation/index.ts` exports content schemas and portable-content validation, while `src/standards/index.ts` exports canonicalization, compatibility attestation, contract-bundle, manifest, and related standards utilities. That places deterministic validation and compatibility semantics inside the SDK package boundary ([src/content/validation/index.ts](/workspace/project/src/content/validation/index.ts), [src/standards/index.ts](/workspace/project/src/standards/index.ts)).
+- Capacity/provider/platform support contracts. The export map and index files show additional package-local domains for agent capacity, capacity providers, platform inventory/worksets/verification, deployment schemas, knowledge, feedback, and security. The pattern is consistent: these modules expose contracts, validation, inventories, and typed clients rather than hosted execution workflows ([src/capacity-provider/index.ts](/workspace/project/src/capacity-provider/index.ts), [src/platform/index.ts](/workspace/project/src/platform/index.ts), [package.json](/workspace/project/package.json)).
+
+TreeDX paths consulted: none could be read because the TreeDX relay environment is incomplete in this assignment. Repository paths consulted: `README.md`, `package.json`, `src/operator-contracts/index.ts`, `src/entrypoints/clients/control-plane-client.ts`, `src/treedx/index.ts`, `src/treedx/client.ts`, `src/treedx/contract.ts`, `src/model-registry/build-builtin-model-registry.ts`, `src/graph/context-query-contracts.ts`, `src/content/validation/index.ts`, `src/standards/index.ts`, `src/capacity-provider/index.ts`, and `src/platform/index.ts`.
+
