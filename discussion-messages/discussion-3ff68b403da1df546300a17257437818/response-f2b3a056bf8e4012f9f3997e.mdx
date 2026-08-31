@@ -1,0 +1,51 @@
+---
+title: "architect: I could not fully satisfy the “focused TreeDX tools” part of
+  this request from the current execu"
+discussionId: discussion-3ff68b403da1df546300a17257437818
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: 230d70373505e07b6b590994ded70241
+sourceMessageRefs:
+  - 230d70373505e07b6b590994ded70241
+  - discussion-messages/discussion-3ff68b403da1df546300a17257437818/230d70373505e07b6b590994ded70241.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T11:36:34.353Z
+---
+I could not fully satisfy the “focused TreeDX tools” part of this request from the current execution context: `/workspace/project` is not a Git checkout, and the required TreeDX CLI entrypoint is missing (`trsd: not found`). Because of that, I did **not** consult any TreeDX library paths. The repository evidence I could inspect locally was:
+
+- `README.md`
+- `package.json`
+- `treeseed.package.yaml`
+- `src/operator-contracts/index.ts`
+- `src/entrypoints/clients/control-plane-client.ts`
+- `src/treedx/index.ts`
+- `src/treedx/client.ts`
+- `src/treedx/contract.ts`
+- `src/treeai/index.ts`
+- `src/treeai/contract.ts`
+- `src/platform/index.ts`
+- `src/standards/index.ts`
+- `src/capacity-provider/index.ts`
+- `src/graph/context-query-contracts.ts`
+- `src/content/contracts.ts`
+
+From those files, the SDK architecture is package-scoped and explicitly subpath-oriented rather than root-export oriented. `README.md` states the package is TreeSeed’s “portable contract and remote API package,” and `package.json` reinforces that by exporting bounded surfaces such as `./operator-contracts`, `./control-plane-client`, `./treedx`, `./treeai`, `./standards`, `./platform`, `./knowledge`, `./feedback`, `./agent-capacity`, and `./graph/context-query-contracts`, while intentionally omitting a root `src/index.ts`. That is an architectural boundary: consumers import a specific contract surface, not a catch-all SDK namespace.
+
+The central spine is the control-plane contract layer. `src/operator-contracts/index.ts` aggregates the command tree, workday lifecycle/profile, OAuth types, MCP input contracts, communication/inbox contracts, seed bundle, and control-plane operation catalog. `src/entrypoints/clients/control-plane-client.ts` shows the runtime side of that spine: a typed HTTP client that validates path/query/body against authoritative operation bindings before dispatch, handles OAuth device/refresh flows, and normalizes control-plane server profiles. That indicates the SDK owns typed transport and contract enforcement, not backend implementation.
+
+Around that spine, the package splits into bounded domains:
+
+- `src/treedx/*`: a TreeDX proxy facade. `src/treedx/client.ts` binds only the TreeDX-related subset of control-plane operations, and `src/treedx/contract.ts` validates that TreeSeed’s proxy mapping stays aligned with the authoritative upstream `@treeseed/treedx` OpenAPI contract while excluding private upstream operations. This is a deliberate boundary: TreeDX remains upstream and remote; the SDK exposes only the TreeSeed-governed proxy surface.
+- `src/treeai/*`: the same pattern for TreeAI. `src/treeai/contract.ts` records adopted upstream release/digests and validates operation mapping into the control-plane catalog.
+- `src/standards/*`: compatibility and release evidence machinery for TypeScript, OpenAPI, and MCP. `src/standards/index.ts` exports canonicalization, compatibility attestation, composition, contract bundle, manifest, and portfolio-entry logic, which matches `treeseed.package.yaml`’s produced standards artifacts and release-gate checks.
+- `src/platform/*`: platform contracts, schemas, inventory, workset, and verification helpers. This looks like portable platform-state modeling, not runtime orchestration ownership.
+- `src/content/*` and `src/graph/*`: shared content-model and graph/context-query contracts. `src/content/contracts.ts` defines portable content model references and actions; `src/graph/context-query-contracts.ts` defines declarative context query compilation into SDK graph request shapes.
+- `src/capacity-provider/*` and `src/agent-capacity/*`: provider-facing contracts, validation, sandbox contracts, ontology, and agent/workday/capacity records. This is contract and policy surface area, not provider execution.
+
+`treeseed.package.yaml` confirms the top-level architectural intent explicitly: `projectArchitecture.topology: package_only`. It also shows the SDK produces immutable standards artifacts from its own sources and consumes authoritative TreeDX/TreeAI service contracts, which fits the README boundary statement that the SDK does not own persistence, scheduling, deployment, provider runtimes, or server-side workflows. Evidence supports describing the package as a **portable contract-and-client substrate**: one package that publishes versioned contracts, compatibility standards, and typed remote clients for the TreeSeed control plane and proxied upstream services, while keeping implementation authority outside this repository.
+
