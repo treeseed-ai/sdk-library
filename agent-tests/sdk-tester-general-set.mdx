@@ -1,0 +1,28 @@
+---
+id: sdk-tester-general-set-test
+agent: tester
+kind: context-query-set
+trigger:
+  activityType: chat
+expect: {}
+groupIds: []
+contextQueryRefs: []
+querySetRef:
+  id: sdk-tester-general-set
+  revision: 1
+testRef: sdk-tester-general-set-test-isolated
+expectedIdentities: []
+expectedRelations: []
+expectedPaths: []
+expectedSchemaVersions: []
+resultBounds:
+  min: 0
+  max: 100
+budget:
+  maxContextItems: 100
+  maxTokens: 24000
+maxLatencyMs: 15000
+---
+
+Isolated freshness and bounded-execution check for sdk-tester-general-set.
+

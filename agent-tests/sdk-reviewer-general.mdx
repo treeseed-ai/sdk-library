@@ -1,0 +1,28 @@
+---
+id: sdk-reviewer-general-test
+agent: reviewer
+kind: context-query
+trigger:
+  activityType: chat
+expect: {}
+groupIds: []
+contextQueryRefs: []
+queryRef:
+  id: sdk-reviewer-general
+  revision: 1
+testRef: sdk-reviewer-general-test-isolated
+expectedIdentities: []
+expectedRelations: []
+expectedPaths: []
+expectedSchemaVersions: []
+resultBounds:
+  min: 0
+  max: 100
+budget:
+  maxContextItems: 100
+  maxTokens: 24000
+maxLatencyMs: 15000
+---
+
+Isolated freshness and bounded-execution check for sdk-reviewer-general.
+
