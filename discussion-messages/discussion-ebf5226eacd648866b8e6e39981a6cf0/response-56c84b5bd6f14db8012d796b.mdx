@@ -1,0 +1,60 @@
+---
+title: "architect: The SDK package is organized as a portable
+  contract-and-client layer, not as an application runt"
+discussionId: discussion-ebf5226eacd648866b8e6e39981a6cf0
+authorId: architect
+authorType: agent
+intent: discuss
+mentionedAgents: []
+recipientIds: []
+fileRefs: []
+contextRefs: []
+replyTo: bffad31fac9ef82333e780207769243d
+sourceMessageRefs:
+  - bffad31fac9ef82333e780207769243d
+  - discussion-messages/discussion-ebf5226eacd648866b8e6e39981a6cf0/bffad31fac9ef82333e780207769243d.mdx
+authorAgentId: architect
+createdAt: 2026-08-31T10:27:40.735Z
+---
+The SDK package is organized as a portable contract-and-client layer, not as an application runtime. That is explicit in both the project objective and the package README: the TreeDX library objective says SDK owns “portable primitives and shared contracts” and must not own UI routes, backend API serving, provider execution, or TreeDX product semantics (`objectives/core.md`); the package README narrows that further to “portable contract and remote API package” for API, CLI, agent, browser, and external integrations (`README.md`).
+
+The major module families in `src/` align to that role:
+
+- `src/operator-contracts/`: the core control-plane catalog. This is the highest-value boundary in the package. It defines operation descriptors, risk classes, auth/scope requirements, surface exposure (`rest`, `cli`, `mcp_tool`, `mcp_resource`), concurrency/idempotency rules, and the assembled `CONTROL_PLANE_OPERATIONS` catalog. The catalog is not just types; it is the authoritative machine-readable operation registry that clients dispatch through.
+- `src/entrypoints/clients/control-plane-client.ts`: the main remote client. It validates path/query/body against the catalog’s schemas, resolves the REST binding from the authoritative catalog, sends OAuth/device-flow requests, handles optimistic concurrency and idempotency headers, and projects RFC 9457 failures into typed errors.
+- `src/treedx/`: the TreeDX-facing proxy layer. `TreeSeedTreeDxClient` is intentionally not a general TreeDX transport; it binds only the TreeSeed-owned proxy operations from the control-plane catalog and rejects operations outside that catalog.
+- `src/treeai/`: TreeAI client support. This is split between direct upstream invocation and control-plane-mediated invocation, which suggests the SDK supports both trusted infrastructure paths and direct service usage where allowed.
+- `src/capacity-provider/`: provider protocol contracts, validation, capability ontology, environment catalog, sandbox contracts, and a `ProviderProtocolClient` for provider-side lifecycle operations.
+- Contract groups for domain data and governance-shaped payloads: `accounts`, `content`, `knowledge`, `feedback`, `graph`, `security`, `secrets-capability`, `site-contracts`, `agent-capacity`, `deployment`, `development`, `model-registry`, and `guarantees`.
+- `src/standards/`: package-level standards tooling and semantic compatibility artifacts, including contract bundling, canonicalization, composition, package manifest handling, and compatibility attestation logic.
+
+The public boundary is deliberately subpath-based rather than root-based. `package.json` exports many explicit entrypoints such as `./control-plane-client`, `./operator-contracts`, `./treedx`, `./treeai`, `./capacity-provider`, `./knowledge`, `./feedback`, `./standards/*`, `./deployment`, and `./development`, and the README states there is “no root catch-all export.” Architecturally, that means ownership and compatibility are meant to remain visible at import time rather than hidden behind a large umbrella package surface.
+
+Contract organization is split between wire-level operation contracts and domain payload contracts:
+
+- Wire-level control-plane contracts live under `operator-contracts`, especially `control-plane-operation.ts` and `control-plane-operations.ts`.
+- Domain contracts are grouped by concern, for example `content/contracts.ts`, `knowledge/contracts.ts`, `feedback/contracts.ts`, `accounts/account-contracts.ts`, `graph/context-query-contracts.ts`, and the capacity-provider contract tree.
+- Standards and release compatibility are treated as first-class contracts as well, not just build byproducts. The repo also carries generated API artifacts in `docs/api/openapi.{json,yaml}` and service adoption contract artifacts in `contracts/services/*.json`.
+
+The client model is layered:
+
+- `ControlPlaneClient` is the general typed transport for TreeSeed control-plane operations.
+- `TreeSeedTreeDxClient` is a constrained facade over the control-plane’s TreeDX proxy operations.
+- `TreeSeedTreeAiClient` supports either direct upstream invocation or control-plane proxying.
+- `ProviderProtocolClient` serves capacity-provider-side lifecycle and membership operations.
+
+That layering matters because it keeps service topology and credentials out of most consumers. The README explicitly says callers do not construct control-plane paths, and TreeDX direct transport/topology/credentials remain confined to trusted control-plane infrastructure.
+
+Build and verification are intentionally narrow and package-bound. `scripts/build/build-dist.ts` builds only the exported source closure from `package.json`, emits declarations, and rejects stray artifacts. `scripts/packages/release-verify.ts` then checks for local dependency leakage, runs the dist build, generates standards artifacts, validates acceptance, scans `dist`, and runs the focused release test suite. Verification in CI (`.github/workflows/verify.yml`) runs `npm run verify:direct`, packs the artifact, and on `staging` additionally seals compatibility, composition, SBOM, release evidence, and custody artifacts. The Vitest config is also scoped to contract/client/deployment/development/security suites rather than broad app-runtime testing (`vitest.contracts.config.ts`).
+
+What the SDK deliberately does not own is consistent across the README and the TreeDX objective:
+
+- no control-plane persistence or backend business workflow implementation
+- no scheduling, deployment, repository mutation, or content publication runtime
+- no provider execution runtime
+- no UI routes
+- no server-side TreeDX transport ownership
+- no package-above imports or SDK-side encoding of TreeDX internals as product semantics
+
+My inference from the source layout is that the package is meant to be the stable compatibility spine between TreeSeed runtimes and consumers: versioned contracts, typed remote clients, standards evidence, and validation rules live here; operational stateful implementations live elsewhere. That inference is strongly supported by the export structure, the control-plane catalog design, and the release pipeline’s emphasis on contract compatibility and packed public-boundary verification.
+
