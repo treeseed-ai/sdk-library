@@ -1,0 +1,27 @@
+---
+id: sdk-project-foundation-test
+agent: architect
+kind: context-query
+trigger:
+  activityType: chat
+expect: {}
+groupIds: []
+contextQueryRefs: []
+queryRef:
+  id: sdk-project-foundation
+  revision: 1
+testRef: sdk-project-foundation-test-isolated
+expectedIdentities: []
+expectedRelations: []
+expectedPaths: []
+expectedSchemaVersions: []
+resultBounds:
+  min: 0
+  max: 100
+budget:
+  maxContextItems: 100
+  maxTokens: 24000
+maxLatencyMs: 15000
+---
+
+Isolated freshness and bounded-execution check for sdk-project-foundation.

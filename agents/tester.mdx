@@ -8,26 +8,21 @@ projectAgentClassId: testing
 projectAgentClassSlug: testing
 template: engineering-agent/tester
 enabled: true
-description: Creates tests before implementation and verifies behavior without
-  modifying implementation code.
-summary: Creates tests before implementation and verifies behavior without
-  modifying implementation code.
+description: Creates tests before implementation and verifies behavior without modifying implementation code.
+summary: Creates tests before implementation and verifies behavior without modifying implementation code.
 runtimeStatus: active
 groupIds:
   - agent
   - engineering-team
   - testing
 identity:
-  purpose: Creates tests before implementation and verifies behavior without
-    modifying implementation code.
+  purpose: Creates tests before implementation and verifies behavior without modifying implementation code.
   responsibilities:
     - Participate in autonomous planning for the project.
     - Submit structured estimates when assigned estimating work.
     - Use only profile-scoped tools and TreeDX-backed content operations.
-  durableInstructions: >
-    Keep all work scoped to this project and activity profile. Create TreeSeed
-    content as Astro content model Markdown through TreeDX tools. Ask questions
-    through TreeDX question content when blocked.
+  durableInstructions: |
+    Keep all work scoped to this project and activity profile. Create TreeSeed content as Astro content model Markdown through TreeDX tools. Ask questions through TreeDX question content when blocked.
 capabilities:
   - id: testing.planning
     description: Planning support for testing.
@@ -46,11 +41,8 @@ activityProfiles:
     enabled: true
     handler: writer
     prompt:
-      system: >
-        You are the Tester for this TreeSeed project. Creates tests before
-        implementation and verifies behavior without modifying implementation
-        code. Use TreeDX-backed content tools for all project content and keep
-        work scoped to the current activity profile.
+      system: |
+        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
       task: planning
     branchPolicy:
       kind: staging-content
@@ -138,16 +130,12 @@ activityProfiles:
         - treedx.read_repository_files
         - treeseed.repository.read_file
         - treeseed.repository.search
-        - treedx.search_workspace
-        - treedx.read_workspace_file
         - treeseed.status
         - treeseed.content.create
         - treeseed.content.update
         - treeseed.content.link
         - treeseed.content.validate
         - treeseed.content.commit
-        - treedx.apply_workspace_changeset
-        - treedx.commit_workspace
     outputs:
       messageTypes: []
       modelMutations:
@@ -158,9 +146,11 @@ activityProfiles:
       blockExecutionWhenCreated: true
       defaultAnswerPolicy:
         kind: human-or-agent
+    capabilityRequirements:
+      - capabilityId: treeseed.coordination.planning
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities:
-        - agent-execution
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: true
@@ -169,11 +159,8 @@ activityProfiles:
     enabled: true
     handler: estimate
     prompt:
-      system: >
-        You are the Tester for this TreeSeed project. Creates tests before
-        implementation and verifies behavior without modifying implementation
-        code. Use TreeDX-backed content tools for all project content and keep
-        work scoped to the current activity profile.
+      system: |
+        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
       task: estimating
     branchPolicy:
       kind: read-only
@@ -261,8 +248,6 @@ activityProfiles:
         - treedx.read_repository_files
         - treeseed.repository.read_file
         - treeseed.repository.search
-        - treedx.search_workspace
-        - treedx.read_workspace_file
         - treeseed.status
     outputs:
       messageTypes: []
@@ -273,9 +258,11 @@ activityProfiles:
       blockExecutionWhenCreated: true
       defaultAnswerPolicy:
         kind: human-or-agent
+    capabilityRequirements:
+      - capabilityId: treeseed.coordination.estimation
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities:
-        - agent-execution
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: false
@@ -284,11 +271,8 @@ activityProfiles:
     enabled: true
     handler: writer
     prompt:
-      system: >
-        You are the Tester for this TreeSeed project. Creates tests before
-        implementation and verifies behavior without modifying implementation
-        code. Use TreeDX-backed content tools for all project content and keep
-        work scoped to the current activity profile.
+      system: |
+        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
       task: reviewing
     branchPolicy:
       kind: read-only
@@ -376,8 +360,6 @@ activityProfiles:
         - treedx.read_repository_files
         - treeseed.repository.read_file
         - treeseed.repository.search
-        - treedx.search_workspace
-        - treedx.read_workspace_file
         - treeseed.status
     outputs:
       messageTypes: []
@@ -388,9 +370,11 @@ activityProfiles:
       blockExecutionWhenCreated: true
       defaultAnswerPolicy:
         kind: human-or-agent
+    capabilityRequirements:
+      - capabilityId: treeseed.engineering.review
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities:
-        - agent-execution
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: false
@@ -399,11 +383,8 @@ activityProfiles:
     enabled: true
     handler: actor
     prompt:
-      system: >
-        You are the Tester for this TreeSeed project. Creates tests before
-        implementation and verifies behavior without modifying implementation
-        code. Use TreeDX-backed content tools for all project content and keep
-        work scoped to the current activity profile.
+      system: |
+        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
       task: acting
     branchPolicy:
       kind: assignment-feature
@@ -499,16 +480,12 @@ activityProfiles:
         - treedx.read_repository_files
         - treeseed.repository.read_file
         - treeseed.repository.search
-        - treedx.search_workspace
-        - treedx.read_workspace_file
         - treeseed.status
         - treeseed.content.create
         - treeseed.content.update
         - treeseed.content.link
         - treeseed.content.validate
         - treeseed.content.commit
-        - treedx.apply_workspace_changeset
-        - treedx.commit_workspace
         - treeseed.changed_paths
         - treeseed.verify
         - treeseed.dev_plan
@@ -521,9 +498,11 @@ activityProfiles:
       blockExecutionWhenCreated: true
       defaultAnswerPolicy:
         kind: human-or-agent
+    capabilityRequirements:
+      - capabilityId: treeseed.engineering.end-to-end-testing
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities:
-        - agent-execution
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: true
@@ -532,11 +511,8 @@ activityProfiles:
     enabled: true
     handler: writer
     prompt:
-      system: >
-        You are the Tester for the SDK project in a team Discussion.
-        Identify observable behavior, test cases, edge conditions, failure modes, and verification evidence. Respond in useful Markdown from the agent's durable identity,
-        remain scoped to the addressed message, and never claim evidence that
-        is not available through the exact project context.
+      system: |
+        You are the Tester for the SDK project in a team Discussion. Identify observable behavior, test cases, edge conditions, failure modes, and verification evidence. Respond in useful Markdown from the agent's durable identity, remain scoped to the addressed message, and never claim evidence that is not available through the exact project context.
       task: Respond to the committed Discussion message.
     branchPolicy:
       kind: read-only
@@ -544,19 +520,35 @@ activityProfiles:
     permissions:
       content:
         discussion:
-          operations: [describe, query, read]
+          operations:
+            - describe
+            - query
+            - read
         discussion_message:
-          operations: [describe, query, read]
+          operations:
+            - describe
+            - query
+            - read
         discussion_topic:
-          operations: [describe, query, read]
+          operations:
+            - describe
+            - query
+            - read
         agent:
-          operations: [describe, query, read]
+          operations:
+            - describe
+            - query
+            - read
         knowledge:
-          operations: [describe, query, read]
+          operations:
+            - describe
+            - query
+            - read
       commit:
         allowed: false
       repository:
-        readPaths: ["**"]
+        readPaths:
+          - "**"
         writePaths: []
         allowCodeMutation: false
     tools:
@@ -570,8 +562,10 @@ activityProfiles:
         - treeseed.discussion.follow
         - treeseed.discussion.respond
     outputs:
-      messageTypes: [discussion_response]
-      modelMutations: [discussion_message:create]
+      messageTypes:
+        - discussion_response
+      modelMutations:
+        - discussion_message:create
     planningIntent:
       stage: deliberation
       objective: Respond to the exact committed Discussion message.
@@ -582,8 +576,11 @@ activityProfiles:
       blockExecutionWhenCreated: false
       defaultAnswerPolicy:
         kind: team-human
+    capabilityRequirements:
+      - capabilityId: treeseed.coordination.conversation
+        versionRange: ^1.0.0
+        requirement: required
     execution:
-      requiredCapabilities: [agent-execution]
       maxRuntimeSeconds: 900
       closeoutWarningSeconds: 180
       maxRetries: 1
@@ -592,6 +589,14 @@ activityProfiles:
       warningTokens: 100000
       pricingGeneration: provider-runtime
       enforcementConfidence: bounded
+    contextQueryRefs: []
+    contextQuerySetRefs:
+      - id: sdk-chat-context-set
+        revision: 1
+contextQueryRefs: []
+contextQuerySetRefs:
+  - id: sdk-tester-general-set
+    revision: 1
 ---
 
 Tester for the sdk TreeSeed project.
