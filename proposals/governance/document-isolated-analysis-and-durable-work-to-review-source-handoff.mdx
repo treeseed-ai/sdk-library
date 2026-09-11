@@ -1,0 +1,57 @@
+---
+id: 48d5429f-4882-4e89-824e-1866e70e7adb
+title: Document isolated analysis and durable work-to-review source handoff
+description: Document the SDK source workspace contracts and verify a real
+  isolated work candidate reaches a fresh review guest without losing committed
+  work.
+summary: Document the SDK source workspace contracts and verify a real isolated
+  work candidate reaches a fresh review guest without losing committed work.
+date: 2026-09-11T09:50:01.900Z
+status: in progress
+draft: false
+proposal_type: implementation
+proposal_types:
+  - implementation
+motivation: Document the SDK source workspace contracts and verify a real
+  isolated work candidate reaches a fresh review guest without losing committed
+  work.
+primary_contributor: 49435480-41fe-4fae-b2f7-baceacea562a
+related_objectives:
+  - objectives/core
+evidence_refs:
+  - https://github.com/treeseed-ai/sdk/issues/293
+  - https://github.com/treeseed-ai/platform/issues/501
+plan:
+  desiredOutcome: A concise, accurate SDK explanation backed by a completed
+    isolated work-to-review handoff.
+  currentProblem: Analysis source access is proven, but durable candidate transfer
+    between work and review guests is not yet accepted.
+  proposedApproach: Inspect exact SDK source, document existing interfaces in a
+    work guest, export its committed candidate and review it in a fresh guest.
+  scope:
+    - SDK documentation describing existing source workspace and candidate
+      contracts
+  nonGoals:
+    - Runtime behavior changes
+    - Production promotion
+    - Training workloads
+  deliverables:
+    - Documentation-only SDK candidate commit
+    - Independent review and focused verification evidence
+  acceptanceCriteria:
+    - Exact source and candidate commits are recorded
+    - Fresh review guest receives work commit after work guest destruction
+    - No credentials or disposable scratch data leak into candidate
+  risks:
+    - Workflow or candidate handoff defects may block acceptance; fix those
+      under owner issues without bypassing authority
+  dependencies: []
+  alternatives:
+    - Unit-only acceptance is insufficient to prove cross-guest persistence
+  verification:
+    - Focused SDK documentation/contract checks and required Actions
+    - Inspect candidate digest, predecessor linkage and lease cleanup
+  openQuestions: []
+---
+Implement SDK issue293 as a bounded documentation-only change. Inspect the current SDK contracts for immutable source images, writable disposable analysis overlays, publication authority and durable work-to-review candidates. Explain the exact supported interfaces in SDK documentation, without modifying runtime behavior or claiming unverified capabilities. Execute the change in a work guest and review its exact candidate in a separate isolated guest. Preserve candidate artifacts and verification evidence. Production promotion is out of scope.
+
