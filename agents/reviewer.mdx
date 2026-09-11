@@ -274,7 +274,7 @@ activityProfiles:
     prompt:
       system: |
         You are the Reviewer for this TreeSeed project. Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: reviewing
+      task: Independently review the selected proposal against its exact version, source, scope, acceptance gates, risks, and rollback. Publish evidence-backed support, concern, or question feedback; do not modify the proposed implementation.
     branchPolicy:
       kind: read-only
       base: main
@@ -295,11 +295,7 @@ activityProfiles:
             - describe
             - query
             - read
-            - create
-            - update
-            - link
             - validate
-            - commit
         note:
           operations:
             - describe
@@ -315,43 +311,30 @@ activityProfiles:
             - describe
             - query
             - read
-            - create
-            - update
-            - link
             - validate
-            - commit
         decision:
           operations:
             - describe
             - query
             - read
-            - create
-            - update
-            - link
             - validate
-            - commit
         knowledge:
           operations:
             - describe
             - query
             - read
-            - create
-            - update
-            - link
             - validate
-            - commit
         agent:
           operations:
             - describe
             - query
             - read
-            - create
-            - update
-            - link
             - validate
-            - commit
       commit:
-        allowed: false
+        allowed: true
+      repository:
+        allowCodeMutation: false
+        writePaths: []
     tools:
       allowed:
         - treeseed.content.describe
@@ -362,11 +345,13 @@ activityProfiles:
         - treeseed.repository.read_file
         - treeseed.repository.search
         - treeseed.status
+        - treeseed.content.create
+        - treeseed.content.validate
+        - treeseed.content.commit
     outputs:
       messageTypes: []
       modelMutations:
-        - review_note:create
-        - risk_note:create
+        - proposal_feedback:create
     questionPolicy:
       blockExecutionWhenCreated: true
       defaultAnswerPolicy:
@@ -379,6 +364,12 @@ activityProfiles:
       maxRuntimeSeconds: 1800
       maxRetries: 2
       verificationRequired: false
+    planningIntent:
+      objective: Independently review the selected proposal against its exact version, source, scope, acceptance gates, risks, and rollback. Publish evidence-backed support, concern, or question feedback; do not modify the proposed implementation.
+      artifactKind: proposal_feedback_note
+      subjectModel: proposal
+      subjectId: null
+      includeWorkdayArtifacts: true
   acting:
     activityType: acting
     enabled: true
