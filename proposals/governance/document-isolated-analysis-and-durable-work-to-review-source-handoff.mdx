@@ -1,21 +1,21 @@
 ---
 id: 48d5429f-4882-4e89-824e-1866e70e7adb
 title: Document isolated analysis and durable work-to-review source handoff
-description: Document the SDK source workspace contracts and verify a real
-  isolated work candidate reaches a fresh review guest, preserving exact file
-  bytes and committed work.
-summary: Document the SDK source workspace contracts and verify a real isolated
-  work candidate reaches a fresh review guest, preserving exact file bytes and
-  committed work.
+description: Document SDK source workspace contracts and verify an isolated work
+  candidate reaches a fresh review guest with byte-exact source, durable
+  commits, and independent review evidence.
+summary: Document SDK source workspace contracts and verify an isolated work
+  candidate reaches a fresh review guest with byte-exact source, durable
+  commits, and independent review evidence.
 date: 2026-09-11T09:50:01.900Z
 status: in progress
 draft: false
 proposal_type: implementation
 proposal_types:
   - implementation
-motivation: Document the SDK source workspace contracts and verify a real
-  isolated work candidate reaches a fresh review guest, preserving exact file
-  bytes and committed work.
+motivation: Document SDK source workspace contracts and verify an isolated work
+  candidate reaches a fresh review guest with byte-exact source, durable
+  commits, and independent review evidence.
 primary_contributor: 49435480-41fe-4fae-b2f7-baceacea562a
 related_objectives:
   - objectives/core
@@ -55,5 +55,3 @@ plan:
   openQuestions: []
 ---
 Implement SDK issue293 as a bounded documentation-only change. Inspect the current SDK contracts for immutable source images, writable disposable analysis overlays, publication authority and durable work-to-review candidates. Explain the exact supported interfaces in SDK documentation, without modifying runtime behavior or claiming unverified capabilities. Execute the change in a work guest and review its exact candidate in a separate isolated guest. Preserve candidate artifacts and verification evidence. Production promotion is out of scope.
-
-
