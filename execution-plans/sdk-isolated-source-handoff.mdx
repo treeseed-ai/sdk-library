@@ -1,0 +1,59 @@
+---
+schemaVersion: treeseed.execution-plan/v1
+id: sdk-isolated-source-handoff
+revision: 1
+proposalId: 48d5429f-4882-4e89-824e-1866e70e7adb
+proposalRevision: 4
+proposalDigest: 052f3368c0920d69ec6fc3e03ab465aee5d2138597caa7ba0b20a39084328839
+status: accepted
+workItems:
+  - id: implement
+    activity: acting
+    agentClass: engineering
+    objective: Verify the living execution graph by adding a bounded acceptance note describing its exact source authority.
+    estimate:
+      minimumSeconds: 120
+      expectedSeconds: 300
+      maximumSeconds: 600
+    produces:
+      - id: source-candidate
+        outputType: source-candidate
+        required: true
+        acceptanceCriteria:
+          - The isolated work guest commits the bounded SDK documentation change.
+          - Focused SDK tests pass.
+    requires: []
+    requiredCapabilities:
+      - treeseed.engineering.code-change
+    acceptanceCriteria:
+      - The assignment uses the exact execution-plan source and decision authority.
+      - The work executes in the local Kata sandbox.
+    assumptions: []
+    blockers: []
+  - id: review
+    activity: reviewing
+    agentClass: review
+    objective: Independently review the exact source candidate produced by the implementation node.
+    estimate:
+      minimumSeconds: 120
+      expectedSeconds: 300
+      maximumSeconds: 600
+    produces:
+      - id: review-disposition
+        outputType: review-disposition
+        required: true
+        acceptanceCriteria:
+          - The reviewer verifies the exact predecessor candidate and focused test evidence.
+    requires:
+      - workItemId: implement
+        outputType: source-candidate
+    requiredCapabilities:
+      - treeseed.engineering.review
+    acceptanceCriteria:
+      - Review executes in an independently isolated Kata guest.
+      - The final graph records an accepted review disposition.
+    assumptions: []
+    blockers: []
+---
+
+This execution plan is the local acceptance fixture for the living team execution graph.
