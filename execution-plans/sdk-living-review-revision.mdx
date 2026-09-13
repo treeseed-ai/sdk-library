@@ -1,19 +1,22 @@
 ---
 schemaVersion: treeseed.execution-plan/v1
 id: sdk-living-review-revision
-revision: 4
+revision: 5
 proposalId: b2c45a28-3f9d-4b56-a8d4-cd7f49af205d
-proposalRevision: 3
-proposalDigest: 7ed7d820047fbe21db9cf62919aebc221b83b952258b5bd73c00c1f467f6007e
+proposalRevision: 4
+proposalDigest: 7bb82a7b25ea9412df29630a23623f4f48ef83f422e656856c4a633b21806db9
 status: accepted
 workItems:
   - id: implement-revision-fixture
     activity: acting
     agentClass: engineering
     objective: >-
-      Add a focused SDK regression fixture named living-graph-review-revision that
-      proves the first candidate can be returned for reviewer-directed revision.
-      On revision, address every supplied review finding and preserve focused test coverage.
+      For revision 1, create tests/fixtures/living-graph-review-revision.ts exporting
+      the literal INITIAL_CANDIDATE and create
+      tests/unit/agent-capacity/capacity/living-graph-review-revision.test.ts asserting
+      that literal. Do not include REVISION_CONFIRMED in revision 1. On a returned
+      revision, consume the exact review finding, replace both fixture and assertion
+      with REVISION_CONFIRMED, and preserve focused test coverage.
     estimate:
       minimumSeconds: 60
       expectedSeconds: 180
@@ -30,7 +33,8 @@ workItems:
       - treeseed.engineering.code-change
     acceptanceCriteria:
       - A focused regression fixture and test exist in the SDK package.
-      - The candidate passes the focused SDK test command.
+      - Revision 1 contains INITIAL_CANDIDATE and does not contain REVISION_CONFIRMED.
+      - The candidate passes npm test -- --run tests/unit/agent-capacity/capacity/living-graph-review-revision.test.ts.
       - Any reviewer findings from an earlier revision are fully resolved.
     assumptions:
       - The SDK staging source is available through the provider source cache.
@@ -41,10 +45,13 @@ workItems:
     activity: reviewing
     agentClass: review
     objective: >-
-      Review the exact implementation candidate. Require revision if the fixture does
-      not prove reviewer-directed correction, does not contain a machine-checkable
-      REVISION_CONFIRMED assertion, or if focused tests are absent or failing;
-      approve only an exact candidate that satisfies every acceptance criterion.
+      Review the exact implementation candidate commit supplied by the acting output.
+      Run npm test -- --run
+      tests/unit/agent-capacity/capacity/living-graph-review-revision.test.ts. Require
+      revision 1 because it intentionally contains INITIAL_CANDIDATE and omits
+      REVISION_CONFIRMED. The finding must name that exact commit and require both
+      fixture and assertion to use REVISION_CONFIRMED. Approve only the distinct
+      revised commit after the focused command passes.
     estimate:
       minimumSeconds: 45
       expectedSeconds: 120
