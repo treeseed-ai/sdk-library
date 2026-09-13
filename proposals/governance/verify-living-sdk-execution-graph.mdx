@@ -6,5 +6,43 @@ title: Verify living SDK execution graph
 request: Prove that one accepted proposal-owned SDK work item projects into the
   real team execution graph without a fixed pipeline or duplicate plan
   authority.
-status: draft
+summary: Exercise the canonical proposal-to-graph path with one independently
+  reviewed SDK architecture work item.
+status: ready
+executionPlan:
+  workItems:
+    - id: verify-living-graph
+      activity: acting
+      agentClass: architect
+      workspace: read-only
+      review: required
+      objective: Inspect and report how the current SDK implementation realizes the
+        living execution graph contract.
+      estimate:
+        minimumSeconds: 120
+        expectedSeconds: 240
+        maximumSeconds: 480
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities: []
+      acceptanceCriteria:
+        - The report cites exact current SDK source evidence and distinguishes
+          implemented behavior from remaining work.
 ---
