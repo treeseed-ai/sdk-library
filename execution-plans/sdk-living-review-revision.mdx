@@ -1,10 +1,10 @@
 ---
 schemaVersion: treeseed.execution-plan/v1
 id: sdk-living-review-revision
-revision: 3
+revision: 4
 proposalId: b2c45a28-3f9d-4b56-a8d4-cd7f49af205d
-proposalRevision: 2
-proposalDigest: d946fdde2fc930d3390b14844264f077c0ab29c86f73c7f9f44efd5dc8fc2ca9
+proposalRevision: 3
+proposalDigest: 7ed7d820047fbe21db9cf62919aebc221b83b952258b5bd73c00c1f467f6007e
 status: accepted
 workItems:
   - id: implement-revision-fixture
@@ -42,7 +42,8 @@ workItems:
     agentClass: review
     objective: >-
       Review the exact implementation candidate. Require revision if the fixture does
-      not prove reviewer-directed correction or if focused tests are absent or failing;
+      not prove reviewer-directed correction, does not contain a machine-checkable
+      REVISION_CONFIRMED assertion, or if focused tests are absent or failing;
       approve only an exact candidate that satisfies every acceptance criterion.
     estimate:
       minimumSeconds: 45
@@ -64,6 +65,7 @@ workItems:
     acceptanceCriteria:
       - The exact source candidate is inspected and tested.
       - The review disposition is evidence-backed.
+      - The source fixture contains a machine-checkable REVISION_CONFIRMED assertion.
       - A deficient candidate is returned to acting without changing DAG semantics.
     assumptions: []
     blockers: []
