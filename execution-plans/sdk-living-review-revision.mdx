@@ -1,7 +1,7 @@
 ---
 schemaVersion: treeseed.execution-plan/v1
 id: sdk-living-review-revision
-revision: 2
+revision: 3
 proposalId: b2c45a28-3f9d-4b56-a8d4-cd7f49af205d
 proposalRevision: 2
 proposalDigest: d946fdde2fc930d3390b14844264f077c0ab29c86f73c7f9f44efd5dc8fc2ca9
@@ -9,7 +9,7 @@ status: accepted
 workItems:
   - id: implement-revision-fixture
     activity: acting
-    agentClass: engineer
+    agentClass: engineering
     objective: >-
       Add a focused SDK regression fixture named living-graph-review-revision that
       proves the first candidate can be returned for reviewer-directed revision.
@@ -39,7 +39,7 @@ workItems:
       - reviewer
   - id: review-revision-fixture
     activity: reviewing
-    agentClass: reviewer
+    agentClass: review
     objective: >-
       Review the exact implementation candidate. Require revision if the fixture does
       not prove reviewer-directed correction or if focused tests are absent or failing;
