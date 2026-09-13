@@ -1,0 +1,75 @@
+---
+schemaVersion: treeseed.execution-plan/v1
+id: sdk-living-review-revision
+revision: 1
+proposalId: b2c45a28-3f9d-4b56-a8d4-cd7f49af205d
+proposalRevision: 1
+proposalDigest: 5490aaff97eea169f830b3bc82afc7d3cc4f37944221e5042587b9bcf8a5dbce
+status: accepted
+workItems:
+  - id: implement-revision-fixture
+    activity: acting
+    agentClass: engineer
+    objective: >-
+      Add a focused SDK regression fixture named living-graph-review-revision that
+      proves the first candidate can be returned for reviewer-directed revision.
+      On revision, address every supplied review finding and preserve focused test coverage.
+    estimate:
+      minimumSeconds: 60
+      expectedSeconds: 180
+      maximumSeconds: 300
+    produces:
+      - id: implementation-candidate
+        outputType: source-candidate
+        required: true
+        acceptanceCriteria:
+          - The candidate is committed from the assignment worktree.
+          - Focused SDK tests pass in the isolated execution guest.
+    requires: []
+    requiredCapabilities:
+      - treeseed.engineering.code-change
+    acceptanceCriteria:
+      - A focused regression fixture and test exist in the SDK package.
+      - The candidate passes the focused SDK test command.
+      - Any reviewer findings from an earlier revision are fully resolved.
+    assumptions:
+      - The SDK staging source is available through the provider source cache.
+    blockers: []
+    reviewerAgentClasses:
+      - reviewer
+  - id: review-revision-fixture
+    activity: reviewing
+    agentClass: reviewer
+    objective: >-
+      Review the exact implementation candidate. Require revision if the fixture does
+      not prove reviewer-directed correction or if focused tests are absent or failing;
+      approve only an exact candidate that satisfies every acceptance criterion.
+    estimate:
+      minimumSeconds: 45
+      expectedSeconds: 120
+      maximumSeconds: 240
+    produces:
+      - id: review-decision
+        outputType: review-disposition
+        required: true
+        acceptanceCriteria:
+          - The disposition identifies the exact reviewed candidate.
+          - Rejection or revision includes actionable findings.
+          - Approval is emitted only after focused verification passes.
+    requires:
+      - workItemId: implement-revision-fixture
+        outputType: source-candidate
+    requiredCapabilities:
+      - treeseed.engineering.review
+    acceptanceCriteria:
+      - The exact source candidate is inspected and tested.
+      - The review disposition is evidence-backed.
+      - A deficient candidate is returned to acting without changing DAG semantics.
+    assumptions: []
+    blockers: []
+---
+
+# Living graph review-revision acceptance
+
+This operational execution plan is a bounded acceptance fixture for the real
+estimate-derived living graph and Kata-isolated SDK assignment path.
