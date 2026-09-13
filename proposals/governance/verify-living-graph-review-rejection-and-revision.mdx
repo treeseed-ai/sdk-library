@@ -1,0 +1,65 @@
+---
+id: b2c45a28-3f9d-4b56-a8d4-cd7f49af205d
+title: Verify living graph review rejection and revision
+description: Prove the real estimate-derived graph can reject an exact SDK
+  source candidate, create a bounded revision, and approve its re-review.
+summary: Prove the real estimate-derived graph can reject an exact SDK source
+  candidate, create a bounded revision, and approve its re-review.
+date: 2026-09-13T03:44:45.867Z
+status: in progress
+draft: false
+proposal_type: implementation
+proposal_types:
+  - implementation
+motivation: Prove the real estimate-derived graph can reject an exact SDK source
+  candidate, create a bounded revision, and approve its re-review.
+primary_contributor: 49435480-41fe-4fae-b2f7-baceacea562a
+related_objectives:
+  - objectives/core
+evidence_refs:
+  - docs/agent-assignments.md
+plan:
+  desiredOutcome: The living graph completes an evidence-backed act, review,
+    revision, and re-review cycle on the real local capacity provider without
+    any fixed engineering pipeline.
+  currentProblem: Existing acceptance proves an approved act/review path but has
+    not yet proven that rejected review deterministically revises the correct
+    graph node and candidate.
+  proposedApproach: Publish an exact TreeDX execution plan, bind governance
+    authority to its immutable revision, and execute every derived node through
+    direct provider admission in Kata.
+  scope:
+    - SDK acting and independent review assignments on the local provider.
+    - Exact graph, decision, profile, source, offer, result, and checkpoint
+      provenance.
+  nonGoals:
+    - Production release or managed-host promotion during this local acceptance
+      slice.
+    - A fixed workflow compiler or manually authored graph topology.
+  deliverables:
+    - A focused SDK source candidate from an isolated assignment.
+    - A review disposition bound to the exact candidate.
+    - A deterministic revised candidate and approved re-review when revision is
+      required.
+  acceptanceCriteria:
+    - Every assignment carries exact living-graph and immutable source authority.
+    - Reconciliation and admission create no duplicate assignment or reservation.
+    - Review rejection advances bounded node revisions without changing DAG
+      semantics.
+  risks:
+    - An agent may approve a conforming first candidate, requiring a
+      deterministic fixture for the rejection path.
+    - Provider or TreeDX cleanup leakage may leave terminal operational residue.
+  dependencies:
+    - Healthy local API, TreeDX, capacity provider, SDK source cache, and Codex
+      execution provider.
+  alternatives:
+    - Unit-only simulation was rejected because it does not prove real provider
+      and Kata behavior.
+  verification:
+    - Read the graph and node explanations through generated trsd operations.
+    - Inspect immutable assignment outputs, revisions, provider settlement, and
+      repeated reconciliation noop.
+  openQuestions: []
+---
+Exercise the real provider and Kata-isolated assignment path with a focused SDK regression change. The accepted execution plan supplies the topology. The first acting assignment produces an immutable source candidate, an independent reviewer inspects that exact candidate, and any rejection returns actionable findings to a deterministic acting revision followed by re-review. Provider selection may choose where the nodes run but may not alter their work, provenance, or dependencies.
