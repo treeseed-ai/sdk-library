@@ -1,7 +1,7 @@
 ---
 schemaVersion: treeseed.execution-plan/v1
 id: sdk-isolated-source-handoff
-revision: 3
+revision: 4
 proposalId: 48d5429f-4882-4e89-824e-1866e70e7adb
 proposalRevision: 4
 proposalDigest: 052f3368c0920d69ec6fc3e03ab465aee5d2138597caa7ba0b20a39084328839
@@ -10,7 +10,7 @@ workItems:
   - id: implement
     activity: acting
     agentClass: engineering
-    objective: Verify the living execution graph by adding a bounded acceptance note describing its exact source authority.
+    objective: Add focused SDK regression coverage proving provider-assignment validation rejects blank agentId and handlerId values. Inspect the current validator, update tests/unit/agent-capacity/capacity/assignments/assignment-record-validation.test.ts, change implementation only if the focused test exposes a real defect, run that exact test, and commit the result.
     estimate:
       minimumSeconds: 120
       expectedSeconds: 300
@@ -20,20 +20,21 @@ workItems:
         outputType: source-candidate
         required: true
         acceptanceCriteria:
-          - The isolated work guest commits the bounded SDK documentation change.
-          - Focused SDK tests pass.
+          - The exact test file contains a meaningful new regression assertion for both blank agentId and blank handlerId.
+          - The isolated work guest commits at least one changed path on top of the exact SDK staging source pin.
+          - The exact focused Vitest command passes with no failed checks.
     requires: []
     requiredCapabilities:
       - treeseed.engineering.code-change
     acceptanceCriteria:
-      - The assignment uses the exact execution-plan source and decision authority.
-      - The work executes in the local Kata sandbox.
+      - The assignment uses this exact execution-plan revision and decision authority.
+      - The work executes in the local Kata sandbox against the exact SDK staging commit.
     assumptions: []
     blockers: []
   - id: review
     activity: reviewing
     agentClass: review
-    objective: Independently review the exact source candidate produced by the implementation node.
+    objective: Independently inspect the exact source candidate produced by implement, verify the new assertions are meaningful and the focused test passed, then publish an explicit approved, rejected, or revision-required disposition.
     estimate:
       minimumSeconds: 120
       expectedSeconds: 300
@@ -43,17 +44,18 @@ workItems:
         outputType: review-disposition
         required: true
         acceptanceCriteria:
-          - The reviewer verifies the exact predecessor candidate and focused test evidence.
+          - The disposition identifies the exact predecessor source-candidate receipt.
+          - Approval is allowed only when the candidate commit differs from the exact base, changed paths are present, and verification has no failed check.
     requires:
       - workItemId: implement
         outputType: source-candidate
     requiredCapabilities:
       - treeseed.engineering.review
     acceptanceCriteria:
-      - Review executes in an independently isolated Kata guest.
-      - The final graph records an accepted review disposition.
+      - Review executes in a separately isolated Kata guest using the exact predecessor candidate.
+      - The final graph records the accepted review output and explicit disposition signal.
     assumptions: []
     blockers: []
 ---
 
-This execution plan is the local acceptance fixture for the living team execution graph. Revision 3 verifies the corrected live Agent provider generation after repairing governed source-candidate output mapping.
+This execution plan is the local acceptance fixture for the living team execution graph. Revision 4 requires a real SDK source mutation, passing focused verification, exact candidate handoff, and an explicit independently produced review disposition.
