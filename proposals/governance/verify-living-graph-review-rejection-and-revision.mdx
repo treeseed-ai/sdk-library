@@ -27,7 +27,10 @@ plan:
     graph node and candidate.
   proposedApproach: Publish an exact TreeDX execution plan, bind governance
     authority to its immutable revision, and execute every derived node through
-    direct provider admission in Kata.
+    direct provider admission in Kata. Seed the initial acting assignment with a
+    deliberately incomplete fixture whose exact deficiency is known to the
+    review contract, then require the revised candidate to add the missing
+    assertion without changing graph topology.
   scope:
     - SDK acting and independent review assignments on the local provider.
     - Exact graph, decision, profile, source, offer, result, and checkpoint
@@ -44,11 +47,21 @@ plan:
   acceptanceCriteria:
     - Every assignment carries exact living-graph and immutable source authority.
     - Reconciliation and admission create no duplicate assignment or reservation.
-    - Review rejection advances bounded node revisions without changing DAG
-      semantics.
+    - The first candidate omits the fixture's required revision-marker assertion
+      and is rejected with an actionable finding bound to that exact candidate.
+    - Exactly one revision advances the intended acting and reviewing nodes
+      without changing node identities, typed dependencies, or DAG semantics.
+    - The revised candidate has a distinct immutable commit, adds the required
+      assertion, passes focused tests, and is the only candidate eligible for
+      re-review approval.
+    - Re-review approval names the revised candidate and cannot approve the
+      rejected predecessor.
+    - Provider settlement and TreeDX cleanup leave no nonterminal assignment,
+      reservation, offer, workspace, or checkpoint records before the repeated
+      reconciliation noop.
+    - Repeating reconciliation changes no node, edge, assignment, reservation,
+      or checkpoint.
   risks:
-    - An agent may approve a conforming first candidate, requiring a
-      deterministic fixture for the rejection path.
     - Provider or TreeDX cleanup leakage may leave terminal operational residue.
   dependencies:
     - Healthy local API, TreeDX, capacity provider, SDK source cache, and Codex
