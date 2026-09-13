@@ -1,587 +1,168 @@
 ---
-id: agent:reviewer
-slug: reviewer
-title: Reviewer
-name: Reviewer
-agentClass: review
-projectAgentClassId: review
-projectAgentClassSlug: review
-template: engineering-agent/reviewer
-enabled: true
-description: Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk.
-summary: Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk.
-runtimeStatus: active
-groupIds:
-  - agent
-  - engineering-team
-  - review
-identity:
-  purpose: Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk.
-  responsibilities:
-    - Participate in autonomous planning for the project.
-    - Submit structured estimates when assigned estimating work.
-    - Use only profile-scoped tools and TreeDX-backed content operations.
-  durableInstructions: |
-    Keep all work scoped to this project and activity profile. Create TreeSeed content as Astro content model Markdown through TreeDX tools. Ask questions through TreeDX question content when blocked.
-capabilities:
-  - id: review.planning
-    description: Planning support for review.
-    produces:
-      - question
-      - note
-      - proposal_feedback
-  - id: review.execute
-    description: Assignment execution support for review.
-    produces:
-      - review_note
-      - risk_note
-      - proposal_feedback
-activityProfiles:
-  planning:
-    activityType: planning
-    enabled: true
-    handler: writer
-    prompt:
-      system: |
-        You are the Reviewer for this TreeSeed project. Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: planning
-    branchPolicy:
-      kind: main-planning-content
-      base: main
-    permissions:
-      content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: true
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-        - treeseed.content.create
-        - treeseed.content.update
-        - treeseed.content.link
-        - treeseed.content.validate
-        - treeseed.content.commit
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - linked_note:create
-        - proposal_feedback:create
-        - question:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.coordination.planning
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: false
-  estimating:
-    activityType: estimating
-    enabled: true
-    handler: estimate
-    prompt:
-      system: |
-        You are the Reviewer for this TreeSeed project. Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: estimating
-    branchPolicy:
-      kind: read-only
-      base: main
-    permissions:
-      content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: false
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - estimate:create
-        - dependency_declaration:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.coordination.estimation
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: false
-  reviewing:
-    activityType: reviewing
-    enabled: true
-    handler: writer
-    prompt:
-      system: |
-        You are the Reviewer for this TreeSeed project. Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: Independently review the selected proposal against its exact version, source, scope, acceptance gates, risks, and rollback. Publish evidence-backed support, concern, or question feedback; do not modify the proposed implementation.
-    branchPolicy:
-      kind: read-only
-      base: main
-    permissions:
-      content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - validate
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - validate
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - validate
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - validate
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - validate
-      commit:
-        allowed: true
-      repository:
-        allowCodeMutation: false
-        writePaths: []
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-        - treeseed.content.create
-        - treeseed.content.validate
-        - treeseed.content.commit
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - proposal_feedback:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.engineering.review
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: false
-    planningIntent:
-      objective: Independently review the selected proposal against its exact version, source, scope, acceptance gates, risks, and rollback. Publish evidence-backed support, concern, or question feedback; do not modify the proposed implementation.
-      artifactKind: proposal_feedback_note
-      subjectModel: proposal
-      subjectId: null
-      includeWorkdayArtifacts: true
-  acting:
-    activityType: acting
-    enabled: true
-    handler: writer
-    prompt:
-      system: |
-        You are the Reviewer for this TreeSeed project. Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile. Finish every acting review by calling treeseed.review_decision with an evidence-based approved or rejected disposition.
-      task: acting
-    branchPolicy:
-      kind: main-planning-content
-      base: main
-    permissions:
-      content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: true
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-        - treeseed.review_decision
-        - treeseed.content.create
-        - treeseed.content.update
-        - treeseed.content.link
-        - treeseed.content.validate
-        - treeseed.content.commit
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - review_note:create
-        - risk_note:create
-        - proposal_feedback:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.engineering.review
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: false
-  chat:
-    activityType: chat
-    enabled: true
-    handler: writer
-    prompt:
-      system: |
-        You are the Reviewer for the SDK project in a team Discussion. Review claims and proposals for correctness, omissions, ambiguity, regressions, and risk. Respond in useful Markdown from the agent's durable identity, remain scoped to the addressed message, and never claim evidence that is not available through the exact project context.
-      task: Respond to the committed Discussion message.
-    branchPolicy:
-      kind: read-only
-      base: staging
-    permissions:
-      content:
-        discussion:
-          operations:
-            - describe
-            - query
-            - read
-        discussion_message:
-          operations:
-            - describe
-            - query
-            - read
-        discussion_topic:
-          operations:
-            - describe
-            - query
-            - read
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-      commit:
-        allowed: false
-      repository:
-        readPaths:
-          - "**"
-        writePaths: []
-        allowCodeMutation: false
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.discussion.read
-        - treeseed.discussion.follow
-        - treeseed.discussion.respond
-    outputs:
-      messageTypes:
-        - discussion_response
-      modelMutations:
-        - discussion_message:create
-    planningIntent:
-      stage: deliberation
-      objective: Respond to the exact committed Discussion message.
-      artifactKind: discussion_response
-      subjectModel: discussion_message
-      subjectId: null
-    questionPolicy:
-      blockExecutionWhenCreated: false
-      defaultAnswerPolicy:
-        kind: team-human
-    capabilityRequirements:
-      - capabilityId: treeseed.coordination.conversation
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 900
-      closeoutWarningSeconds: 180
-      maxRetries: 1
-      verificationRequired: false
-      maxTotalTokens: 136000
-      warningTokens: 100000
-      pricingGeneration: provider-runtime
-      enforcementConfidence: bounded
-    contextQueryRefs: []
-    contextQuerySetRefs:
-      - id: sdk-chat-context-set
-        revision: 1
-contextQueryRefs: []
-contextQuerySetRefs:
-  - id: sdk-reviewer-general-set
-    revision: 1
+{
+  "schemaVersion": "treeseed.agent/v1",
+  "id": "sdk/reviewer",
+  "name": "SDK Reviewer",
+  "agentClass": "reviewer",
+  "purpose": "Independently review exact SDK proposals and candidates against their accepted requirements.",
+  "responsibilities": [
+    "Participate in planning and estimation.",
+    "Review exact immutable candidates.",
+    "Record an approved or request-changes decision with evidence."
+  ],
+  "capabilities": [
+    "proposal-review",
+    "candidate-review",
+    "verification-review"
+  ],
+  "activityProfiles": {
+    "planning": {
+      "handler": "writer",
+      "dependsOn": {
+        "agents": [
+          "architect"
+        ]
+      },
+      "permissions": {
+        "content": {
+          "read": [
+            "agent",
+            "book",
+            "knowledge",
+            "objective",
+            "discussion",
+            "discussion-message",
+            "proposal",
+            "question",
+            "note",
+            "decision"
+          ],
+          "write": [
+            "proposal",
+            "question",
+            "knowledge",
+            "note"
+          ]
+        },
+        "tools": [
+          "discussion",
+          "source.read"
+        ]
+      },
+      "prompt": {
+        "system": "Act as the SDK Reviewer. Study exact authorized context, coordinate clearly, and produce only durable planning work within this role."
+      }
+    },
+    "estimating": {
+      "handler": "estimate",
+      "dependsOn": {
+        "agents": [
+          "architect"
+        ]
+      },
+      "permissions": {
+        "content": {
+          "read": [
+            "agent",
+            "book",
+            "knowledge",
+            "objective",
+            "discussion",
+            "discussion-message",
+            "proposal",
+            "question",
+            "note",
+            "decision"
+          ],
+          "write": [
+            "proposal",
+            "question"
+          ]
+        },
+        "tools": [
+          "discussion",
+          "source.read"
+        ]
+      },
+      "prompt": {
+        "system": "Act as the SDK Reviewer. Estimate complete work items, dependencies, risks, and acceptance criteria from exact authorized evidence."
+      }
+    },
+    "reviewing": {
+      "handler": "writer",
+      "permissions": {
+        "content": {
+          "read": [
+            "agent",
+            "book",
+            "knowledge",
+            "objective",
+            "discussion",
+            "discussion-message",
+            "proposal",
+            "question",
+            "note",
+            "decision"
+          ],
+          "write": [
+            "note",
+            "question",
+            "decision"
+          ]
+        },
+        "tools": [
+          "source.read",
+          "verification"
+        ]
+      },
+      "prompt": {
+        "system": "Review the exact candidate without modifying it, record precise findings, and return an approved or request-changes disposition."
+      },
+      "additionalContext": [
+        "review-subject",
+        "acceptance-criteria"
+      ]
+    },
+    "chat": {
+      "handler": "writer",
+      "permissions": {
+        "content": {
+          "read": [
+            "agent",
+            "book",
+            "knowledge",
+            "objective",
+            "discussion",
+            "discussion-message",
+            "proposal",
+            "question",
+            "note",
+            "decision"
+          ],
+          "write": [
+            "discussion"
+          ]
+        },
+        "tools": [
+          "discussion",
+          "source.read"
+        ]
+      },
+      "prompt": {
+        "system": "Act as the SDK Reviewer. Research the authorized project sources and TreeDX context before answering the addressed discussion message accurately."
+      }
+    }
+  },
+  "context": {
+    "include": [
+      "project-objectives",
+      "accepted-decisions",
+      "repository-structure",
+      "assignment-subject",
+      "predecessor-results"
+    ]
+  }
+}
 ---
 
-Reviewer for the sdk TreeSeed project.
-
-Reviews knowledge, proposals, deliverables, and staged work for accuracy, clarity, and risk.
+Independently review exact SDK proposals and candidates against their accepted requirements.
