@@ -1,0 +1,181 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: 93b4a2fa-e340-41aa-9393-34f895d50373
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Prove the SDK Git Actor review cycle
+request: This proposal is the sole end-to-end acceptance frontier. Its
+  governance Reviewer assesses whether the exact plan is decision-ready; no
+  Actor candidate can exist until after acceptance. Once accepted, the living
+  graph derives the declared prerequisite work, the Git Actor, and every
+  required Reviewer without a fixed pipeline. The Engineer's exact mutable
+  authority is treeseed-ai/sdk commit 0b70da01bbac7492ca783054861dbbe5690ea36f
+  at tests/fixtures/agent-execution/review-cycle.json. The first Engineer
+  candidate intentionally records status initial. Its Reviewer must request the
+  specified revision. The same Actor node then receives that exact review
+  result, records status revised plus the exact review decision reference, and
+  returns a new immutable commit for approval by the same Reviewer node.
+  Provider selection may choose where nodes run but cannot alter this topology
+  or semantics.
+summary: Run the profile-required Architect and Tester prerequisites, then prove
+  one bounded Git Actor request-changes and approval cycle.
+status: draft
+executionPlan:
+  workItems:
+    - id: establish-source
+      activity: acting
+      agentClass: architect
+      workspace: read-only
+      review: required
+      objective: Inspect treeseed-ai/sdk commit
+        0b70da01bbac7492ca783054861dbbe5690ea36f and report that it is the exact
+        source authority for the bounded review-cycle fixture. Do not modify
+        source.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle.json
+      acceptanceCriteria:
+        - The Architect returns one canonical result identifying the exact SDK
+          repository and base commit without modifying source.
+        - The paired Reviewer approves only if the exact source authority and
+          no-mutation boundary are preserved.
+    - id: verify-source
+      activity: acting
+      agentClass: tester
+      workspace: read-only
+      review: required
+      objective: Verify the exact SDK checkout by running git rev-parse HEAD and test
+        ! -e tests/fixtures/agent-execution/review-cycle.json. Do not modify
+        source.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn:
+        - establish-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle.json
+      acceptanceCriteria:
+        - Both declared commands are runner-observed at the exact SDK base
+          commit and pass without modifying source.
+        - The paired Reviewer receives the exact Tester result and approves only
+          if the base and absence checks passed.
+    - id: exercise-review-cycle
+      activity: acting
+      agentClass: engineer
+      workspace: git
+      review: required
+      objective: Create tests/fixtures/agent-execution/review-cycle.json. On the
+        initial attempt write valid JSON containing schemaVersion
+        treeseed.agent-review-cycle-acceptance/v1, status initial, and
+        baseCommit 0b70da01bbac7492ca783054861dbbe5690ea36f. After the required
+        request-changes decision is supplied as predecessor context, revise the
+        same file so status is revised and reviewDecision contains the exact
+        TreeDX decision commit and path. Modify no other file. Verify with git
+        diff --check and node -e
+        "JSON.parse(require('node:fs').readFileSync('tests/fixtures/agent-execution/review-cycle.json','utf8'))".
+      estimate:
+        minimumSeconds: 120
+        expectedSeconds: 240
+        maximumSeconds: 480
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn:
+        - verify-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle.json
+      acceptanceCriteria:
+        - The initial Actor changes only the fixture, records status initial and
+          the exact base commit, passes both declared verification commands, and
+          returns one canonical result with an exact Git commit.
+        - The first Reviewer binds its work-review decision to that exact
+          candidate and requests the specified revision without mutating the
+          candidate.
+        - The same Actor node advances one revision, receives the exact prior
+          review result, changes only the fixture to status revised with the
+          exact TreeDX decision commit and path, passes both commands, and
+          returns a distinct immutable Git commit.
+        - The same Reviewer node advances one revision, receives the revised
+          exact candidate, approves it, and completes the work item.
+        - Every attempt runs in an isolated Kata guest with immutable grants;
+          workspaces are cleaned up and every reservation and result settles
+          once.
+        - Repeated reconciliation creates no duplicate node, edge, assignment,
+          result, reservation, or settlement.
+---
