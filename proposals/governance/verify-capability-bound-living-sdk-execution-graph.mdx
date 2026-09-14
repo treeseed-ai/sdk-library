@@ -6,17 +6,21 @@ title: Verify capability-bound living SDK execution graph
 request: "Exercise the real accepted proposal work item through capability-bound
   admission, the canonical assignment-result contract, isolated Actor execution,
   exact predecessor delivery, independent Reviewer execution, and terminal
-  reconciliation. The single declared acting work item and review: required are
-  the only plan authority: reconciliation derives the Actor node, paired
-  Reviewer node, and review-pair edge. Pre-decision review judges whether this
-  plan specifies a decision-ready and testable path; its acceptance criteria
-  describe evidence that must be produced after acceptance and do not assert
-  that Actor runtime evidence already exists. The proposal's TreeDX content
-  commit identifies only this proposal revision; it is not an SDK source commit.
-  The separately attached SDK source commit is the feasibility-inspection base
-  and the later Actor's source authority. Predecessor results are expected only
-  from the post-Actor Reviewer. Provider selection chooses where the immutable
-  nodes execute and cannot alter their topology or semantics."
+  reconciliation. This is a read-only execution-path acceptance probe, not a
+  claim that the attached SDK staging revision already contains the locally
+  developed living-graph implementation. The Actor must inspect the exact
+  attached SDK source and truthfully report which relevant contracts are present
+  or absent. The single declared acting work item and review: required are the
+  only plan authority: reconciliation derives the Actor node, paired Reviewer
+  node, and review-pair edge. Pre-decision review judges whether this plan
+  specifies a decision-ready and testable path; its acceptance criteria describe
+  evidence that must be produced after acceptance and do not assert that Actor
+  runtime evidence already exists. The proposal's TreeDX content commit
+  identifies only this proposal revision; it is not an SDK source commit. The
+  separately attached SDK source commit is the feasibility-inspection base and
+  the later Actor's source authority. Predecessor results are expected only from
+  the post-Actor Reviewer. Provider selection chooses where the immutable nodes
+  execute and cannot alter their topology or semantics."
 summary: Prove the canonical proposal-to-Actor-to-Reviewer path without a fixed
   pipeline or duplicate plan authority.
 status: ready
@@ -27,9 +31,10 @@ executionPlan:
       agentClass: architect
       workspace: read-only
       review: required
-      objective: Inspect the current SDK source and report how the living execution
-        graph contracts are implemented, distinguishing verified behavior from
-        remaining work.
+      objective: Inspect the exact attached SDK source revision and report which
+        living execution graph contracts are present or absent, distinguishing
+        verified source behavior from remaining implementation work without
+        modifying the repository.
       estimate:
         minimumSeconds: 120
         expectedSeconds: 240
@@ -55,8 +60,9 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.architecture
       acceptanceCriteria:
-        - The report cites exact current SDK source evidence and distinguishes
-          implemented behavior from remaining work.
+        - The report cites exact attached SDK source evidence and distinguishes
+          implemented behavior from absent contracts or remaining work; finding
+          that a contract is absent is a valid result.
         - The Actor returns the one canonical treeseed.assignment-result/v1
           result with exact references, runner-observed verification, usage, and
           diagnostics; no proposal-specific output taxonomy is introduced.
