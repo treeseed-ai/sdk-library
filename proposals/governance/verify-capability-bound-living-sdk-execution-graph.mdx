@@ -3,24 +3,20 @@ schemaVersion: treeseed.proposal/v1
 id: 4be5c0f2-4ca0-4a24-8cc9-6d1c64df5ea3
 projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Verify capability-bound living SDK execution graph
-request: "Exercise the real accepted proposal work item through capability-bound
-  admission, the canonical assignment-result contract, isolated Actor execution,
-  exact predecessor delivery, independent Reviewer execution, and terminal
-  reconciliation. This is a read-only execution-path acceptance probe, not a
-  claim that the attached SDK staging revision already contains the locally
-  developed living-graph implementation. The Actor must inspect the exact
-  attached SDK source and truthfully report which relevant contracts are present
-  or absent. The single declared acting work item and review: required are the
-  only plan authority: reconciliation derives the Actor node, paired Reviewer
-  node, and review-pair edge. Pre-decision review judges whether this plan
-  specifies a decision-ready and testable path; its acceptance criteria describe
-  evidence that must be produced after acceptance and do not assert that Actor
-  runtime evidence already exists. The proposal's TreeDX content commit
-  identifies only this proposal revision; it is not an SDK source commit. The
-  separately attached SDK source commit is the feasibility-inspection base and
-  the later Actor's source authority. Predecessor results are expected only from
-  the post-Actor Reviewer. Provider selection chooses where the immutable nodes
-  execute and cannot alter their topology or semantics."
+request: "Exercise one accepted proposal work item through capability-bound
+  admission, an isolated Git Actor, the canonical assignment-result contract,
+  exact predecessor delivery, an independent Reviewer, a bounded request-changes
+  revision, re-review, approval, and terminal reconciliation. The work item
+  binds its only mutable source authority to treeseed-ai/sdk commit
+  0b70da01bbac7492ca783054861dbbe5690ea36f and the single path
+  tests/fixtures/agent-execution/review-cycle.json. On its first attempt the
+  Actor creates the fixture with status initial; the Reviewer must request the
+  specified revision. The same Actor node then receives that exact review
+  result, advances the fixture to status revised with the review decision
+  reference, and returns a new immutable commit for approval by the same
+  Reviewer node. The single declared work item and review: required are the only
+  plan authority. Provider selection chooses where the immutable nodes execute
+  and cannot alter their topology or semantics."
 summary: Prove the canonical proposal-to-Actor-to-Reviewer path without a fixed
   pipeline or duplicate plan authority.
 status: ready
@@ -28,13 +24,19 @@ executionPlan:
   workItems:
     - id: verify-living-graph
       activity: acting
-      agentClass: architect
-      workspace: read-only
+      agentClass: engineer
+      workspace: git
       review: required
-      objective: Inspect the exact attached SDK source revision and report which
-        living execution graph contracts are present or absent, distinguishing
-        verified source behavior from remaining implementation work without
-        modifying the repository.
+      objective: Create the bounded review-cycle acceptance fixture at
+        tests/fixtures/agent-execution/review-cycle.json. On the initial attempt
+        write valid JSON containing schemaVersion
+        treeseed.agent-review-cycle-acceptance/v1, status initial, and
+        baseCommit 0b70da01bbac7492ca783054861dbbe5690ea36f. After the required
+        request-changes decision is supplied as predecessor context, revise the
+        same file so status is revised and reviewDecision contains the exact
+        TreeDX decision commit and path. Modify no other file. Verify with git
+        diff --check and node -e
+        "JSON.parse(require('node:fs').readFileSync('tests/fixtures/agent-execution/review-cycle.json','utf8'))".
       estimate:
         minimumSeconds: 120
         expectedSeconds: 240
@@ -57,25 +59,38 @@ executionPlan:
           write: []
         tools:
           - source.read
+          - source.write
+          - verification
       requiredCapabilities:
         - treeseed.engineering.architecture
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle.json
       acceptanceCriteria:
-        - The report cites exact attached SDK source evidence and distinguishes
-          implemented behavior from absent contracts or remaining work; finding
-          that a contract is absent is a valid result.
-        - The Actor returns the one canonical treeseed.assignment-result/v1
-          result with exact references, runner-observed verification, usage, and
-          diagnostics; no proposal-specific output taxonomy is introduced.
+        - The initial Actor candidate changes only
+          tests/fixtures/agent-execution/review-cycle.json, records status
+          initial and the exact base commit, passes both declared verification
+          commands, and returns one canonical treeseed.assignment-result/v1 with
+          its exact Git commit.
+        - The first Reviewer binds its work-review decision to that exact
+          candidate and requests the specified status and review-decision
+          revision rather than mutating the candidate.
+        - The same Actor node advances one revision, receives the exact prior
+          review result, changes only the fixture to status revised with the
+          exact TreeDX decision commit and path, passes both declared
+          verification commands, and returns a distinct immutable Git commit.
+        - The same Reviewer node advances one revision, receives the revised
+          exact candidate, approves it, and completes the work item.
         - Admission evidence binds the Actor's treeseed.engineering.architecture
           demand to one satisfying provider offer without changing the graph
           topology.
-        - Execution evidence proves the Actor ran in its isolated Kata guest
-          with the exact read-only SDK source authority and that its workspace
-          was cleaned up after completion.
-        - "Reconciliation projects exactly one paired Reviewer from review:
-          required, delivers the Actor's exact predecessor result, records an
-          exact work-review disposition, and settles both attempts exactly
-          once."
+        - Execution evidence proves each Actor and Reviewer ran in its isolated
+          Kata guest with immutable grants and that every workspace was cleaned
+          up after completion.
         - A repeated reconciliation creates no duplicate node, edge, assignment,
           result, reservation, or settlement.
         - Any passing verification command was directly observed to exit zero in
