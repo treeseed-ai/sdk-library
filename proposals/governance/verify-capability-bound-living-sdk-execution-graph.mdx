@@ -3,11 +3,15 @@ schemaVersion: treeseed.proposal/v1
 id: 4be5c0f2-4ca0-4a24-8cc9-6d1c64df5ea3
 projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Verify capability-bound living SDK execution graph
-request: Exercise the real accepted proposal work item through capability-bound
-  admission, strict structured output, isolated Actor execution, exact
-  predecessor delivery, independent Reviewer execution, and terminal
-  reconciliation. Pre-decision review judges this plan before Actor execution;
-  predecessor results are expected only from the post-Actor Reviewer.
+request: "Exercise the real accepted proposal work item through capability-bound
+  admission, the canonical assignment-result contract, isolated Actor execution,
+  exact predecessor delivery, independent Reviewer execution, and terminal
+  reconciliation. The single declared acting work item and review: required are
+  the only plan authority: reconciliation derives the Actor node, paired
+  Reviewer node, and review-pair edge. Pre-decision review judges this plan
+  before Actor execution; predecessor results are expected only from the
+  post-Actor Reviewer. Provider selection chooses where the immutable nodes
+  execute and cannot alter their topology or semantics."
 summary: Prove the canonical proposal-to-Actor-to-Reviewer path without a fixed
   pipeline or duplicate plan authority.
 status: ready
@@ -48,6 +52,21 @@ executionPlan:
       acceptanceCriteria:
         - The report cites exact current SDK source evidence and distinguishes
           implemented behavior from remaining work.
+        - The Actor returns the one canonical treeseed.assignment-result/v1
+          result with exact references, runner-observed verification, usage, and
+          diagnostics; no proposal-specific output taxonomy is introduced.
+        - Admission evidence binds the Actor's treeseed.engineering.architecture
+          demand to one satisfying provider offer without changing the graph
+          topology.
+        - Execution evidence proves the Actor ran in its isolated Kata guest
+          with the exact read-only SDK source authority and that its workspace
+          was cleaned up after completion.
+        - "Reconciliation projects exactly one paired Reviewer from review:
+          required, delivers the Actor's exact predecessor result, records an
+          exact work-review disposition, and settles both attempts exactly
+          once."
+        - A repeated reconciliation creates no duplicate node, edge, assignment,
+          result, reservation, or settlement.
         - Any passing verification command was directly observed to exit zero in
           the assignment workspace.
 ---
