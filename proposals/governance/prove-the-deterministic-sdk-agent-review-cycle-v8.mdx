@@ -1,0 +1,168 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: cfaa618b-8aa5-4b86-aefe-93285ed89703
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Prove the deterministic SDK agent review cycle v8
+request: Exercise the accepted estimate-derived graph through Architect, Tester,
+  and the exact Engineer request-changes revision cycle. Each Reviewer evaluates
+  only the acceptance boundary of its paired Actor result. Provider selection
+  may choose where work runs but may not alter graph semantics.
+summary: Prove one deterministic, isolated, revision-preserving SDK agent cycle.
+status: ready
+executionPlan:
+  workItems:
+    - id: establish-source
+      activity: acting
+      agentClass: architect
+      workspace: read-only
+      review: required
+      objective: Inspect the exact SDK source authority. Report the repository,
+        commit, fixture path, and the fact that this work item establishes only
+        the immutable source boundary for later work; do not modify source.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle-v8.json
+      acceptanceCriteria:
+        - The result identifies treeseed-ai/sdk, commit
+          0b70da01bbac7492ca783054861dbbe5690ea36f, and
+          tests/fixtures/agent-execution/review-cycle-v8.json without mutation.
+        - The paired Reviewer evaluates only this source-boundary result and
+          approves it when those facts are exact.
+    - id: verify-source
+      activity: acting
+      agentClass: tester
+      workspace: read-only
+      review: required
+      objective: Run git rev-parse HEAD and test ! -e
+        tests/fixtures/agent-execution/review-cycle-v8.json at the exact SDK
+        source commit without modifying source.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn:
+        - establish-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle-v8.json
+      acceptanceCriteria:
+        - Both commands pass under runner observation and source remains
+          unchanged.
+        - The paired Reviewer evaluates only this verification result and
+          approves it when the exact commands passed.
+    - id: exercise-review-cycle
+      activity: acting
+      agentClass: engineer
+      workspace: git
+      review: required
+      objective: Create tests/fixtures/agent-execution/review-cycle-v8.json and modify
+        no other file. On the first attempt write schemaVersion
+        treeseed.agent-review-cycle-acceptance/v1, status initial, baseCommit
+        0b70da01bbac7492ca783054861dbbe5690ea36f, and knownDefect
+        requires-review-revision. After receiving the first review result,
+        continue from the prior candidate commit, remove knownDefect, set status
+        revised, and set reviewDecision.commit and reviewDecision.path to that
+        exact TreeDX decision reference. Run git diff --check and verify that
+        only this fixture differs from the declared base.
+      estimate:
+        minimumSeconds: 120
+        expectedSeconds: 240
+        maximumSeconds: 480
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn:
+        - verify-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 0b70da01bbac7492ca783054861dbbe5690ea36f
+          path: tests/fixtures/agent-execution/review-cycle-v8.json
+      acceptanceCriteria:
+        - The initial candidate changes only the fixture, has status initial and
+          knownDefect requires-review-revision, and passes runner-observed
+          checks.
+        - The first Reviewer requests changes while knownDefect is present and
+          binds its decision to the exact candidate.
+        - The same Actor node advances, receives both its prior candidate and
+          the exact review result, starts from that candidate commit, and
+          returns a distinct revised commit without knownDefect.
+        - The same Reviewer node advances, inspects the revised candidate,
+          approves it, and completes the work item.
+        - Every attempt uses an isolated Kata guest, immutable grants, teardown,
+          and exactly-once result and reservation settlement.
+        - Repeated reconciliation produces no duplicate nodes, edges,
+          assignments, results, reservations, or settlements.
+---
