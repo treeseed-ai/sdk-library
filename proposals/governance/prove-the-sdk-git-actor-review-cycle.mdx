@@ -117,15 +117,25 @@ executionPlan:
       agentClass: engineer
       workspace: git
       review: required
-      objective: Create tests/fixtures/agent-execution/review-cycle.json. On the
+      objective: "Create tests/fixtures/agent-execution/review-cycle.json. On the
         initial attempt write valid JSON containing schemaVersion
         treeseed.agent-review-cycle-acceptance/v1, status initial, and
         baseCommit 0b70da01bbac7492ca783054861dbbe5690ea36f. After the required
         request-changes decision is supplied as predecessor context, revise the
         same file so status is revised and reviewDecision contains the exact
-        TreeDX decision commit and path. Modify no other file. Verify with git
-        diff --check and node -e
-        "JSON.parse(require('node:fs').readFileSync('tests/fixtures/agent-execution/review-cycle.json','utf8'))".
+        TreeDX decision commit and path. Modify no other file. Run exactly these
+        standalone checks: git diff --check; node -e
+        \"((r,a)=>(a.equal(r.status,0),a.equal(r.stdout.trim(),'tests/fixtures/\
+        agent-execution/review-cycle.json')))(require('node:child_process').spa\
+        wnSync('git',['diff','--name-only','0b70da01bbac7492ca783054861dbbe5690\
+        ea36f'],{encoding:'utf8'}),require('node:assert/strict'))\"; node -e
+        \"((f,a)=>(a.equal(f.schemaVersion,'treeseed.agent-review-cycle-accepta\
+        nce/v1'),a.equal(f.baseCommit,'0b70da01bbac7492ca783054861dbbe5690ea36f\
+        '),a.ok(['initial','revised'].includes(f.status)),f.status==='initial'?\
+        a.equal(f.reviewDecision,undefined):(a.match(f.reviewDecision.commit,/^\
+        [a-f0-9]{40}$/),a.match(f.reviewDecision.path,/^decisions\\/.+\\.mdx$/)\
+        )))(JSON.parse(require('node:fs').readFileSync('tests/fixtures/agent-ex\
+        ecution/review-cycle.json','utf8')),require('node:assert/strict'))\"."
       estimate:
         minimumSeconds: 120
         expectedSeconds: 240
@@ -162,14 +172,14 @@ executionPlan:
           path: tests/fixtures/agent-execution/review-cycle.json
       acceptanceCriteria:
         - The initial Actor changes only the fixture, records status initial and
-          the exact base commit, passes both declared verification commands, and
-          returns one canonical result with an exact Git commit.
+          the exact base commit, passes all three declared verification
+          commands, and returns one canonical result with an exact Git commit.
         - The first Reviewer binds its work-review decision to that exact
           candidate and requests the specified revision without mutating the
           candidate.
         - The same Actor node advances one revision, receives the exact prior
           review result, changes only the fixture to status revised with the
-          exact TreeDX decision commit and path, passes both commands, and
+          exact TreeDX decision commit and path, passes all three commands, and
           returns a distinct immutable Git commit.
         - The same Reviewer node advances one revision, receives the revised
           exact candidate, approves it, and completes the work item.
