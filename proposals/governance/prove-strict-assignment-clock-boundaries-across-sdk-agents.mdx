@@ -5,10 +5,11 @@ projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Prove strict assignment clock boundaries across SDK agents
 request: The independent Reviewer runs through proposal governance; the accepted
   graph then runs Architect, Researcher, Tester, Engineer, Technical Writer, and
-  Releaser work items. Every model-backed assignment must invoke the exact
-  treedx server tool treeseed_time_status as its first attempted tool action and
-  again as its final attempted tool action. Any failed or aliased tool attempt
-  outside that boundary invalidates completion. This acceptance is read-only.
+  Releaser work items. Releaser is downstream of every evidence-producing acting
+  predecessor. Every model-backed assignment must invoke the exact treedx server
+  tool treeseed_time_status as its first attempted tool action and again as its
+  final attempted tool action. Any failed or aliased tool attempt outside that
+  boundary invalidates completion. This acceptance is read-only.
 summary: Exercise the Reviewer governance activity and all six model-backed SDK
   acting classes through one real estimate-derived graph under strict
   first/final tool-action enforcement.
