@@ -3,22 +3,38 @@ schemaVersion: treeseed.proposal/v1
 id: 3abb47da-da65-4a2d-aa9a-4566fc8d57cf
 projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Prove strict assignment clock boundaries across SDK agents
-request: "The independent Reviewer runs through proposal governance; the
-  accepted graph then runs Architect, Researcher, Tester, Engineer, Technical
-  Writer, and Releaser work items. Releaser is downstream of every
-  evidence-producing acting predecessor. Every model-backed assignment,
-  including Reviewer, must invoke the exact treedx server tool
-  treeseed_time_status as its first attempted tool action and again as its final
-  attempted tool action. Provider timingAwareness is the authoritative
-  acceptance receipt: firstTool and lastTool must equal treeseed_time_status,
-  both succeeded fields and both compliant fields must be true, and
-  completedChecks must equal requiredChecks. Any failed or aliased tool attempt
-  outside that boundary invalidates completion. This acceptance is read-only."
+request: The independent Reviewer runs through proposal governance; the accepted
+  graph then runs Architect, Researcher, Tester, Engineer, Technical Writer, and
+  Releaser work items. Releaser is downstream of every evidence-producing acting
+  predecessor. Every model-backed assignment, including Reviewer, must invoke
+  the exact treedx server tool treeseed_time_status as its first attempted tool
+  action and again as its final attempted tool action. The clock is an intrinsic
+  provider boundary available to every model assignment, not a discretionary
+  profile grant. SDK commit 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7 defines
+  treeseed.assignment-timing-awareness/v1 as a required sandbox result field.
+  Agent commit af39ffc550eed792d624247437dd766f2b1208db records attempted
+  provider actions and rejects completion unless the typed receipt proves
+  successful first and final clock actions and at least two checks. Focused SDK
+  and Agent contract tests reject missing, aliased, failed, and out-of-boundary
+  attempts. Extra valid clock checks are allowed so an agent can re-check
+  remaining time during longer work. This acceptance is read-only.
 summary: Exercise the Reviewer governance activity and all six model-backed SDK
   acting classes through one real estimate-derived graph under strict
   first/final tool-action enforcement.
 status: ready
-evidenceRefs: []
+evidenceRefs:
+  - store: git
+    model: repository
+    id: sdk-timing-contract
+    repository: treeseed-ai/sdk
+    commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
+    path: src/capacity-provider/sandbox-contracts.ts
+  - store: git
+    model: repository
+    id: agent-timing-enforcement
+    repository: treeseed-ai/agent
+    commit: af39ffc550eed792d624247437dd766f2b1208db
+    path: src/sandbox/guest.ts
 executionPlan:
   workItems:
     - id: confirm-architecture
@@ -53,13 +69,13 @@ executionPlan:
           model: repository
           id: sdk
           repository: treeseed-ai/sdk
-          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
           path: package.json
       acceptanceCriteria:
         - The exact commit and SDK boundary are identified without mutation
-        - Provider timingAwareness proves exact successful first and final
-          treeseed_time_status attempts with both compliance flags true and
-          completedChecks equal to requiredChecks
+        - The required SDK timingAwareness receipt proves exact successful first
+          and final treeseed_time_status attempts with both compliance flags
+          true and completedChecks at least requiredChecks
     - id: research-source
       activity: acting
       agentClass: researcher
@@ -92,13 +108,13 @@ executionPlan:
           model: repository
           id: sdk
           repository: treeseed-ai/sdk
-          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
           path: package.json
       acceptanceCriteria:
         - The Researcher cites exact source evidence and does not mutate it
-        - Provider timingAwareness proves exact successful first and final
-          treeseed_time_status attempts with both compliance flags true and
-          completedChecks equal to requiredChecks
+        - The required SDK timingAwareness receipt proves exact successful first
+          and final treeseed_time_status attempts with both compliance flags
+          true and completedChecks at least requiredChecks
     - id: verify-source
       activity: acting
       agentClass: tester
@@ -130,13 +146,13 @@ executionPlan:
           model: repository
           id: sdk
           repository: treeseed-ai/sdk
-          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
           path: package.json
       acceptanceCriteria:
         - The exact commit and JSON parse are verified without mutation
-        - Provider timingAwareness proves exact successful first and final
-          treeseed_time_status attempts with both compliance flags true and
-          completedChecks equal to requiredChecks
+        - The required SDK timingAwareness receipt proves exact successful first
+          and final treeseed_time_status attempts with both compliance flags
+          true and completedChecks at least requiredChecks
     - id: assess-implementation
       activity: acting
       agentClass: engineer
@@ -168,14 +184,14 @@ executionPlan:
           model: repository
           id: sdk
           repository: treeseed-ai/sdk
-          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
           path: package.json
       acceptanceCriteria:
         - The Engineer identifies an exact existing verification command without
           mutation
-        - Provider timingAwareness proves exact successful first and final
-          treeseed_time_status attempts with both compliance flags true and
-          completedChecks equal to requiredChecks
+        - The required SDK timingAwareness receipt proves exact successful first
+          and final treeseed_time_status attempts with both compliance flags
+          true and completedChecks at least requiredChecks
     - id: verify-documentation
       activity: acting
       agentClass: technical-writer
@@ -208,14 +224,14 @@ executionPlan:
           model: repository
           id: sdk
           repository: treeseed-ai/sdk
-          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
           path: README.md
       acceptanceCriteria:
         - The Technical Writer reports an exact supported statement without
           mutation
-        - Provider timingAwareness proves exact successful first and final
-          treeseed_time_status attempts with both compliance flags true and
-          completedChecks equal to requiredChecks
+        - The required SDK timingAwareness receipt proves exact successful first
+          and final treeseed_time_status attempts with both compliance flags
+          true and completedChecks at least requiredChecks
     - id: assess-release
       activity: acting
       agentClass: releaser
@@ -255,13 +271,13 @@ executionPlan:
           model: repository
           id: sdk
           repository: treeseed-ai/sdk
-          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          commit: 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7
           path: package.json
       acceptanceCriteria:
         - The Releaser evaluates the exact completion and strict timing receipts
           from all five predecessor work items without mutation or release
           operations
-        - Provider timingAwareness proves exact successful first and final
-          treeseed_time_status attempts with both compliance flags true and
-          completedChecks equal to requiredChecks
+        - The required SDK timingAwareness receipt proves exact successful first
+          and final treeseed_time_status attempts with both compliance flags
+          true and completedChecks at least requiredChecks
 ---
