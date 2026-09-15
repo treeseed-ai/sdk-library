@@ -1,0 +1,241 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: 064e0172-9bd5-4708-bd95-c8e2a8ebdb14
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Prove strict assignment clock boundaries across SDK agents
+request: Every assignment must invoke the exact treeseed server tool
+  treeseed_time_status as its first attempted tool action and again as its final
+  attempted tool action. Any failed or aliased tool attempt outside that
+  boundary invalidates completion. This acceptance is read-only.
+summary: Exercise all seven model-backed SDK agent classes through one real
+  estimate-derived graph under strict first/final tool-action enforcement.
+status: ready
+evidenceRefs: []
+executionPlan:
+  workItems:
+    - id: confirm-architecture
+      activity: acting
+      agentClass: architect
+      workspace: read-only
+      review: none
+      objective: Inspect the exact SDK source and identify its package boundary in one
+        concise evidence-backed result. Do not modify source.
+        treeseed_time_status must be your first execution action and your final
+        tool action. Invoke the exact MCP tool treeseed_time_status from the
+        treedx server; do not guess or call an alias.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 90
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The exact commit and SDK boundary are identified without mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: research-source
+      activity: acting
+      agentClass: researcher
+      workspace: read-only
+      review: none
+      objective: Research the exact SDK package metadata and summarize its declared
+        purpose and public entry points using repository evidence. Do not modify
+        source. treeseed_time_status must be your first execution action and
+        your final tool action. Invoke the exact MCP tool treeseed_time_status
+        from the treedx server; do not guess or call an alias.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.research.synthesis
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The Researcher cites exact source evidence and does not mutate it
+        - The timing receipt proves the clock was the first and final tool action
+    - id: verify-source
+      activity: acting
+      agentClass: tester
+      workspace: read-only
+      review: none
+      objective: Verify the exact SDK commit and that package.json is valid JSON. Do
+        not modify source. treeseed_time_status must be your first execution
+        action and your final tool action. Invoke the exact MCP tool
+        treeseed_time_status from the treedx server; do not guess or call an
+        alias.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 90
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The exact commit and JSON parse are verified without mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: assess-implementation
+      activity: acting
+      agentClass: engineer
+      workspace: read-only
+      review: none
+      objective: Inspect package.json and identify the exact verification command
+        relevant to SDK contract tests. Do not modify source.
+        treeseed_time_status must be your first execution action and your final
+        tool action. Invoke the exact MCP tool treeseed_time_status from the
+        treedx server; do not guess or call an alias.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 90
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The Engineer identifies an exact existing verification command without
+          mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: verify-documentation
+      activity: acting
+      agentClass: technical-writer
+      workspace: read-only
+      review: none
+      objective: Compare package.json with README.md and report one exact, currently
+        supported SDK usage statement. Do not modify source.
+        treeseed_time_status must be your first execution action and your final
+        tool action. Invoke the exact MCP tool treeseed_time_status from the
+        treedx server; do not guess or call an alias.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.publishing.documentation
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: README.md
+      acceptanceCriteria:
+        - The Technical Writer reports an exact supported statement without
+          mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: assess-release
+      activity: acting
+      agentClass: releaser
+      workspace: read-only
+      review: none
+      objective: Assess only whether this read-only acceptance produced sufficient
+        evidence for the three remaining activity profiles. Do not publish, tag,
+        deploy, or modify source. treeseed_time_status must be your first
+        execution action and your final tool action. Invoke the exact MCP tool
+        treeseed_time_status from the treedx server; do not guess or call an
+        alias.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - proposal
+            - decision
+            - note
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.release
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The Releaser evaluates exact predecessor evidence without mutation or
+          release operations
+        - The timing receipt proves the clock was the first and final tool action
+---
