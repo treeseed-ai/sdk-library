@@ -3,12 +3,15 @@ schemaVersion: treeseed.proposal/v1
 id: 064e0172-9bd5-4708-bd95-c8e2a8ebdb14
 projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Prove strict assignment clock boundaries across SDK agents
-request: Every assignment must invoke the exact treeseed server tool
-  treeseed_time_status as its first attempted tool action and again as its final
-  attempted tool action. Any failed or aliased tool attempt outside that
-  boundary invalidates completion. This acceptance is read-only.
-summary: Exercise all seven model-backed SDK agent classes through one real
-  estimate-derived graph under strict first/final tool-action enforcement.
+request: The independent Reviewer runs through proposal governance; the accepted
+  graph then runs Architect, Researcher, Tester, Engineer, Technical Writer, and
+  Releaser work items. Every model-backed assignment must invoke the exact
+  treedx server tool treeseed_time_status as its first attempted tool action and
+  again as its final attempted tool action. Any failed or aliased tool attempt
+  outside that boundary invalidates completion. This acceptance is read-only.
+summary: Exercise the Reviewer governance activity and all six model-backed SDK
+  acting classes through one real estimate-derived graph under strict
+  first/final tool-action enforcement.
 status: ready
 evidenceRefs: []
 executionPlan:
@@ -203,17 +206,22 @@ executionPlan:
       agentClass: releaser
       workspace: read-only
       review: none
-      objective: Assess only whether this read-only acceptance produced sufficient
-        evidence for the three remaining activity profiles. Do not publish, tag,
-        deploy, or modify source. treeseed_time_status must be your first
-        execution action and your final tool action. Invoke the exact MCP tool
-        treeseed_time_status from the treedx server; do not guess or call an
-        alias.
+      objective: Assess whether the five predecessor work items produced the exact
+        source and timing receipts required by this read-only acceptance. Do not
+        publish, tag, deploy, or modify source. treeseed_time_status must be
+        your first execution action and your final tool action. Invoke the exact
+        MCP tool treeseed_time_status from the treedx server; do not guess or
+        call an alias.
       estimate:
         minimumSeconds: 60
         expectedSeconds: 120
         maximumSeconds: 180
-      dependsOn: []
+      dependsOn:
+        - confirm-architecture
+        - research-source
+        - verify-source
+        - assess-implementation
+        - verify-documentation
       requestedPermissions:
         content:
           read:
@@ -235,7 +243,8 @@ executionPlan:
           commit: feca92d8ceb5944866bf3a26da4719c3018a839e
           path: package.json
       acceptanceCriteria:
-        - The Releaser evaluates exact predecessor evidence without mutation or
-          release operations
+        - The Releaser evaluates the exact completion and strict timing receipts
+          from all five predecessor work items without mutation or release
+          operations
         - The timing receipt proves the clock was the first and final tool action
 ---
