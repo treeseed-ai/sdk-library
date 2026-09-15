@@ -12,14 +12,14 @@ request: The independent Reviewer runs through proposal governance; the accepted
   provider boundary available to every model assignment, not a discretionary
   profile grant. SDK commit 9d676e1c087dd7dbdc033f5858c853ebe7b42ae7 defines
   treeseed.assignment-timing-awareness/v1 as a required sandbox result field.
-  Agent commit 8bbf554480c95f4c48762b42a762600f76e51bb4 records attempted
+  Agent commit 9b8ef82c10dff453f947a14dddf24484a12424b7 records attempted
   provider actions, rejects completion unless the typed receipt proves
-  successful first and final clock actions and at least two checks, and repeats
-  the clock-first instruction immediately before execution so long structured
-  prompts cannot bury it. Focused SDK and Agent contract tests reject missing,
-  aliased, failed, and out-of-boundary attempts. Extra valid clock checks are
-  allowed so an agent can re-check remaining time during longer work. This
-  acceptance is read-only.
+  successful first and final clock actions and at least two checks, repeats the
+  clock-first instruction immediately before execution, and emits a bounded
+  redacted response preview only when this gate rejects an attempt. Focused SDK
+  and Agent contract tests reject missing, aliased, failed, and out-of-boundary
+  attempts. Extra valid clock checks are allowed so an agent can re-check
+  remaining time during longer work. This acceptance is read-only.
 summary: Exercise the Reviewer governance activity and all six model-backed SDK
   acting classes through one real estimate-derived graph under strict
   first/final tool-action enforcement.
@@ -35,7 +35,7 @@ evidenceRefs:
     model: repository
     id: agent-timing-enforcement
     repository: treeseed-ai/agent
-    commit: 8bbf554480c95f4c48762b42a762600f76e51bb4
+    commit: 9b8ef82c10dff453f947a14dddf24484a12424b7
     path: src/sandbox/guest.ts
 executionPlan:
   workItems:
