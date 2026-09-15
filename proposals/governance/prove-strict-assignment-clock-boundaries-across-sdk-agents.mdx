@@ -3,13 +3,17 @@ schemaVersion: treeseed.proposal/v1
 id: 064e0172-9bd5-4708-bd95-c8e2a8ebdb14
 projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Prove strict assignment clock boundaries across SDK agents
-request: The independent Reviewer runs through proposal governance; the accepted
-  graph then runs Architect, Researcher, Tester, Engineer, Technical Writer, and
-  Releaser work items. Releaser is downstream of every evidence-producing acting
-  predecessor. Every model-backed assignment must invoke the exact treedx server
-  tool treeseed_time_status as its first attempted tool action and again as its
-  final attempted tool action. Any failed or aliased tool attempt outside that
-  boundary invalidates completion. This acceptance is read-only.
+request: "The independent Reviewer runs through proposal governance; the
+  accepted graph then runs Architect, Researcher, Tester, Engineer, Technical
+  Writer, and Releaser work items. Releaser is downstream of every
+  evidence-producing acting predecessor. Every model-backed assignment,
+  including Reviewer, must invoke the exact treedx server tool
+  treeseed_time_status as its first attempted tool action and again as its final
+  attempted tool action. Provider timingAwareness is the authoritative
+  acceptance receipt: firstTool and lastTool must equal treeseed_time_status,
+  both succeeded fields and both compliant fields must be true, and
+  completedChecks must equal requiredChecks. Any failed or aliased tool attempt
+  outside that boundary invalidates completion. This acceptance is read-only."
 summary: Exercise the Reviewer governance activity and all six model-backed SDK
   acting classes through one real estimate-derived graph under strict
   first/final tool-action enforcement.
@@ -53,7 +57,9 @@ executionPlan:
           path: package.json
       acceptanceCriteria:
         - The exact commit and SDK boundary are identified without mutation
-        - The timing receipt proves the clock was the first and final tool action
+        - Provider timingAwareness proves exact successful first and final
+          treeseed_time_status attempts with both compliance flags true and
+          completedChecks equal to requiredChecks
     - id: research-source
       activity: acting
       agentClass: researcher
@@ -90,7 +96,9 @@ executionPlan:
           path: package.json
       acceptanceCriteria:
         - The Researcher cites exact source evidence and does not mutate it
-        - The timing receipt proves the clock was the first and final tool action
+        - Provider timingAwareness proves exact successful first and final
+          treeseed_time_status attempts with both compliance flags true and
+          completedChecks equal to requiredChecks
     - id: verify-source
       activity: acting
       agentClass: tester
@@ -126,7 +134,9 @@ executionPlan:
           path: package.json
       acceptanceCriteria:
         - The exact commit and JSON parse are verified without mutation
-        - The timing receipt proves the clock was the first and final tool action
+        - Provider timingAwareness proves exact successful first and final
+          treeseed_time_status attempts with both compliance flags true and
+          completedChecks equal to requiredChecks
     - id: assess-implementation
       activity: acting
       agentClass: engineer
@@ -163,7 +173,9 @@ executionPlan:
       acceptanceCriteria:
         - The Engineer identifies an exact existing verification command without
           mutation
-        - The timing receipt proves the clock was the first and final tool action
+        - Provider timingAwareness proves exact successful first and final
+          treeseed_time_status attempts with both compliance flags true and
+          completedChecks equal to requiredChecks
     - id: verify-documentation
       activity: acting
       agentClass: technical-writer
@@ -201,7 +213,9 @@ executionPlan:
       acceptanceCriteria:
         - The Technical Writer reports an exact supported statement without
           mutation
-        - The timing receipt proves the clock was the first and final tool action
+        - Provider timingAwareness proves exact successful first and final
+          treeseed_time_status attempts with both compliance flags true and
+          completedChecks equal to requiredChecks
     - id: assess-release
       activity: acting
       agentClass: releaser
@@ -247,5 +261,7 @@ executionPlan:
         - The Releaser evaluates the exact completion and strict timing receipts
           from all five predecessor work items without mutation or release
           operations
-        - The timing receipt proves the clock was the first and final tool action
+        - Provider timingAwareness proves exact successful first and final
+          treeseed_time_status attempts with both compliance flags true and
+          completedChecks equal to requiredChecks
 ---
