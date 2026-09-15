@@ -1,0 +1,174 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: 003cc19e-c72d-4b73-871d-ce336a6e7665
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Prove assignment-clock awareness through the SDK review cycle
+request: Prove the current source-changing execution path with assignment-clock
+  awareness enforced in every Kata guest. The Architect and Tester establish the
+  exact source authority. The Engineer creates one bounded fixture with status
+  initial. The Reviewer must request changes because initial is not the accepted
+  terminal state. The same Engineer node then records status revised and the
+  exact review decision reference, and the same Reviewer node approves it. Every
+  model-backed attempt must check its assignment clock near the beginning and
+  immediately before finalizing.
+summary: Exercise the current Actor and Reviewer revision path with enforced
+  timing evidence.
+status: ready
+executionPlan:
+  workItems:
+    - id: establish-source
+      activity: acting
+      agentClass: architect
+      workspace: read-only
+      review: required
+      objective: Inspect treeseed-ai/sdk commit
+        be8c7b3ee4be1f8470329c3bf975d94400c8633f and confirm that it is the
+        immutable source authority for this acceptance. Do not modify source.
+        Check the assignment clock near the beginning and immediately before
+        finalizing.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: be8c7b3ee4be1f8470329c3bf975d94400c8633f
+          path: tests/fixtures/agent-execution/timing-review-cycle.json
+      acceptanceCriteria:
+        - The Architect identifies the exact repository and base commit without
+          mutation and returns enforced timing evidence.
+        - The paired Reviewer approves only with exact source authority, no
+          mutation, and enforced timing evidence.
+    - id: verify-source
+      activity: acting
+      agentClass: tester
+      workspace: read-only
+      review: required
+      objective: Verify that git rev-parse HEAD equals
+        be8c7b3ee4be1f8470329c3bf975d94400c8633f and
+        tests/fixtures/agent-execution/timing-review-cycle.json is absent. Do
+        not modify source. Check the assignment clock near the beginning and
+        immediately before finalizing.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn:
+        - establish-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: be8c7b3ee4be1f8470329c3bf975d94400c8633f
+          path: tests/fixtures/agent-execution/timing-review-cycle.json
+      acceptanceCriteria:
+        - The Tester proves the exact base and absent fixture without mutation
+          and returns enforced timing evidence.
+        - The paired Reviewer receives the exact result and approves only when
+          both checks and timing evidence pass.
+    - id: exercise-review-cycle
+      activity: acting
+      agentClass: engineer
+      workspace: git
+      review: required
+      objective: Create tests/fixtures/agent-execution/timing-review-cycle.json and
+        modify no other file. On the initial attempt write valid JSON with
+        schemaVersion treeseed.assignment-clock-acceptance/v1, status initial,
+        and baseCommit be8c7b3ee4be1f8470329c3bf975d94400c8633f. After the
+        required request-changes result arrives as predecessor context, revise
+        the same file to status revised and add reviewDecision with the exact
+        TreeDX decision commit and path. Run git diff --check and a Node
+        assertion covering every field. Check the assignment clock near the
+        beginning and immediately before finalizing.
+      estimate:
+        minimumSeconds: 120
+        expectedSeconds: 240
+        maximumSeconds: 480
+      reviewEstimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 240
+      maximumReviewCycles: 2
+      dependsOn:
+        - verify-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: be8c7b3ee4be1f8470329c3bf975d94400c8633f
+          path: tests/fixtures/agent-execution/timing-review-cycle.json
+      acceptanceCriteria:
+        - The first Actor changes only the fixture, records status initial and
+          the exact base, passes verification, and returns one immutable Git
+          candidate with enforced timing evidence.
+        - The first Reviewer binds request-changes to that exact candidate and
+          returns enforced timing evidence.
+        - The same Actor node advances once, consumes the exact review result,
+          records status revised and its exact decision reference, passes
+          verification, and returns a distinct immutable candidate with enforced
+          timing evidence.
+        - The same Reviewer node advances once, approves the revised candidate,
+          and returns enforced timing evidence.
+        - Reconciliation creates no duplicate execution or settlement records.
+---
