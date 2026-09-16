@@ -45,11 +45,6 @@ executionPlan:
           repository: treeseed-ai/sdk-library
           store: treedx
       dependsOn: []
-      estimate:
-        expectedSeconds: 360
-        maximumSeconds: 720
-        minimumSeconds: 180
-        rationale: Fixed by the authoritative golden acceptance proposal.
       id: research-context
       maximumReviewCycles: 2
       objective: Trace every current SDK workday-selection, decision, graph,
@@ -75,11 +70,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.research.repository
       review: required
-      reviewEstimate:
-        expectedSeconds: 240
-        maximumSeconds: 480
-        minimumSeconds: 120
-        rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: treedx
     - acceptanceCriteria:
         - Extend the SDK Architecture book with the single authority boundary
@@ -98,11 +88,6 @@ executionPlan:
           repository: treeseed-ai/sdk-library
           store: treedx
       dependsOn: []
-      estimate:
-        expectedSeconds: 600
-        maximumSeconds: 1200
-        minimumSeconds: 300
-        rationale: Fixed by the authoritative golden acceptance proposal.
       id: architecture-contract
       maximumReviewCycles: 2
       objective: Extend the SDK Architecture book with the single authority boundary
@@ -128,11 +113,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.architecture
       review: required
-      reviewEstimate:
-        expectedSeconds: 240
-        maximumSeconds: 480
-        minimumSeconds: 120
-        rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: treedx
     - acceptanceCriteria:
         - Add normalization, duplicate/empty rejection, stable digest, omission,
@@ -154,11 +134,6 @@ executionPlan:
       dependsOn:
         - research-context
         - architecture-contract
-      estimate:
-        expectedSeconds: 600
-        maximumSeconds: 1200
-        minimumSeconds: 300
-        rationale: Fixed by the authoritative golden acceptance proposal.
       id: tests-first
       maximumReviewCycles: 2
       objective: Add normalization, duplicate/empty rejection, stable digest,
@@ -182,11 +157,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.unit-testing
       review: required
-      reviewEstimate:
-        expectedSeconds: 240
-        maximumSeconds: 480
-        minimumSeconds: 120
-        rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
     - acceptanceCriteria:
         - Implement the minimal strict TypeScript contract and delete superseded
@@ -206,11 +176,6 @@ executionPlan:
           store: git
       dependsOn:
         - tests-first
-      estimate:
-        expectedSeconds: 1200
-        maximumSeconds: 2400
-        minimumSeconds: 600
-        rationale: Fixed by the authoritative golden acceptance proposal.
       id: implement-change
       maximumReviewCycles: 2
       objective: Implement the minimal strict TypeScript contract and delete
@@ -233,11 +198,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.code-change
       review: required
-      reviewEstimate:
-        expectedSeconds: 360
-        maximumSeconds: 720
-        minimumSeconds: 180
-        rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
     - acceptanceCriteria:
         - Update SDK API/reference examples to show repeated decision selection
@@ -257,11 +217,6 @@ executionPlan:
       dependsOn:
         - tests-first
         - implement-change
-      estimate:
-        expectedSeconds: 360
-        maximumSeconds: 720
-        minimumSeconds: 180
-        rationale: Fixed by the authoritative golden acceptance proposal.
       id: document-change
       maximumReviewCycles: 2
       objective: Update SDK API/reference examples to show repeated decision selection
@@ -284,11 +239,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.publishing.documentation
       review: required
-      reviewEstimate:
-        expectedSeconds: 240
-        maximumSeconds: 480
-        minimumSeconds: 120
-        rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
     - acceptanceCriteria:
         - Build, run contract/release verification, pack locally, inspect
@@ -315,11 +265,6 @@ executionPlan:
       dependsOn:
         - implement-change
         - document-change
-      estimate:
-        expectedSeconds: 360
-        maximumSeconds: 720
-        minimumSeconds: 180
-        rationale: Fixed by the authoritative golden acceptance proposal.
       id: simulate-release
       maximumReviewCycles: 2
       objective: Build, run contract/release verification, pack locally, inspect
@@ -343,10 +288,5 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.release
       review: required
-      reviewEstimate:
-        expectedSeconds: 240
-        maximumSeconds: 480
-        minimumSeconds: 120
-        rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
 ---
