@@ -24,18 +24,17 @@ evidenceRefs:
     model: issue
     store: url
     url: https://github.com/treeseed-ai/sdk/issues/299
-discussionRef:
-  id: agent-golden-20260915-sdk
-  model: discussion
-  revision: 1
-  store: postgresql
 executionPlan:
   workItems:
     - acceptanceCriteria:
-        - empty and duplicate IDs fail; omitted selection retains planning-only
-          intent without a compatibility path; normalized order and digest are
-          deterministic; generated descriptors expose the field once; no legacy
-          execution-plan/capacity-plan input survives.
+        - Trace every current SDK workday-selection, decision, graph,
+          assignment, and legacy planning contract; return exact refs and a
+          duplication/deletion note.
+        - Return an exact TreeDX note or knowledge reference containing
+          inspected source evidence, duplication/deletion boundaries, and
+          unresolved questions. Cite the frozen repository commit and inspected
+          paths. This research result is not required to prove subsequent
+          implementation.
       activity: acting
       agentClass: researcher
       contextRefs:
@@ -83,10 +82,12 @@ executionPlan:
         rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: treedx
     - acceptanceCriteria:
-        - empty and duplicate IDs fail; omitted selection retains planning-only
-          intent without a compatibility path; normalized order and digest are
-          deterministic; generated descriptors expose the field once; no legacy
-          execution-plan/capacity-plan input survives.
+        - Extend the SDK Architecture book with the single authority boundary
+          and exact portable shape; identify all retired competing contracts.
+        - Return exact project Architecture book or knowledge references
+          describing the smallest design, portable shape, ownership boundaries,
+          and retired competing contracts. Review this design against its stated
+          objective, not as completed downstream implementation.
       activity: acting
       agentClass: architect
       contextRefs:
@@ -134,10 +135,14 @@ executionPlan:
         rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: treedx
     - acceptanceCriteria:
-        - empty and duplicate IDs fail; omitted selection retains planning-only
-          intent without a compatibility path; normalized order and digest are
-          deterministic; generated descriptors expose the field once; no legacy
-          execution-plan/capacity-plan input survives.
+        - Add normalization, duplicate/empty rejection, stable digest, omission,
+          and schema/CLI-descriptor contract tests that fail on the frozen base.
+        - Return a clean Git commit containing the requested test-first cases
+          before Engineer implementation. Demonstrate that the intended tests
+          fail on the frozen source for the expected reason; retain exact
+          command, exit status, duration, and output digest. Specify the
+          expected corrected outcomes. Do not implement the production fix or
+          claim failing tests passed.
       activity: acting
       agentClass: tester
       contextRefs:
@@ -184,10 +189,13 @@ executionPlan:
         rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
     - acceptanceCriteria:
-        - empty and duplicate IDs fail; omitted selection retains planning-only
-          intent without a compatibility path; normalized order and digest are
-          deterministic; generated descriptors expose the field once; no legacy
-          execution-plan/capacity-plan input survives.
+        - Implement the minimal strict TypeScript contract and delete superseded
+          unions, aliases, and exported paths.
+        - Start from the exact approved Tester candidate. Implement the stated
+          change so those tests pass; do not replace the Tester cases or add
+          substitute tests unless requested by the Tester result. Return a clean
+          Git commit with exact passing verification records and deleted
+          superseded paths.
       activity: acting
       agentClass: engineer
       contextRefs:
@@ -232,10 +240,12 @@ executionPlan:
         rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
     - acceptanceCriteria:
-        - empty and duplicate IDs fail; omitted selection retains planning-only
-          intent without a compatibility path; normalized order and digest are
-          deterministic; generated descriptors expose the field once; no legacy
-          execution-plan/capacity-plan input survives.
+        - Update SDK API/reference examples to show repeated decision selection
+          and explicitly forbid caller-authored derived state.
+        - Start from the exact approved implementation and test chain. Update
+          the actual repository documentation and examples for the stated
+          objective; return a clean Git commit. Describe verified behavior
+          accurately and do not claim unrelated future acceptance.
       activity: acting
       agentClass: technical-writer
       contextRefs:
@@ -281,10 +291,19 @@ executionPlan:
         rationale: Fixed by the authoritative golden acceptance proposal.
       workspace: git
     - acceptanceCriteria:
-        - empty and duplicate IDs fail; omitted selection retains planning-only
-          intent without a compatibility path; normalized order and digest are
-          deterministic; generated descriptors expose the field once; no legacy
-          execution-plan/capacity-plan input survives.
+        - Build, run contract/release verification, pack locally, inspect
+          exports/types, and produce an unpushed local candidate.
+        - Combine only the exact approved Git predecessor chain in the
+          campaign-local simulation repository. Run project verification and
+          package/release dry runs, inspect local artifacts and exports, and
+          return a local integration commit with artifact digests and optional
+          unpushed local tag. Do not publish, push upstream, deploy, rotate
+          credentials, or mutate live data.
+        - "Final project acceptance: empty and duplicate IDs fail; omitted
+          selection retains planning-only intent without a compatibility path;
+          normalized order and digest are deterministic; generated descriptors
+          expose the field once; no legacy execution-plan/capacity-plan input
+          survives."
       activity: acting
       agentClass: releaser
       contextRefs:
