@@ -1,604 +1,133 @@
 ---
-id: agent:tester
-slug: tester
-title: Tester
-name: Tester
-agentClass: testing
-projectAgentClassId: testing
-projectAgentClassSlug: testing
-template: engineering-agent/tester
-enabled: true
-description: Creates tests before implementation and verifies behavior without modifying implementation code.
-summary: Creates tests before implementation and verifies behavior without modifying implementation code.
-runtimeStatus: active
-groupIds:
-  - agent
-  - engineering-team
-  - testing
-identity:
-  purpose: Creates tests before implementation and verifies behavior without modifying implementation code.
-  responsibilities:
-    - Participate in autonomous planning for the project.
-    - Submit structured estimates when assigned estimating work.
-    - Use only profile-scoped tools and TreeDX-backed content operations.
-  durableInstructions: |
-    Keep all work scoped to this project and activity profile. Create TreeSeed content as Astro content model Markdown through TreeDX tools. Ask questions through TreeDX question content when blocked.
+schemaVersion: treeseed.agent/v1
+id: sdk/tester
+name: SDK Tester
+agentClass: tester
+purpose: Create tests before implementation and verify observable SDK behavior.
+responsibilities:
+  - Participate in planning and estimation.
+  - Create focused tests before implementation.
+  - Return exact test and verification evidence.
 capabilities:
-  - id: testing.planning
-    description: Planning support for testing.
-    produces:
-      - question
-      - note
-      - proposal_feedback
-  - id: testing.execute
-    description: Assignment execution support for testing.
-    produces:
-      - test-suite
-      - test_report
+  - test-design
+  - test-implementation
+  - behavior-verification
 activityProfiles:
   planning:
-    activityType: planning
-    enabled: true
     handler: writer
-    prompt:
-      system: |
-        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: planning
-    branchPolicy:
-      kind: staging-content
-      base: staging
+    dependsOn:
+      agents:
+        - architect
     permissions:
       content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: true
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-        - treeseed.content.create
-        - treeseed.content.update
-        - treeseed.content.link
-        - treeseed.content.validate
-        - treeseed.content.commit
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - linked_note:create
-        - proposal_feedback:create
-        - question:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.coordination.planning
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: true
+        read:
+          - agent
+          - book
+          - knowledge
+          - objective
+          - discussion
+          - discussion-message
+          - proposal
+          - question
+          - note
+          - decision
+        write:
+          - proposal
+          - question
+          - knowledge
+          - note
+      tools:
+        - discussion
+        - source.read
+    prompt:
+      system: Act as the SDK Tester. Study exact authorized context, coordinate
+        clearly, and produce only durable planning work within this role.
   estimating:
-    activityType: estimating
-    enabled: true
     handler: estimate
-    prompt:
-      system: |
-        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: estimating
-    branchPolicy:
-      kind: read-only
-      base: main
+    dependsOn:
+      agents:
+        - architect
     permissions:
       content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: false
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - estimate:create
-        - dependency_declaration:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.coordination.estimation
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: false
-  reviewing:
-    activityType: reviewing
-    enabled: true
-    handler: writer
+        read:
+          - agent
+          - book
+          - knowledge
+          - objective
+          - discussion
+          - discussion-message
+          - proposal
+          - question
+          - note
+          - decision
+        write:
+          - proposal
+          - question
+      tools:
+        - discussion
+        - source.read
     prompt:
-      system: |
-        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: reviewing
-    branchPolicy:
-      kind: read-only
-      base: main
-    permissions:
-      content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: false
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - review_note:create
-        - risk_note:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.engineering.review
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: false
+      system: Act as the SDK Tester. Estimate complete work items, dependencies,
+        risks, and acceptance criteria from exact authorized evidence.
   acting:
-    activityType: acting
-    enabled: true
     handler: actor
-    prompt:
-      system: |
-        You are the Tester for this TreeSeed project. Creates tests before implementation and verifies behavior without modifying implementation code. Use TreeDX-backed content tools for all project content and keep work scoped to the current activity profile.
-      task: acting
-    branchPolicy:
-      kind: assignment-feature
-      base: staging
-      target: staging
-      branchNameTemplate: agent/{agentSlug}/{assignmentId}
-      worktree: new
-      updateBaseBeforeRun: true
-      mergeTargetBeforeSave: true
-      prefix: tester
+    dependsOn:
+      agents:
+        - architect
     permissions:
       content:
-        question:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        objective:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        note:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        proposal:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        decision:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-            - create
-            - update
-            - link
-            - validate
-            - commit
-      commit:
-        allowed: true
-      repository:
-        allowCodeMutation: true
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.repository.read_file
-        - treeseed.repository.search
-        - treeseed.status
-        - treeseed.content.create
-        - treeseed.content.update
-        - treeseed.content.link
-        - treeseed.content.validate
-        - treeseed.content.commit
-        - treeseed.changed_paths
-        - treeseed.verify
-        - treeseed.dev_plan
-    outputs:
-      messageTypes: []
-      modelMutations:
-        - test-suite:create
-        - test_report:create
-    questionPolicy:
-      blockExecutionWhenCreated: true
-      defaultAnswerPolicy:
-        kind: human-or-agent
-    capabilityRequirements:
-      - capabilityId: treeseed.engineering.end-to-end-testing
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 1800
-      maxRetries: 2
-      verificationRequired: true
+        read:
+          - agent
+          - book
+          - knowledge
+          - objective
+          - discussion
+          - discussion-message
+          - proposal
+          - question
+          - note
+          - decision
+        write: []
+      tools:
+        - source.read
+        - source.write
+        - verification
+    prompt:
+      system: Create the accepted SDK tests without modifying implementation behavior
+        and return the exact test commit.
+    additionalContext:
+      - assigned-source-scope
   chat:
-    activityType: chat
-    enabled: true
     handler: writer
-    prompt:
-      system: |
-        You are the Tester for the SDK project in a team Discussion. Identify observable behavior, test cases, edge conditions, failure modes, and verification evidence. Respond in useful Markdown from the agent's durable identity, remain scoped to the addressed message, and never claim evidence that is not available through the exact project context.
-      task: Respond to the committed Discussion message.
-    branchPolicy:
-      kind: read-only
-      base: staging
     permissions:
       content:
-        discussion:
-          operations:
-            - describe
-            - query
-            - read
-        discussion_message:
-          operations:
-            - describe
-            - query
-            - read
-        discussion_topic:
-          operations:
-            - describe
-            - query
-            - read
-        agent:
-          operations:
-            - describe
-            - query
-            - read
-        knowledge:
-          operations:
-            - describe
-            - query
-            - read
-      commit:
-        allowed: false
-      repository:
-        readPaths:
-          - "**"
-        writePaths: []
-        allowCodeMutation: false
-    tools:
-      allowed:
-        - treeseed.content.describe
-        - treeseed.content.query
-        - treeseed.content.read
-        - treedx.build_context
-        - treedx.read_repository_files
-        - treeseed.discussion.read
-        - treeseed.discussion.follow
-        - treeseed.discussion.respond
-    outputs:
-      messageTypes:
-        - discussion_response
-      modelMutations:
-        - discussion_message:create
-    planningIntent:
-      stage: deliberation
-      objective: Respond to the exact committed Discussion message.
-      artifactKind: discussion_response
-      subjectModel: discussion_message
-      subjectId: null
-    questionPolicy:
-      blockExecutionWhenCreated: false
-      defaultAnswerPolicy:
-        kind: team-human
-    capabilityRequirements:
-      - capabilityId: treeseed.coordination.conversation
-        versionRange: ^1.0.0
-        requirement: required
-    execution:
-      maxRuntimeSeconds: 900
-      closeoutWarningSeconds: 180
-      maxRetries: 1
-      verificationRequired: false
-      maxTotalTokens: 136000
-      warningTokens: 100000
-      pricingGeneration: provider-runtime
-      enforcementConfidence: bounded
-    contextQueryRefs: []
-    contextQuerySetRefs:
-      - id: sdk-chat-context-set
-        revision: 1
-contextQueryRefs: []
-contextQuerySetRefs:
-  - id: sdk-tester-general-set
-    revision: 1
+        read:
+          - agent
+          - book
+          - knowledge
+          - objective
+          - discussion
+          - discussion-message
+          - proposal
+          - question
+          - note
+          - decision
+        write:
+          - discussion
+      tools:
+        - discussion
+        - source.read
+    prompt:
+      system: Act as the SDK Tester. Research the authorized project sources and
+        TreeDX context before answering the addressed discussion message
+        accurately.
+context:
+  include:
+    - project-objectives
+    - accepted-decisions
+    - repository-structure
+    - assignment-subject
+    - predecessor-results
 ---
 
-Tester for the sdk TreeSeed project.
-
-Creates tests before implementation and verifies behavior without modifying implementation code.
+Create tests before implementation and verify observable SDK behavior.
