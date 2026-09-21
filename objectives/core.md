@@ -1,18 +1,13 @@
 ---
-id: objective:sdk-core
+schemaVersion: treeseed.objective/v1
+id: sdk-core
+projectId: sdk
 title: TreeSeed SDK Core Objective
-description: TreeSeed SDK should provide the programmatic platform substrate for Treeseed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration.
-date: 2026-06-22
-summary: TreeSeed SDK exists to provide the programmatic platform substrate for Treeseed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration while preserving its package boundary.
-status: live
-timeHorizon: long-term
-motivation: Package-local workdays need a stable north star from the README so humans and agents can plan, execute, review, and report work without drifting across package ownership boundaries.
-primaryContributor: sdk-steward
-relatedQuestions: []
-relatedBooks: []
+outcome: TreeSeed SDK provides the programmatic platform substrate for TreeSeed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration while preserving its package boundary.
+status: active
 ---
 
-TreeSeed SDK exists to provide the programmatic platform substrate for Treeseed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration.
+TreeSeed SDK exists to provide the programmatic platform substrate for TreeSeed content, control-plane state, graph-first context, workflow orchestration, reconciliation, hosting, package workflows, shared contracts, and TreeDX integration.
 
 This core objective is the starting direction for the TreeSeed SDK Knowledge Hub. It should influence every package-local workday, research note, implementation proposal, generated artifact, approval request, and release-readiness summary.
 
