@@ -1,0 +1,268 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: golden-sdk-decision-governed-workday-intent-retry-15
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Select accepted decisions in portable workday intent
+request: Add normalized repeated accepted-decision identities to the public SDK
+  workday intent and generated operation contract. Preserve them in
+  normalization and preflight digests. They select authority but never contain
+  or grant derived graph, assignment, source, role, estimate, or capacity state.
+  Remove conflicting legacy workday-selection contracts without compatibility
+  aliases.
+summary: Prove the SDK can express high-level decision-governed execution while
+  keeping all derived execution state API-owned.
+status: draft
+objectiveRefs:
+  - commit: 5e348df7e59a6f426e6245173a41d145c0226ce0
+    id: sdk-core
+    model: objective
+    path: objectives/core.md
+    repository: treeseed-ai/sdk-library
+    store: treedx
+evidenceRefs:
+  - id: sdk-source-1
+    model: issue
+    store: url
+    url: https://github.com/treeseed-ai/sdk/issues/299
+executionPlan:
+  workItems:
+    - acceptanceCriteria:
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
+      activity: acting
+      agentClass: researcher
+      contextRefs:
+        - commit: 5e348df7e59a6f426e6245173a41d145c0226ce0
+          id: sdk-library
+          model: repository
+          path: .
+          repository: treeseed-ai/sdk-library
+          store: treedx
+      dependsOn: []
+      id: research-context
+      maximumReviewCycles: 2
+      objective: Trace every current SDK workday-selection, decision, graph,
+        assignment, and legacy planning contract; return exact refs and a
+        duplication/deletion note.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write:
+            - knowledge
+            - note
+            - question
+        tools:
+          - discussion
+          - source.read
+      requiredCapabilities:
+        - treeseed.research.repository
+      review: required
+      workspace: treedx
+    - acceptanceCriteria:
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
+      activity: acting
+      agentClass: architect
+      contextRefs:
+        - commit: 5e348df7e59a6f426e6245173a41d145c0226ce0
+          id: sdk-library
+          model: repository
+          path: .
+          repository: treeseed-ai/sdk-library
+          store: treedx
+      dependsOn: []
+      id: architecture-contract
+      maximumReviewCycles: 2
+      objective: Extend the SDK Architecture book with the single authority boundary
+        and exact portable shape; identify all retired competing contracts.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write:
+            - book
+            - knowledge
+            - note
+            - question
+        tools:
+          - discussion
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      review: required
+      workspace: treedx
+    - acceptanceCriteria:
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
+      activity: acting
+      agentClass: tester
+      contextRefs:
+        - commit: 90ca34a6cfd61e965cf564302f91636a3af56c02
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - research-context
+        - architecture-contract
+      id: tests-first
+      maximumReviewCycles: 2
+      objective: Add normalization, duplicate/empty rejection, stable digest,
+        omission, and schema/CLI-descriptor contract tests that fail on the
+        frozen base.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.unit-testing
+      review: required
+      workspace: git
+    - acceptanceCriteria:
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
+      activity: acting
+      agentClass: engineer
+      contextRefs:
+        - commit: 90ca34a6cfd61e965cf564302f91636a3af56c02
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - tests-first
+      id: implement-change
+      maximumReviewCycles: 2
+      objective: Implement the minimal strict TypeScript contract and delete
+        superseded unions, aliases, and exported paths.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      review: required
+      workspace: git
+    - acceptanceCriteria:
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
+      activity: acting
+      agentClass: technical-writer
+      contextRefs:
+        - commit: 90ca34a6cfd61e965cf564302f91636a3af56c02
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - tests-first
+        - implement-change
+      id: document-change
+      maximumReviewCycles: 2
+      objective: Update SDK API/reference examples to show repeated decision selection
+        and explicitly forbid caller-authored derived state.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.publishing.documentation
+      review: required
+      workspace: git
+    - acceptanceCriteria:
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
+      activity: acting
+      agentClass: releaser
+      contextRefs:
+        - commit: 90ca34a6cfd61e965cf564302f91636a3af56c02
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - implement-change
+        - document-change
+      id: simulate-release
+      maximumReviewCycles: 2
+      objective: Build, run contract/release verification, pack locally, inspect
+        exports/types, and produce an unpushed local candidate.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+          - release
+      requiredCapabilities:
+        - treeseed.engineering.release
+      review: required
+      workspace: git
+---
