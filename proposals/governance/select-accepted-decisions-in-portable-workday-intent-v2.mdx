@@ -32,23 +32,10 @@ evidenceRefs:
 executionPlan:
   workItems:
     - acceptanceCriteria:
-        - "WorkdayIntent exposes only decisionIds?: string[] for
-          accepted-decision selection, and workdays plan exposes it once through
-          repeatable/comma-separated --decision."
-        - Blank, overlong, unbounded, and duplicate identities after trimming
-          fail; valid identities are trimmed and lexically sorted before the
-          portable request crosses the SDK/API boundary.
-        - Equivalent decision selections produce byte-equivalent normalized
-          request payloads and reordered or changed selections are handled
-          deterministically; API-owned intentDigest and preflightDigest consume
-          that payload downstream.
-        - agentSelection, allocation, profile, project, timing, and
-          communication inputs remain as high-level policy; operatorConstraints
-          and caller-authored graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, or
-          provider-selection state are absent and rejected without aliases.
-        - Types, validators, generated operation descriptors, tests, exports,
-          and SDK reference documentation agree on the same strict contract.
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
       activity: acting
       agentClass: researcher
       contextRefs:
@@ -94,23 +81,10 @@ executionPlan:
       review: required
       workspace: treedx
     - acceptanceCriteria:
-        - "WorkdayIntent exposes only decisionIds?: string[] for
-          accepted-decision selection, and workdays plan exposes it once through
-          repeatable/comma-separated --decision."
-        - Blank, overlong, unbounded, and duplicate identities after trimming
-          fail; valid identities are trimmed and lexically sorted before the
-          portable request crosses the SDK/API boundary.
-        - Equivalent decision selections produce byte-equivalent normalized
-          request payloads and reordered or changed selections are handled
-          deterministically; API-owned intentDigest and preflightDigest consume
-          that payload downstream.
-        - agentSelection, allocation, profile, project, timing, and
-          communication inputs remain as high-level policy; operatorConstraints
-          and caller-authored graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, or
-          provider-selection state are absent and rejected without aliases.
-        - Types, validators, generated operation descriptors, tests, exports,
-          and SDK reference documentation agree on the same strict contract.
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
       activity: acting
       agentClass: architect
       contextRefs:
@@ -156,23 +130,10 @@ executionPlan:
       review: required
       workspace: treedx
     - acceptanceCriteria:
-        - "WorkdayIntent exposes only decisionIds?: string[] for
-          accepted-decision selection, and workdays plan exposes it once through
-          repeatable/comma-separated --decision."
-        - Blank, overlong, unbounded, and duplicate identities after trimming
-          fail; valid identities are trimmed and lexically sorted before the
-          portable request crosses the SDK/API boundary.
-        - Equivalent decision selections produce byte-equivalent normalized
-          request payloads and reordered or changed selections are handled
-          deterministically; API-owned intentDigest and preflightDigest consume
-          that payload downstream.
-        - agentSelection, allocation, profile, project, timing, and
-          communication inputs remain as high-level policy; operatorConstraints
-          and caller-authored graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, or
-          provider-selection state are absent and rejected without aliases.
-        - Types, validators, generated operation descriptors, tests, exports,
-          and SDK reference documentation agree on the same strict contract.
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
       activity: acting
       agentClass: tester
       contextRefs:
@@ -209,23 +170,10 @@ executionPlan:
       review: required
       workspace: git
     - acceptanceCriteria:
-        - "WorkdayIntent exposes only decisionIds?: string[] for
-          accepted-decision selection, and workdays plan exposes it once through
-          repeatable/comma-separated --decision."
-        - Blank, overlong, unbounded, and duplicate identities after trimming
-          fail; valid identities are trimmed and lexically sorted before the
-          portable request crosses the SDK/API boundary.
-        - Equivalent decision selections produce byte-equivalent normalized
-          request payloads and reordered or changed selections are handled
-          deterministically; API-owned intentDigest and preflightDigest consume
-          that payload downstream.
-        - agentSelection, allocation, profile, project, timing, and
-          communication inputs remain as high-level policy; operatorConstraints
-          and caller-authored graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, or
-          provider-selection state are absent and rejected without aliases.
-        - Types, validators, generated operation descriptors, tests, exports,
-          and SDK reference documentation agree on the same strict contract.
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
       activity: acting
       agentClass: engineer
       contextRefs:
@@ -260,23 +208,10 @@ executionPlan:
       review: required
       workspace: git
     - acceptanceCriteria:
-        - "WorkdayIntent exposes only decisionIds?: string[] for
-          accepted-decision selection, and workdays plan exposes it once through
-          repeatable/comma-separated --decision."
-        - Blank, overlong, unbounded, and duplicate identities after trimming
-          fail; valid identities are trimmed and lexically sorted before the
-          portable request crosses the SDK/API boundary.
-        - Equivalent decision selections produce byte-equivalent normalized
-          request payloads and reordered or changed selections are handled
-          deterministically; API-owned intentDigest and preflightDigest consume
-          that payload downstream.
-        - agentSelection, allocation, profile, project, timing, and
-          communication inputs remain as high-level policy; operatorConstraints
-          and caller-authored graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, or
-          provider-selection state are absent and rejected without aliases.
-        - Types, validators, generated operation descriptors, tests, exports,
-          and SDK reference documentation agree on the same strict contract.
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
       activity: acting
       agentClass: technical-writer
       contextRefs:
@@ -312,23 +247,10 @@ executionPlan:
       review: required
       workspace: git
     - acceptanceCriteria:
-        - "WorkdayIntent exposes only decisionIds?: string[] for
-          accepted-decision selection, and workdays plan exposes it once through
-          repeatable/comma-separated --decision."
-        - Blank, overlong, unbounded, and duplicate identities after trimming
-          fail; valid identities are trimmed and lexically sorted before the
-          portable request crosses the SDK/API boundary.
-        - Equivalent decision selections produce byte-equivalent normalized
-          request payloads and reordered or changed selections are handled
-          deterministically; API-owned intentDigest and preflightDigest consume
-          that payload downstream.
-        - agentSelection, allocation, profile, project, timing, and
-          communication inputs remain as high-level policy; operatorConstraints
-          and caller-authored graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, or
-          provider-selection state are absent and rejected without aliases.
-        - Types, validators, generated operation descriptors, tests, exports,
-          and SDK reference documentation agree on the same strict contract.
+        - empty and duplicate IDs fail; omitted selection retains planning-only
+          intent without a compatibility path; normalized order and digest are
+          deterministic; generated descriptors expose the field once; no legacy
+          execution-plan/capacity-plan input survives.
       activity: acting
       agentClass: releaser
       contextRefs:
