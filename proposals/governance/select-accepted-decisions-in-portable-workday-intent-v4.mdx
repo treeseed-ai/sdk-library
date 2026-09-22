@@ -16,7 +16,7 @@ request: "Add decisionIds?: string[] to WorkdayIntent and expose it exactly once
   without aliases."
 summary: Prove the SDK can express high-level decision-governed execution while
   keeping all derived execution state API-owned.
-status: draft
+status: discussing
 objectiveRefs:
   - commit: 65106c908bca127ea45d11b3f6b54905878d191c
     id: sdk-core
@@ -54,18 +54,6 @@ executionPlan:
           repository: repo_a3c347e2abcd09af
           store: treedx
       dependsOn: []
-      estimate:
-        expectedSeconds: 300
-        maximumSeconds: 480
-        minimumSeconds: 180
-        rationale: The assigned research has no dependencies and requires targeted
-          inspection of four contract/test seams, reconciliation of existing
-          predecessor findings, explicit separation of WorkdayIntent from
-          governance executionPlan fields, and a precise duplication/deletion
-          handoff. The expected estimate allows time to trace descriptor reuse
-          and API-owned derived-state boundaries without running builds or
-          tests; the upper bound covers ambiguity in generated/export
-          references.
       id: research-context
       maximumReviewCycles: 2
       objective: Trace every current SDK workday-selection, decision, graph,
@@ -91,14 +79,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.research.repository
       review: required
-      reviewEstimate:
-        expectedSeconds: 300
-        maximumSeconds: 480
-        minimumSeconds: 180
-        rationale: Cross-cutting review of lifecycle, descriptors, selection bindings,
-          generated/export seams, and tests, including exact-reference tracing
-          and governance-schema separation; upper bound covers ambiguity in
-          generated contracts.
       workspace: treedx
     - acceptanceCriteria:
         - Commit an SDK Architecture Knowledge page in the exact Architecture
@@ -122,18 +102,6 @@ executionPlan:
           repository: repo_a3c347e2abcd09af
           store: treedx
       dependsOn: []
-      estimate:
-        expectedSeconds: 120
-        maximumSeconds: 150
-        minimumSeconds: 90
-        rationale: Focused architecture-contract work is limited to specifying and
-          recording one authority boundary across the existing lifecycle and
-          shared command-descriptor seams, identifying retired competing
-          contracts, and preserving the distinction between WorkdayIntent and
-          proposal governance executionPlan. The existing decisionIds field and
-          single --decision binding reduce discovery effort; time is reserved
-          for checking all acceptance-criterion implications and documenting
-          dependencies and risks.
       id: architecture-contract
       maximumReviewCycles: 2
       objective: Extend the SDK Architecture book with the single authority boundary
@@ -159,13 +127,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.architecture
       review: required
-      reviewEstimate:
-        expectedSeconds: 120
-        maximumSeconds: 150
-        minimumSeconds: 90
-        rationale: Focused review of the SDK authority boundary, retired competing
-          contracts, retained policy inputs, and distinction from proposal
-          governance; existing decision and CLI seams reduce discovery.
       workspace: treedx
     - acceptanceCriteria:
         - Commit tests for normalization, duplicate and empty rejection, stable
@@ -182,19 +143,6 @@ executionPlan:
       dependsOn:
         - research-context
         - architecture-contract
-      estimate:
-        expectedSeconds: 180
-        maximumSeconds: 240
-        minimumSeconds: 120
-        rationale: Focused contract-test work spans the existing lifecycle and
-          command-descriptor test seams. The base already has decisionIds, one
-          shared --decision binding, and basic omission/empty-selection tests,
-          reducing discovery time; the estimate reserves time to add trim-based
-          duplicate rejection, deterministic lexical-order and
-          digest-equivalence cases, planning-only omission assertions,
-          descriptor single-exposure checks, and strict rejection/exclusion
-          coverage for caller-authored derived fields while distinguishing
-          proposal executionPlan from WorkdayIntent.
       id: tests-first
       maximumReviewCycles: 2
       objective: Add normalization, duplicate/empty rejection, stable digest,
@@ -218,13 +166,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.unit-testing
       review: required
-      reviewEstimate:
-        expectedSeconds: 180
-        maximumSeconds: 240
-        minimumSeconds: 120
-        rationale: Review of tests for trimming, post-trim duplicates, lexical
-          normalization, digest equivalence, omission, descriptor uniqueness,
-          and derived-state rejection; existing basic tests reduce setup.
       workspace: git
     - acceptanceCriteria:
         - Implement the minimal strict TypeScript contract, make the approved
@@ -240,19 +181,6 @@ executionPlan:
           store: git
       dependsOn:
         - tests-first
-      estimate:
-        expectedSeconds: 300
-        maximumSeconds: 420
-        minimumSeconds: 180
-        rationale: Focused TypeScript implementation across the identified lifecycle
-          contract and shared descriptor/export seams. The field and CLI binding
-          already exist, reducing discovery; time is needed to implement
-          trim-based validation, post-trim duplicate rejection, deterministic
-          lexical normalization before digesting, remove operatorConstraints and
-          superseded derived-state paths, preserve planning-only omission and
-          retained policy inputs, and inspect the resulting type/schema/export
-          surface. The range includes dependency alignment with tests-first and
-          review of all acceptance criteria.
       id: implement-change
       maximumReviewCycles: 2
       objective: Implement the minimal strict TypeScript contract and delete
@@ -275,14 +203,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.code-change
       review: required
-      reviewEstimate:
-        expectedSeconds: 300
-        maximumSeconds: 420
-        minimumSeconds: 180
-        rationale: Review of strict lifecycle normalization, duplicate rejection,
-          deterministic digest preparation, legacy-contract removal, and
-          resulting type/schema/export surfaces; existing seams reduce
-          discovery.
       workspace: git
     - acceptanceCriteria:
         - Commit SDK API and reference examples for repeated decision selection
@@ -299,22 +219,6 @@ executionPlan:
       dependsOn:
         - tests-first
         - implement-change
-      estimate:
-        expectedSeconds: 135
-        maximumSeconds: 180
-        minimumSeconds: 90
-        rationale: The repository already has the decisionIds field and one shared
-          --decision descriptor, but documentation must be aligned with the
-          post-implementation normalization and strict retirement contract
-          across a small README/API-reference surface. The estimate includes
-          updating repeated/comma-separated decision examples, omission and
-          planning-only guidance, API ownership and forbidden-derived-state
-          language, checking generated reference consistency, and accounting for
-          dependency-driven wording changes after tests-first and
-          implementation. The upper bound covers stale generated descriptions or
-          examples and the risk of distinguishing proposal governance
-          executionPlan from WorkdayIntent without documenting an unintended
-          compatibility path.
       id: document-change
       maximumReviewCycles: 2
       objective: Update SDK API/reference examples to show repeated decision selection
@@ -337,14 +241,6 @@ executionPlan:
       requiredCapabilities:
         - treeseed.publishing.documentation
       review: required
-      reviewEstimate:
-        expectedSeconds: 135
-        maximumSeconds: 180
-        minimumSeconds: 90
-        rationale: Review of API/reference updates for repeated or comma-separated
-          decisions, planning-only omission, governed authority, API-owned
-          derived state, and no compatibility alias; upper bound covers stale
-          generated examples.
       workspace: git
     - acceptanceCriteria:
         - Integrate the exact approved Git predecessors locally, run build and
@@ -361,20 +257,6 @@ executionPlan:
       dependsOn:
         - implement-change
         - document-change
-      estimate:
-        expectedSeconds: 180
-        maximumSeconds: 270
-        minimumSeconds: 120
-        rationale: The repository already provides standard build, contract-test,
-          release-verification, packing, and export surfaces, and the relevant
-          SDK seams are known. The minimum covers a focused build plus
-          contract/release verification and export inspection. The expected
-          estimate allows local packing, generated declaration review, and clean
-          unpushed-candidate confirmation after both implementation and
-          documentation dependencies. The maximum reserves time for diagnosing
-          stale generated artifacts, export/type drift, descriptor duplication,
-          or release-check failures while preserving the acceptance-boundary
-          review.
       id: simulate-release
       maximumReviewCycles: 2
       objective: Build, run contract/release verification, pack locally, inspect
@@ -398,13 +280,5 @@ executionPlan:
       requiredCapabilities:
         - treeseed.engineering.release
       review: required
-      reviewEstimate:
-        expectedSeconds: 180
-        maximumSeconds: 270
-        minimumSeconds: 120
-        rationale: Review of build, contract/release checks, local packing, generated
-          declarations and exports, descriptor uniqueness, and clean
-          unpushed-candidate confirmation; upper bound covers stale artifacts
-          and release drift.
       workspace: git
 ---
