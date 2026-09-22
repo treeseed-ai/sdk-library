@@ -1,0 +1,415 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: golden-sdk-decision-governed-workday-intent-v7
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Select accepted decisions in portable workday intent v7
+request: "Refine the existing decision-selection contract instead of adding a
+  parallel feature. src/operator-contracts/workday-lifecycle.ts owns the
+  portable WorkdayIntent strict validation and normalization boundary: trim
+  decisionIds, reject empty identities and duplicates after trimming, sort
+  deterministically, and preserve omission as undefined.
+  src/operator-contracts/canonical-command-tree.ts with
+  src/operator-contracts/catalog/workdays/selection-commands.ts remains the one
+  SDK descriptor for repeatable/comma-separated --decision input. Reject
+  operatorConstraints and caller-authored graph, executionPlan, capacityPlan,
+  demand, assignment, source, role, estimate, reservation, usage, and
+  provider-selection fields without aliases. The API workday-preflight-service
+  remains the sole intent/preflight digest authority and receives only the
+  normalized portable request. Retain agentSelection, allocation, profile,
+  project, timing, and communication inputs as high-level policy."
+summary: Prove the SDK can express high-level decision-governed execution while
+  keeping all derived execution state API-owned.
+status: ready
+objectiveRefs:
+  - commit: 65106c908bca127ea45d11b3f6b54905878d191c
+    id: sdk-core
+    model: objective
+    path: objectives/core.md
+    repository: repo_a3c347e2abcd09af
+    store: treedx
+evidenceRefs:
+  - id: sdk-source-1
+    model: issue
+    store: url
+    url: https://github.com/treeseed-ai/sdk/issues/299
+executionPlan:
+  workItems:
+    - acceptanceCriteria:
+        - Return exact source refs for SDK workday selection, decision, graph,
+          assignment, and retired planning contracts, with a
+          duplication/deletion note; do not claim implementation or test
+          verification.
+      activity: acting
+      agentClass: researcher
+      contextRefs:
+        - commit: 65106c908bca127ea45d11b3f6b54905878d191c
+          digest: sha256:65c10939426530c2060f70519f52b9f158e8085b4fa4086c7f27324a53df85b5
+          id: sdk-core
+          model: book
+          path: books/sdk-core.md
+          repository: repo_a3c347e2abcd09af
+          revision: 1
+          store: treedx
+        - commit: 65106c908bca127ea45d11b3f6b54905878d191c
+          id: sdk-library
+          model: repository
+          path: .
+          repository: repo_a3c347e2abcd09af
+          store: treedx
+      dependsOn: []
+      estimate:
+        expectedSeconds: 180
+        maximumSeconds: 300
+        minimumSeconds: 90
+        rationale: No dependencies. Time covers direct inspection of the frozen SDK
+          seams, reconciliation of WorkdayIntent/CLI/API-owned
+          graph-assignment/proposal contracts, exact source-reference
+          extraction, and the required duplication/deletion note. Risk allowance
+          covers cross-package contract overlap and line-level evidence
+          reconciliation; implementation, builds, and tests are explicitly out
+          of scope.
+      id: research-context
+      maximumReviewCycles: 2
+      objective: Trace every current SDK workday-selection, decision, graph,
+        assignment, and legacy planning contract; return exact refs and a
+        duplication/deletion note.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write:
+            - knowledge
+            - note
+            - question
+        tools:
+          - discussion
+          - source.read
+      requiredCapabilities:
+        - treeseed.research.repository
+      review: required
+      reviewEstimate:
+        expectedSeconds: 180
+        maximumSeconds: 300
+        minimumSeconds: 90
+        rationale: Direct source tracing and exact-reference reconciliation across
+          WorkdayIntent, validation, CLI, API-owned graph/assignment, and legacy
+          planning seams; maximum covers cross-package overlap.
+      workspace: treedx
+    - acceptanceCriteria:
+        - Commit an SDK Architecture Knowledge page in the exact Architecture
+          Book defining the single authority boundary, portable WorkdayIntent
+          shape, and retired competing contracts, with exact source evidence.
+      activity: acting
+      agentClass: architect
+      contextRefs:
+        - commit: 65106c908bca127ea45d11b3f6b54905878d191c
+          digest: sha256:c740b7fbb79681781b95e311e838ef3e231873f16b1cb4dd8c8fbe5112a4eb02
+          id: sdk-architecture
+          model: book
+          path: books/architecture.md
+          repository: repo_a3c347e2abcd09af
+          revision: 1
+          store: treedx
+        - commit: 65106c908bca127ea45d11b3f6b54905878d191c
+          id: sdk-library
+          model: repository
+          path: .
+          repository: repo_a3c347e2abcd09af
+          store: treedx
+      dependsOn: []
+      estimate:
+        expectedSeconds: 240
+        maximumSeconds: 420
+        minimumSeconds: 120
+        rationale: The work requires a focused Architecture Book addition plus
+          reconciliation of exact source evidence across the WorkdayIntent
+          contract, validation, CLI descriptor, API receipt boundary,
+          graph/assignment contracts, and separately governed execution-plan
+          schema. Scope is bounded because the relevant seams are already
+          identified and no implementation or verification is included; risk is
+          moderate due to preserving the intent/CLI single semantic path while
+          documenting all retired aliases and authority boundaries.
+      id: architecture-contract
+      maximumReviewCycles: 2
+      objective: Extend the SDK Architecture book with the single authority boundary
+        and exact portable shape; identify all retired competing contracts.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write:
+            - book
+            - knowledge
+            - note
+            - question
+        tools:
+          - discussion
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      review: required
+      reviewEstimate:
+        expectedSeconds: 240
+        maximumSeconds: 420
+        minimumSeconds: 120
+        rationale: Document the authority boundary, portable policy shape, normalization
+          behavior, and retired contracts with exact evidence; moderate risk
+          comes from preserving one intent/CLI semantic path.
+      workspace: treedx
+    - acceptanceCriteria:
+        - Commit focused SDK tests that fail on the frozen base and prove trim,
+          empty and post-trim duplicate rejection, deterministic lexical
+          normalization, omission, strict retired-field rejection, exactly-one
+          decision option, and order-independent normalized API request bytes;
+          report the exact failing checks.
+      activity: acting
+      agentClass: tester
+      contextRefs:
+        - commit: 1186bff3b400fe442642013b2de93e7f0d4939df
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn: []
+      estimate:
+        expectedSeconds: 360
+        maximumSeconds: 600
+        minimumSeconds: 180
+        rationale: The repository already has focused lifecycle and command-tree test
+          files, so scope is bounded to contract cases and small
+          fixtures/helpers. Expected effort covers trim, duplicate rejection,
+          lexical normalization, omission, stable digest equivalence, strict
+          derived-field rejection, and exactly-one CSV descriptor assertions.
+          Risk is moderate because digest behavior depends on request
+          serialization and tests must preserve the intentional intent/CLI
+          single semantic path. The maximum allows locating the digest helper
+          and adapting assertions to existing Vitest conventions without
+          implementing production code.
+      id: tests-first
+      maximumReviewCycles: 2
+      objective: Add focused contract tests at
+        src/operator-contracts/workday-lifecycle.ts and
+        src/operator-contracts/catalog/workdays/selection-commands.ts for trim,
+        post-trim duplicate rejection, lexical normalization, omission, strict
+        rejection of retired caller-authored fields, and exactly-one decision
+        option; prove equivalent decision order produces the same normalized
+        request handed to API digest authority.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.unit-testing
+      review: required
+      reviewEstimate:
+        expectedSeconds: 360
+        maximumSeconds: 600
+        minimumSeconds: 180
+        rationale: Add focused coverage for trimming, duplicate rejection, lexical
+          normalization, omission, stable digest, derived-field rejection, and
+          exactly-one CSV descriptor; maximum covers digest-helper discovery and
+          test adaptation.
+      workspace: git
+    - acceptanceCriteria:
+        - Implement the minimal strict TypeScript contract, make the approved
+          Tester checks pass, and delete superseded unions, aliases, exports,
+          and caller-authored derived-state inputs.
+      activity: acting
+      agentClass: engineer
+      contextRefs:
+        - commit: 1186bff3b400fe442642013b2de93e7f0d4939df
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - tests-first
+      estimate:
+        expectedSeconds: 300
+        maximumSeconds: 480
+        minimumSeconds: 180
+        rationale: The implementation is bounded to the identified WorkdayIntent,
+          validation, canonical command/CLI descriptor, exports, and related
+          contract seams, but requires tracing and removing superseded aliases
+          and caller-authored derived-state inputs across TypeScript exports.
+          The expected effort includes integrating the Tester checks,
+          implementing shared trim/duplicate rejection/lexical normalization,
+          preserving omission behavior and API authority boundaries, and
+          reviewing affected types. Risk is moderate because the decision input
+          already exists, while strict compatibility and export cleanup may
+          expose additional references; no documentation, release packaging,
+          build, or acceptance verification is included.
+      id: implement-change
+      maximumReviewCycles: 2
+      objective: Implement the minimal strict TypeScript normalization and validation
+        boundary in src/operator-contracts/workday-lifecycle.ts, preserve the
+        single descriptor path in
+        src/operator-contracts/canonical-command-tree.ts and
+        src/operator-contracts/catalog/workdays/selection-commands.ts, and
+        delete operatorConstraints and caller-authored derived-state inputs
+        without aliases.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      review: required
+      reviewEstimate:
+        expectedSeconds: 300
+        maximumSeconds: 480
+        minimumSeconds: 180
+        rationale: Implement shared strict normalization, retire operatorConstraints,
+          reject derived inputs, and clean aliases/exports; maximum covers
+          downstream type and compatibility fallout.
+      workspace: git
+    - acceptanceCriteria:
+        - Commit SDK API and reference examples for repeated decision selection
+          and the prohibition on caller-authored derived state; verify the
+          documentation examples.
+      activity: acting
+      agentClass: technical-writer
+      contextRefs:
+        - commit: 1186bff3b400fe442642013b2de93e7f0d4939df
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - tests-first
+        - implement-change
+      estimate:
+        expectedSeconds: 180
+        maximumSeconds: 300
+        minimumSeconds: 90
+        rationale: The change requires updating a small set of SDK API/reference
+          examples and explanatory text after two predecessor changes, then
+          checking examples against the final contract. The lower bound assumes
+          the existing documentation surface is easy to locate and examples need
+          only focused edits; the expected case includes synchronizing
+          repeated/CSV decision syntax with normalized decisionIds and
+          documenting the full API-owned derived-state prohibition; the upper
+          bound covers reference-layout discovery, example drift, and revisions
+          needed after implementation changes.
+      id: document-change
+      maximumReviewCycles: 2
+      objective: Update SDK API/reference examples to show repeated decision selection
+        and explicitly forbid caller-authored derived state.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+      requiredCapabilities:
+        - treeseed.publishing.documentation
+      review: required
+      reviewEstimate:
+        expectedSeconds: 180
+        maximumSeconds: 300
+        minimumSeconds: 90
+        rationale: Update and validate API/reference examples for repeated or CSV
+          decision input, normalized IDs, and API-owned derived state; maximum
+          covers reference discovery and example drift.
+      workspace: git
+    - acceptanceCriteria:
+        - Integrate the exact approved Git predecessors locally, run build and
+          contract/release checks, pack and inspect exports and types, and
+          return an unpushed candidate satisfying the proposal-wide final gates.
+      activity: acting
+      agentClass: releaser
+      contextRefs:
+        - commit: 1186bff3b400fe442642013b2de93e7f0d4939df
+          id: sdk
+          model: repository
+          repository: treeseed-ai/sdk
+          store: git
+      dependsOn:
+        - implement-change
+        - document-change
+      estimate:
+        expectedSeconds: 300
+        maximumSeconds: 480
+        minimumSeconds: 180
+        rationale: The task integrates two approved predecessor commits, runs build and
+          contract/release gates, packs locally, and inspects generated exports
+          and declaration types. The expected duration includes one diagnostic
+          pass because package metadata exposes multiple release checks. Minimum
+          assumes clean integration and green checks; maximum covers conflicts,
+          stale generated output, or a release/type-surface defect requiring
+          investigation while keeping the candidate unpushed.
+      id: simulate-release
+      maximumReviewCycles: 2
+      objective: Build, run contract/release verification, pack locally, inspect
+        exports/types, and produce an unpushed local candidate.
+      requestedPermissions:
+        content:
+          read:
+            - book
+            - knowledge
+            - objective
+            - proposal
+            - decision
+            - note
+            - question
+          write: []
+        tools:
+          - source.read
+          - source.write
+          - verification
+          - release
+      requiredCapabilities:
+        - treeseed.engineering.release
+      review: required
+      reviewEstimate:
+        expectedSeconds: 300
+        maximumSeconds: 480
+        minimumSeconds: 180
+        rationale: Integrate predecessors, run release gates, pack locally, and inspect
+          exports/types; maximum covers conflicts, stale declarations, metadata
+          failures, and public-surface regressions.
+      workspace: git
+---
