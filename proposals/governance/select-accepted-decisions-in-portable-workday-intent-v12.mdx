@@ -32,7 +32,7 @@ request: "Refine the existing SDK decision-selection contract instead of adding
   insertion order and decisionIds order. Nested agentSelection and allocation
   insertion order is outside this normalizer and remains owned by their existing
   canonicalizers and validators. WorkdayPreflightReceipt, WorkdayStartReceipt,
-  WorkdaySettlementReceipt, WorkdaySelectedDemand, and their selectedDemands,
+  WorkdaySettlement, WorkdaySelectedDemand, and their selectedDemands,
   assignments, reservations, providerReceiptRefs, and settlement fields remain
   read-only portable receipt representations; they are forbidden only as
   caller-authored WorkdayIntent inputs. No external API implementation behavior
@@ -66,9 +66,12 @@ executionPlan:
           validateWorkdayIntent, workdayIntentInputs, WORKDAY_SELECTION_INPUTS,
           WORKDAY_PLAN_OPTIONS, TREESEED_COMMAND_TREE_V1 workdays plan/schedules
           start, WorkdayPreflightReceipt, WorkdayStartReceipt,
-          WorkdaySettlementReceipt, WorkdaySelectedDemand, execution graph
-          types, assignment records, allocation contracts, and retired planning
-          records; do not claim implementation or verification.
+          WorkdaySettlement, WorkdaySelectedDemand, execution graph types,
+          assignment records, allocation contracts, and retired planning
+          records. Include an absent-symbol row recording
+          WorkdaySettlementReceipt as not found and mapped to WorkdaySettlement
+          with exact source evidence and disposition; do not claim
+          implementation or verification.
       activity: acting
       agentClass: researcher
       contextRefs:
@@ -223,7 +226,11 @@ executionPlan:
       workspace: treedx
     - acceptanceCriteria:
         - Commit focused SDK tests matching the objective that fail on the
-          frozen base and report exact failing checks.
+          frozen base and report exact failing checks. Inspect
+          TREESEED_COMMAND_TREE_V1 at workdays plan and workdays schedules
+          start, excluding execution graph show; assert each contains exactly
+          one --decision option and each is deeply equal to
+          WORKDAY_PLAN_OPTIONS.find(option => option.name === --decision).
       activity: acting
       agentClass: tester
       contextRefs:
@@ -291,8 +298,14 @@ executionPlan:
           covers normalization-boundary discovery and test adaptation.
       workspace: git
     - acceptanceCriteria:
-        - Reference sdk-workday-contract-inventory-v1 in the result, implement
-          the exact exported normalization and strict top-level validation
+        - Reference sdk-workday-contract-inventory-v1 in the result. Reconstruct
+          a fresh object in exact order schemaVersion, teamId, profileId,
+          projects, executionMode, startsAt, endsAt, durationSeconds,
+          objectiveFilters, planningOnly, proposalIds, decisionIds,
+          agentSelection, allocation. Inspect own enumerable top-level keys;
+          every key outside that exact allowlist, including every forbidden
+          spelling in the request, must yield workday_intent_unknown_field at
+          the exact top-level path. Implement the remaining normalization
           contract, preserve delegated nested validation and read-only receipt
           contracts, pass Tester checks, and remove only approved superseded
           symbols.
