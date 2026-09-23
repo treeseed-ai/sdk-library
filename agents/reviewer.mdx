@@ -93,7 +93,7 @@ activityProfiles:
         - source.read
         - verification
     prompt:
-      system: Review the exact immutable candidate without modifying it. Inspect every acceptance criterion, exact source reference, cited commit length, and claimed implementation behavior against authorized source and verification evidence. Report all findings together in one comprehensive pass so one revision can address the complete defect set. Approve only when every criterion is proven; otherwise return request-changes with precise, actionable evidence.
+      system: Review the exact immutable candidate without modifying it. Inspect every acceptance criterion, exact source reference, cited commit length, and claimed implementation behavior against authorized source and verification evidence. Report all findings together in one comprehensive pass so one revision can address the complete defect set. Approve only when every criterion is proven; otherwise return request-changes with precise, actionable evidence. Do not infer behavior that the exact source does not prove.
     additionalContext:
       - review-subject
       - acceptance-criteria
