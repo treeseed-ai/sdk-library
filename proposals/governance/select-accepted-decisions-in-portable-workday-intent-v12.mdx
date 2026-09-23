@@ -54,6 +54,11 @@ executionPlan:
           path: .
           repository: repo_a3c347e2abcd09af
           store: treedx
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 1186bff3b400fe442642013b2de93e7f0d4939df
       dependsOn: []
       estimate:
         expectedSeconds: 180
@@ -129,6 +134,11 @@ executionPlan:
           path: .
           repository: repo_a3c347e2abcd09af
           store: treedx
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: 1186bff3b400fe442642013b2de93e7f0d4939df
       dependsOn:
         - research-context
       estimate:
@@ -215,13 +225,16 @@ executionPlan:
       id: tests-first
       maximumReviewCycles: 2
       objective: Add focused SDK tests for normalizeWorkdayIntent and
-        validateWorkdayIntent plus command-catalog descriptor uniqueness. The
-        equality fixture must normalize two WorkdayIntent values containing the
-        same whitespace-varied decisions in different orders, deep-equal the
-        outputs, and compare JSON.stringify outputs. Test omission as undefined;
-        empty and post-trim duplicates; every enumerated retired runtime key;
-        and exactly one decisionIds/--decision descriptor across workday plan
-        and schedule catalogs. API digest behavior is out of scope.
+        validateWorkdayIntent plus WORKDAY_PLAN_OPTIONS descriptor reuse. The
+        equality fixture normalizes two WorkdayIntent values containing the same
+        whitespace-varied decisions in different orders, deep-equals outputs,
+        and compares JSON.stringify outputs. Test a fresh returned object
+        retaining every allowed high-level field; absence preserving decisionIds
+        as undefined; empty and post-trim duplicates; each forbidden key
+        producing workday_intent_unknown_field at the exact key path; and
+        exactly one WORKDAY_PLAN_OPTIONS decisionIds descriptor reused by
+        workdays plan and schedules start. Exclude the unrelated execution graph
+        read filter and API behavior.
       requestedPermissions:
         content:
           read:
@@ -263,6 +276,8 @@ executionPlan:
           repository: treeseed-ai/sdk
           store: git
       dependsOn:
+        - research-context
+        - architecture-contract
         - tests-first
       estimate:
         expectedSeconds: 300
@@ -281,12 +296,14 @@ executionPlan:
           build, or acceptance verification is included.
       id: implement-change
       maximumReviewCycles: 2
-      objective: "Export normalizeWorkdayIntent(intent: WorkdayIntent): WorkdayIntent
-        from src/operator-contracts/workday-lifecycle.ts, make
-        validateWorkdayIntent the exhaustive strict runtime-key boundary,
-        preserve the one decisionIds descriptor path, consume the approved
-        Tester checks, and remove only the exact superseded symbols identified
-        by research without aliases."
+      objective: "Using the approved Research inventory and Architecture boundary,
+        export normalizeWorkdayIntent(intent: WorkdayIntent): WorkdayIntent from
+        src/operator-contracts/workday-lifecycle.ts, remove operatorConstraints
+        from the type, make validateWorkdayIntent reject every non-allowed own
+        key with workday_intent_unknown_field at the exact key path, preserve
+        the shared WORKDAY_PLAN_OPTIONS decisionIds descriptor, make the
+        approved Tester checks pass, and remove only approved superseded symbols
+        without aliases."
       requestedPermissions:
         content:
           read:
