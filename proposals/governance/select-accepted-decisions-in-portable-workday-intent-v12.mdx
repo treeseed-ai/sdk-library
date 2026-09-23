@@ -31,12 +31,17 @@ evidenceRefs: []
 executionPlan:
   workItems:
     - acceptanceCriteria:
-        - Return exact refs and keep/delete/duplicate dispositions for SDK
-          workday intent/selection, portable preflight descriptor, execution
-          graph, assignment records, allocation, and retired planning contracts
-          in the named source paths; identify exact superseded unions, aliases,
-          exports, and caller-authored derived inputs. Do not claim
-          implementation or test verification.
+        - Publish immutable TreeDX Knowledge id
+          sdk-workday-contract-inventory-v1. For each exact symbol in the named
+          SDK paths, record symbol name, source path and lines, public export
+          path, all repository consumers found at the frozen commit, and one
+          keep/delete/duplicate disposition. Explicitly inventory WorkdayIntent,
+          validateWorkdayIntent, workdayIntentInputs, WORKDAY_SELECTION_INPUTS,
+          WORKDAY_PLAN_OPTIONS, TREESEED_COMMAND_TREE_V1 workdays plan/schedules
+          start, WorkdayPreflightReceipt, WorkdayStartReceipt,
+          WorkdaySettlementReceipt, WorkdaySelectedDemand, execution graph
+          types, assignment records, allocation contracts, and retired planning
+          records; do not claim implementation or verification.
       activity: acting
       agentClass: researcher
       contextRefs:
@@ -112,11 +117,9 @@ executionPlan:
           planning seams; maximum covers cross-package overlap.
       workspace: treedx
     - acceptanceCriteria:
-        - Commit an SDK Architecture Knowledge page in the exact Architecture
-          Book defining the single authority boundary, normalizeWorkdayIntent
-          and validateWorkdayIntent contracts, canonical equality and descriptor
-          uniqueness, API non-ownership, and every approved keep/delete
-          disposition with exact source evidence.
+        - Commit an SDK Architecture Knowledge page referencing exact
+          predecessor sdk-workday-contract-inventory-v1 and defining every
+          boundary in the proposal request with exact source evidence.
       activity: acting
       agentClass: architect
       contextRefs:
@@ -155,11 +158,13 @@ executionPlan:
           documenting all retired aliases and authority boundaries.
       id: architecture-contract
       maximumReviewCycles: 2
-      objective: Using the approved research inventory, extend the SDK Architecture
-        book with the single portable WorkdayIntent authority,
-        normalizeWorkdayIntent input/output contract, strict
-        validateWorkdayIntent runtime-key boundary, descriptor uniqueness, API
-        non-ownership boundary, and explicit retired-contract dispositions.
+      objective: Consume immutable predecessor Knowledge
+        sdk-workday-contract-inventory-v1 and extend the SDK Architecture book
+        with the exact canonical property order, top-level allowlist and
+        spelling-sensitive forbidden matrix, diagnostic/path contract,
+        nested-validator ownership, receipt-type dispositions,
+        descriptor/binding uniqueness, API non-ownership, and approved
+        keep/delete dispositions.
       requestedPermissions:
         content:
           read:
@@ -190,15 +195,8 @@ executionPlan:
           comes from preserving one intent/CLI semantic path.
       workspace: treedx
     - acceptanceCriteria:
-        - Commit focused SDK tests that fail on the frozen base and prove the
-          exact normalization fixture, JSON.stringify equality, omission as
-          undefined, empty and post-trim duplicate rejection, strict rejection
-          of operatorConstraints, graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage,
-          providerSelection, provider-selection, and provider, and exactly one
-          decisionIds/--decision descriptor across workday plan and schedule
-          catalogs; report exact failing checks. API digest behavior is out of
-          scope.
+        - Commit focused SDK tests matching the objective that fail on the
+          frozen base and report exact failing checks.
       activity: acting
       agentClass: tester
       contextRefs:
@@ -224,17 +222,18 @@ executionPlan:
           existing Vitest conventions without implementing production code.
       id: tests-first
       maximumReviewCycles: 2
-      objective: Add focused SDK tests for normalizeWorkdayIntent and
-        validateWorkdayIntent plus WORKDAY_PLAN_OPTIONS descriptor reuse. The
-        equality fixture normalizes two WorkdayIntent values containing the same
-        whitespace-varied decisions in different orders, deep-equals outputs,
-        and compares JSON.stringify outputs. Test a fresh returned object
-        retaining every allowed high-level field; absence preserving decisionIds
-        as undefined; empty and post-trim duplicates; each forbidden key
-        producing workday_intent_unknown_field at the exact key path; and
-        exactly one WORKDAY_PLAN_OPTIONS decisionIds descriptor reused by
-        workdays plan and schedules start. Exclude the unrelated execution graph
-        read filter and API behavior.
+      objective: Add focused SDK tests for normalizeWorkdayIntent,
+        validateWorkdayIntent, workdayIntentInputs, WORKDAY_PLAN_OPTIONS, and
+        TREESEED_COMMAND_TREE_V1. Build two semantically identical fixtures with
+        different object insertion and decision orders; assert fresh-object
+        output, the exact canonical key order, deep equality, JSON.stringify
+        equality, retained allowed fields, and undefined omission. Assert empty
+        and duplicate diagnostics at decisionIds[index]; each exact forbidden
+        key produces workday_intent_unknown_field at that top-level path; nested
+        agentSelection/allocation diagnostics remain delegated; one decisionIds
+        binding exists; plan and schedules start each emit one structurally
+        equal --decision option from WORKDAY_PLAN_OPTIONS; exclude execution
+        graph read filter and API behavior.
       requestedPermissions:
         content:
           read:
@@ -263,10 +262,11 @@ executionPlan:
           covers normalization-boundary discovery and test adaptation.
       workspace: git
     - acceptanceCriteria:
-        - Implement the exported normalization API and strict runtime-key
-          contract, make the approved Tester checks pass, and delete the exact
-          superseded unions, aliases, exports, and caller-authored derived-state
-          inputs from the approved research inventory.
+        - Reference sdk-workday-contract-inventory-v1 in the result, implement
+          the exact exported normalization and strict top-level validation
+          contract, preserve delegated nested validation and read-only receipt
+          contracts, pass Tester checks, and remove only approved superseded
+          symbols.
       activity: acting
       agentClass: engineer
       contextRefs:
@@ -296,14 +296,10 @@ executionPlan:
           build, or acceptance verification is included.
       id: implement-change
       maximumReviewCycles: 2
-      objective: "Using the approved Research inventory and Architecture boundary,
-        export normalizeWorkdayIntent(intent: WorkdayIntent): WorkdayIntent from
-        src/operator-contracts/workday-lifecycle.ts, remove operatorConstraints
-        from the type, make validateWorkdayIntent reject every non-allowed own
-        key with workday_intent_unknown_field at the exact key path, preserve
-        the shared WORKDAY_PLAN_OPTIONS decisionIds descriptor, make the
-        approved Tester checks pass, and remove only approved superseded symbols
-        without aliases."
+      objective: Consume immutable inventory sdk-workday-contract-inventory-v1 and the
+        approved Architecture predecessor, implement the exact request contract,
+        pass approved Tester checks, and apply only the inventorys approved
+        delete dispositions without aliases.
       requestedPermissions:
         content:
           read:
