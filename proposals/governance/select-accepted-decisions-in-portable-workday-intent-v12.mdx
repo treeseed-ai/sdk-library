@@ -3,20 +3,45 @@ schemaVersion: treeseed.proposal/v1
 id: golden-sdk-decision-governed-workday-intent-v12
 projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
 title: Select accepted decisions in portable workday intent v12
-request: "Refine the existing decision-selection contract instead of adding a
-  parallel feature. src/operator-contracts/workday-lifecycle.ts owns the
-  portable WorkdayIntent strict validation and normalization boundary: trim
-  decisionIds, reject empty identities and duplicates after trimming, sort
-  deterministically, and preserve omission as undefined.
-  src/operator-contracts/canonical-command-tree.ts with
-  src/operator-contracts/catalog/workdays/selection-commands.ts remains the one
-  SDK descriptor for repeatable/comma-separated --decision input. Reject
-  operatorConstraints and caller-authored graph, executionPlan, capacityPlan,
-  demand, assignment, source, role, estimate, reservation, usage, and
-  provider-selection fields without aliases. The API workday-preflight-service
-  remains the sole intent/preflight digest authority and receives only the
-  normalized portable request. Retain agentSelection, allocation, profile,
-  project, timing, and communication inputs as high-level policy."
+request: "Refine the existing SDK decision-selection contract instead of adding
+  a parallel feature. Export normalizeWorkdayIntent(intent: WorkdayIntent):
+  WorkdayIntent from src/operator-contracts/workday-lifecycle.ts. It returns a
+  fresh object reconstructed in this canonical property order: schemaVersion,
+  teamId, profileId, projects, executionMode, startsAt, endsAt, durationSeconds,
+  objectiveFilters, planningOnly, proposalIds, decisionIds, agentSelection,
+  allocation. It retains every present allowed field, trims decision IDs before
+  validation, rejects empty IDs at decisionIds[index], rejects duplicates after
+  trimming at decisionIds[index], sorts IDs lexically, and preserves absent
+  decisionIds as undefined. Remove operatorConstraints from WorkdayIntent.
+  validateWorkdayIntent is the top-level strict runtime-key boundary: any other
+  own enumerable key produces workday_intent_unknown_field at that exact
+  top-level key path. The spelling-sensitive forbidden matrix is
+  operatorConstraints, graph, executionGraph, executionPlan, capacityPlan,
+  demand, assignment, source, role, estimate, reservation, usage,
+  providerSelection, provider-selection, and provider. Nested agentSelection and
+  allocation keys remain owned by normalizeWorkdayAgentSelection and
+  workdayAllocationOverridesSchema validators, whose diagnostics retain their
+  existing nested paths; this proposal does not duplicate nested validation.
+  WORKDAY_PLAN_OPTIONS in selection-commands.ts owns one --decision option,
+  workdayIntentInputs in canonical-command-tree.ts owns one decisionIds binding,
+  and TREESEED_COMMAND_TREE_V1 workdays plan and workdays schedules start each
+  emit exactly one structurally equal --decision option by reusing
+  WORKDAY_PLAN_OPTIONS; execution graph --decision is an unrelated read filter
+  excluded from this assertion. The SDK proves deep equality and JSON.stringify
+  equality for equivalent semantic inputs inserted in different property and
+  decision orders. WorkdayPreflightReceipt, WorkdayStartReceipt,
+  WorkdaySettlementReceipt, WorkdaySelectedDemand, and their selectedDemands,
+  assignments, reservations, providerReceiptRefs, and settlement fields remain
+  read-only portable receipt representations; they are forbidden only as
+  caller-authored WorkdayIntent inputs. No external API implementation behavior
+  is claimed or tested. Exact high-level mapping is profile=profileId,
+  projects=projects, timing=startsAt/endsAt/durationSeconds,
+  custody=executionMode, planning=planningOnly/proposalIds/agentSelection,
+  acting authority=decisionIds, objective=objectiveFilters, and
+  allocation=allocation; no separate communication field exists in
+  WorkdayIntent. The immutable inventory identifier
+  sdk-workday-contract-inventory-v1 is normative for downstream Architecture and
+  implementation results."
 summary: Prove the SDK can express high-level decision-governed execution while
   keeping all derived execution state API-owned.
 status: discussing
