@@ -28,8 +28,10 @@ request: "Refine the existing SDK decision-selection contract instead of adding
   emit exactly one structurally equal --decision option by reusing
   WORKDAY_PLAN_OPTIONS; execution graph --decision is an unrelated read filter
   excluded from this assertion. The SDK proves deep equality and JSON.stringify
-  equality for equivalent semantic inputs inserted in different property and
-  decision orders. WorkdayPreflightReceipt, WorkdayStartReceipt,
+  equality only for inputs that differ in top-level WorkdayIntent property
+  insertion order and decisionIds order. Nested agentSelection and allocation
+  insertion order is outside this normalizer and remains owned by their existing
+  canonicalizers and validators. WorkdayPreflightReceipt, WorkdayStartReceipt,
   WorkdaySettlementReceipt, WorkdaySelectedDemand, and their selectedDemands,
   assignments, reservations, providerReceiptRefs, and settlement fields remain
   read-only portable receipt representations; they are forbidden only as
@@ -250,11 +252,13 @@ executionPlan:
       objective: Add focused SDK tests for normalizeWorkdayIntent,
         validateWorkdayIntent, workdayIntentInputs, WORKDAY_PLAN_OPTIONS, and
         TREESEED_COMMAND_TREE_V1. Build two semantically identical fixtures with
-        different object insertion and decision orders; assert fresh-object
-        output, the exact canonical key order, deep equality, JSON.stringify
-        equality, retained allowed fields, and undefined omission. Assert empty
-        and duplicate diagnostics at decisionIds[index]; each exact forbidden
-        key produces workday_intent_unknown_field at that top-level path; nested
+        different top-level WorkdayIntent property insertion order and
+        decisionIds order, while using identical nested agentSelection and
+        allocation objects; assert fresh-object output, the exact canonical key
+        order, deep equality, JSON.stringify equality, retained allowed fields,
+        and undefined omission. Assert empty and duplicate diagnostics at
+        decisionIds[index]; each exact forbidden key produces
+        workday_intent_unknown_field at that top-level path; nested
         agentSelection/allocation diagnostics remain delegated; one decisionIds
         binding exists; plan and schedules start each emit one structurally
         equal --decision option from WORKDAY_PLAN_OPTIONS; exclude execution
