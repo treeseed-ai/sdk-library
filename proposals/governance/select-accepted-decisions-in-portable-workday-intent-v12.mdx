@@ -31,10 +31,12 @@ evidenceRefs: []
 executionPlan:
   workItems:
     - acceptanceCriteria:
-        - Return exact refs within the named SDK source paths for workday
-          selection, preflight operations, execution graph, assignment, and
-          retired planning contracts, with a duplication/deletion note; do not
-          claim implementation or test verification.
+        - Return exact refs and keep/delete/duplicate dispositions for SDK
+          workday intent/selection, portable preflight descriptor, execution
+          graph, assignment records, allocation, and retired planning contracts
+          in the named source paths; identify exact superseded unions, aliases,
+          exports, and caller-authored derived inputs. Do not claim
+          implementation or test verification.
       activity: acting
       agentClass: researcher
       contextRefs:
@@ -66,13 +68,16 @@ executionPlan:
           of scope.
       id: research-context
       maximumReviewCycles: 2
-      objective: Trace the SDK authority seams in
-        src/operator-contracts/workday-lifecycle.ts,
+      objective: Inventory src/operator-contracts/workday-lifecycle.ts,
         src/operator-contracts/canonical-command-tree.ts,
         src/operator-contracts/catalog/workdays/selection-commands.ts,
-        src/operator-contracts/control-plane-operations.ts, and
-        src/agent-capacity/contracts; return exact refs and a
-        duplication/deletion note.
+        src/operator-contracts/control-plane-operations.ts,
+        src/agent-capacity/contracts/support/execution-graph.ts,
+        src/agent-capacity/contracts/capacity/assignments/assignment-records.ts,
+        src/agent-capacity/contracts/capacity/workdays/assignment-allocation.ts,
+        src/agent-capacity/contracts/support/planning-records.ts, and their
+        exports/tests; return exact refs and one keep/delete/duplicate
+        disposition per symbol.
       requestedPermissions:
         content:
           read:
@@ -103,8 +108,10 @@ executionPlan:
       workspace: treedx
     - acceptanceCriteria:
         - Commit an SDK Architecture Knowledge page in the exact Architecture
-          Book defining the single authority boundary, portable WorkdayIntent
-          shape, and retired competing contracts, with exact source evidence.
+          Book defining the single authority boundary, normalizeWorkdayIntent
+          and validateWorkdayIntent contracts, canonical equality and descriptor
+          uniqueness, API non-ownership, and every approved keep/delete
+          disposition with exact source evidence.
       activity: acting
       agentClass: architect
       contextRefs:
@@ -122,7 +129,8 @@ executionPlan:
           path: .
           repository: repo_a3c347e2abcd09af
           store: treedx
-      dependsOn: []
+      dependsOn:
+        - research-context
       estimate:
         expectedSeconds: 240
         maximumSeconds: 420
@@ -137,12 +145,11 @@ executionPlan:
           documenting all retired aliases and authority boundaries.
       id: architecture-contract
       maximumReviewCycles: 2
-      objective: Extend the SDK Architecture book with the single authority boundary
-        using exact refs from src/operator-contracts/workday-lifecycle.ts,
-        src/operator-contracts/canonical-command-tree.ts,
-        src/operator-contracts/catalog/workdays/selection-commands.ts,
-        src/operator-contracts/control-plane-operations.ts, and
-        src/agent-capacity/contracts; identify retired competing contracts.
+      objective: Using the approved research inventory, extend the SDK Architecture
+        book with the single portable WorkdayIntent authority,
+        normalizeWorkdayIntent input/output contract, strict
+        validateWorkdayIntent runtime-key boundary, descriptor uniqueness, API
+        non-ownership boundary, and explicit retired-contract dispositions.
       requestedPermissions:
         content:
           read:
@@ -173,14 +180,15 @@ executionPlan:
           comes from preserving one intent/CLI semantic path.
       workspace: treedx
     - acceptanceCriteria:
-        - Commit focused SDK tests that fail on the frozen base and prove trim,
-          empty and post-trim duplicate rejection, deterministic lexical
-          normalization, omission, strict unknown-key rejection for
-          operatorConstraints, graph, executionPlan, capacityPlan, demand,
-          assignment, source, role, estimate, reservation, usage, and
-          provider-selection fields, exactly-one decision option, and
-          order-independent canonical normalized request equality; report exact
-          failing checks. API digest behavior is out of scope.
+        - Commit focused SDK tests that fail on the frozen base and prove the
+          exact normalization fixture, JSON.stringify equality, omission as
+          undefined, empty and post-trim duplicate rejection, strict rejection
+          of operatorConstraints, graph, executionPlan, capacityPlan, demand,
+          assignment, source, role, estimate, reservation, usage,
+          providerSelection, provider-selection, and provider, and exactly one
+          decisionIds/--decision descriptor across workday plan and schedule
+          catalogs; report exact failing checks. API digest behavior is out of
+          scope.
       activity: acting
       agentClass: tester
       contextRefs:
@@ -206,14 +214,14 @@ executionPlan:
           existing Vitest conventions without implementing production code.
       id: tests-first
       maximumReviewCycles: 2
-      objective: Add focused contract tests at
-        src/operator-contracts/workday-lifecycle.ts and
-        src/operator-contracts/catalog/workdays/selection-commands.ts for trim,
-        post-trim duplicate rejection, lexical normalization, omission, strict
-        rejection of operatorConstraints and the enumerated caller-authored
-        derived fields, exactly-one decision option, and order-independent
-        canonical normalized request equality; API digest behavior is out of
-        scope.
+      objective: Add focused SDK tests for normalizeWorkdayIntent and
+        validateWorkdayIntent plus command-catalog descriptor uniqueness. The
+        equality fixture must normalize two WorkdayIntent values containing the
+        same whitespace-varied decisions in different orders, deep-equal the
+        outputs, and compare JSON.stringify outputs. Test omission as undefined;
+        empty and post-trim duplicates; every enumerated retired runtime key;
+        and exactly one decisionIds/--decision descriptor across workday plan
+        and schedule catalogs. API digest behavior is out of scope.
       requestedPermissions:
         content:
           read:
@@ -242,9 +250,10 @@ executionPlan:
           covers normalization-boundary discovery and test adaptation.
       workspace: git
     - acceptanceCriteria:
-        - Implement the minimal strict TypeScript contract, make the approved
-          Tester checks pass, and delete superseded unions, aliases, exports,
-          and caller-authored derived-state inputs.
+        - Implement the exported normalization API and strict runtime-key
+          contract, make the approved Tester checks pass, and delete the exact
+          superseded unions, aliases, exports, and caller-authored derived-state
+          inputs from the approved research inventory.
       activity: acting
       agentClass: engineer
       contextRefs:
@@ -272,13 +281,12 @@ executionPlan:
           build, or acceptance verification is included.
       id: implement-change
       maximumReviewCycles: 2
-      objective: Implement the minimal strict TypeScript normalization and validation
-        boundary in src/operator-contracts/workday-lifecycle.ts, preserve the
-        single descriptor path in
-        src/operator-contracts/canonical-command-tree.ts and
-        src/operator-contracts/catalog/workdays/selection-commands.ts, and
-        delete operatorConstraints and caller-authored derived-state inputs
-        without aliases.
+      objective: "Export normalizeWorkdayIntent(intent: WorkdayIntent): WorkdayIntent
+        from src/operator-contracts/workday-lifecycle.ts, make
+        validateWorkdayIntent the exhaustive strict runtime-key boundary,
+        preserve the one decisionIds descriptor path, consume the approved
+        Tester checks, and remove only the exact superseded symbols identified
+        by research without aliases."
       requestedPermissions:
         content:
           read:
