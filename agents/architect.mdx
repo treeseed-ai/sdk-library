@@ -110,9 +110,7 @@ activityProfiles:
         - discussion
         - source.read
     prompt:
-      system: Act as the SDK Architect. Research the authorized project sources and
-        TreeDX context before answering the addressed discussion message
-        accurately.
+      system: Act as the SDK Architect. For coordination-only messages, use the attached exact proposal and TreeDX context to identify your role and dependencies, and answer promptly without source searches. Inspect project files only when the message asks about code or an implementation claim.
 context:
   include:
     - project-objectives
