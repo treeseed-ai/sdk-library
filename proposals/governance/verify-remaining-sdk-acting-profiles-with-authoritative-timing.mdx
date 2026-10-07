@@ -1,0 +1,240 @@
+---
+schemaVersion: treeseed.proposal/v1
+id: f4fe3d8c-864c-475b-a4df-bc3cb9c859e8
+projectId: 8cbfb810-6da5-4da2-9ae9-cad53101253f
+title: Verify remaining SDK acting profiles with authoritative timing
+request: Use one accepted proposal and one graph. Every model-backed assignment
+  must call treeseed_time_status as its first execution action, use that reading
+  to bound its work, and call it again as its final tool action immediately
+  before responding. This acceptance is read-only and must not change or release
+  SDK source.
+summary: Exercise Researcher, Technical Writer, and Releaser through the real
+  estimate-derived graph without mutating product source.
+status: draft
+evidenceRefs: []
+executionPlan:
+  workItems:
+    - id: confirm-architecture
+      activity: acting
+      agentClass: architect
+      workspace: read-only
+      review: none
+      objective: Inspect the exact SDK source and identify its package boundary in one
+        concise evidence-backed result. Do not modify source.
+        treeseed_time_status must be your first execution action and your final
+        tool action.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 90
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.engineering.architecture
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The exact commit and SDK boundary are identified without mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: research-source
+      activity: acting
+      agentClass: researcher
+      workspace: read-only
+      review: none
+      objective: Research the exact SDK package metadata and summarize its declared
+        purpose and public entry points using repository evidence. Do not modify
+        source. treeseed_time_status must be your first execution action and
+        your final tool action.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 180
+      dependsOn: []
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - objective
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+      requiredCapabilities:
+        - treeseed.research.synthesis
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The Researcher cites exact source evidence and does not mutate it
+        - The timing receipt proves the clock was the first and final tool action
+    - id: verify-source
+      activity: acting
+      agentClass: tester
+      workspace: read-only
+      review: none
+      objective: Verify the exact SDK commit and that package.json is valid JSON. Do
+        not modify source. treeseed_time_status must be your first execution
+        action and your final tool action.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 90
+        maximumSeconds: 180
+      dependsOn:
+        - confirm-architecture
+      requestedPermissions:
+        content:
+          read:
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The exact commit and JSON parse are verified without mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: assess-implementation
+      activity: acting
+      agentClass: engineer
+      workspace: read-only
+      review: none
+      objective: Inspect package.json and identify the exact verification command
+        relevant to SDK contract tests. Do not modify source.
+        treeseed_time_status must be your first execution action and your final
+        tool action.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 90
+        maximumSeconds: 180
+      dependsOn:
+        - verify-source
+      requestedPermissions:
+        content:
+          read:
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.code-change
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The Engineer identifies an exact existing verification command without
+          mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: verify-documentation
+      activity: acting
+      agentClass: technical-writer
+      workspace: read-only
+      review: none
+      objective: Compare package.json with README.md and report one exact, currently
+        supported SDK usage statement. Do not modify source.
+        treeseed_time_status must be your first execution action and your final
+        tool action.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 180
+      dependsOn:
+        - assess-implementation
+        - verify-source
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - proposal
+            - decision
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.publishing.documentation
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: README.md
+      acceptanceCriteria:
+        - The Technical Writer reports an exact supported statement without
+          mutation
+        - The timing receipt proves the clock was the first and final tool action
+    - id: assess-release
+      activity: acting
+      agentClass: releaser
+      workspace: read-only
+      review: none
+      objective: Assess only whether this read-only acceptance produced sufficient
+        evidence for the three remaining activity profiles. Do not publish, tag,
+        deploy, or modify source. treeseed_time_status must be your first
+        execution action and your final tool action.
+      estimate:
+        minimumSeconds: 60
+        expectedSeconds: 120
+        maximumSeconds: 180
+      dependsOn:
+        - assess-implementation
+        - verify-documentation
+      requestedPermissions:
+        content:
+          read:
+            - knowledge
+            - proposal
+            - decision
+            - note
+          write: []
+        tools:
+          - source.read
+          - verification
+      requiredCapabilities:
+        - treeseed.engineering.release
+      contextRefs:
+        - store: git
+          model: repository
+          id: sdk
+          repository: treeseed-ai/sdk
+          commit: feca92d8ceb5944866bf3a26da4719c3018a839e
+          path: package.json
+      acceptanceCriteria:
+        - The Releaser evaluates exact predecessor evidence without mutation or
+          release operations
+        - The timing receipt proves the clock was the first and final tool action
+---

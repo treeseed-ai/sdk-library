@@ -1,0 +1,62 @@
+---
+id: c9ce5058-2cef-4fb3-a98b-f6218338cb5d
+title: Verify living proposal planning and estimate projection
+description: Exercise the canonical proposal-to-living-graph path through normal
+  TreeSeed operations and prove that planning and estimating become
+  independently assignable work.
+summary: Exercise the canonical proposal-to-living-graph path through normal
+  TreeSeed operations and prove that planning and estimating become
+  independently assignable work.
+date: 2026-09-13T08:06:02.340Z
+status: in progress
+draft: false
+proposal_type: implementation
+proposal_types:
+  - implementation
+motivation: Exercise the canonical proposal-to-living-graph path through normal
+  TreeSeed operations and prove that planning and estimating become
+  independently assignable work.
+primary_contributor: 49435480-41fe-4fae-b2f7-baceacea562a
+related_objectives:
+  - Complete the living agent assignment graph replacement
+evidence_refs:
+  - docs/agent-assignments.md
+plan:
+  desiredOutcome: A normal TreeDX-backed proposal deterministically creates
+    planning and estimating nodes in the team living graph and repeated
+    reconciliation remains idempotent.
+  currentProblem: Existing live evidence begins from hand-authored execution
+    plans, so proposal intake and plan derivation are not yet proven through the
+    same operational path.
+  proposedApproach: Author this bounded proposal through the public CLI, reconcile
+    its exact TreeDX revision, execute its planning work through the active
+    provider, and inspect graph events and outputs.
+  scope:
+    - SDK proposal only
+    - local development runtime
+    - living execution graph
+  nonGoals:
+    - No product behavior change
+    - No production release
+    - No AgentKernel redesign
+  deliverables:
+    - Planning node
+    - Estimating node
+    - Immutable assignment evidence
+  acceptanceCriteria:
+    - Both activity kinds are visible
+    - Assignments bind exact node revisions
+    - Replay produces noop
+  risks:
+    - A missing profile or capability must fail closed with an exact explanation
+  dependencies:
+    - Local TreeDX, API, provider, and SDK project binding are healthy
+  alternatives:
+    - Synthetic database fixtures are rejected because they do not prove the
+      public path
+  verification:
+    - Use trsd proposal, execution graph, node explanation, assignment, and
+      watch commands
+  openQuestions: []
+---
+The living assignment graph currently proves decision-driven acting and review, but it still needs a normal proposal fixture that enters through governance authoring, resolves through TreeDX, and produces planning and estimating nodes without relying on the retired frozen signal graph. This acceptance proposal supplies that bounded, non-product fixture.

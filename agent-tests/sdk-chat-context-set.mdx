@@ -1,0 +1,27 @@
+---
+id: sdk-chat-context-set-test
+agent: architect
+kind: context-query-set
+trigger:
+  activityType: chat
+expect: {}
+groupIds: []
+contextQueryRefs: []
+querySetRef:
+  id: sdk-chat-context-set
+  revision: 1
+testRef: sdk-chat-context-set-test-isolated
+expectedIdentities: []
+expectedRelations: []
+expectedPaths: []
+expectedSchemaVersions: []
+resultBounds:
+  min: 0
+  max: 100
+budget:
+  maxContextItems: 100
+  maxTokens: 24000
+maxLatencyMs: 15000
+---
+
+Isolated freshness and bounded-execution check for sdk-chat-context-set.
