@@ -1,0 +1,47 @@
+---
+{
+  "schemaVersion": "treeseed.objective/v1",
+  "id": "retained-release-git-ref-contract",
+  "projectId": "8cbfb810-6da5-4da2-9ae9-cad53101253f",
+  "title": "Complete exact-ref Git operation and observation contracts for retained delivery",
+  "outcome": "The existing SDK remote-Git operation and hosting contracts unambiguously express authorized ref operations, exact expected prior state including an absent ref, and authoritative observation of the requested ref, so API and Deployment can support the ordinary isolated simulated release of the retained Agent contribution without duplicating source identity, authority or release machinery.",
+  "status": "active",
+  "evidenceRefs": [
+    {
+      "store": "treedx",
+      "model": "objective",
+      "id": "retained-agent-simulated-release",
+      "repository": "repo_c6e08eb9721e363b",
+      "commit": "98aba24f2848cca88b998afcabf0deca79d97c30",
+      "path": "objectives/retained-agent-simulated-release.mdx",
+      "digest": "sha256:0b684bcec7d2abfaabbb4ee85340b77e07e0f6b0e88f49538e1c586b6406028c"
+    },
+    {
+      "store": "treedx",
+      "model": "objective",
+      "id": "retained-release-simulation-git-authority",
+      "repository": "repo_be2b46a14c729f0e",
+      "commit": "785baa7735bd3d8f601fe4e521d8088c1cd84b6b",
+      "path": "objectives/retained-release-simulation-git-authority.mdx",
+      "digest": "sha256:655b7416c5d28e75b04eadaaf8a6d63aacf9f9fd3c1152ba67c23c2e5152a483"
+    },
+    {
+      "store": "git",
+      "model": "repository",
+      "id": "treeseed-ai/sdk",
+      "repository": "treeseed-ai/sdk",
+      "commit": "d5ef1e2985a639e7bd197d94847d66ce06b98f84"
+    }
+  ]
+}
+---
+
+This is the SDK-owned contract prerequisite of the same retained-agent-simulated-release objective and linked API authority objective above. Existing SDK411/API625/Deployment913 own status. It is not new portfolio work or permission to duplicate the retained Agent repair.
+
+SDK Architect's source-backed discussion response-fc7df92d6d6b732c068db6f3 in retained-agent-release-recovery inspected SDKd5ef1e2985a639e7bd197d94847d66ce06b98f84. SourceWorkspaceAuthorization carries exact source/additional commits and a single publication ref, while simulation forbids upstream credential bindings. Source provenance is not the physical simulation endpoint. ProjectRemoteRepositoryBinding and RemoteGitOperationGrant already carry repository/ref, reviewed commit and expected-head facts. The Architect identified unproven/missing exact operation/prior-state and requested-ref observation semantics, and proposed NEW future own ID sdk.remote-git-ref-operation-contract. That is not an accepted work item, estimate or implementation.
+
+Have the existing project-sdk group author and deliver the smallest coherent SDK contract change genuinely needed for exact staging/release-ref/tag operations and durable read-back. Reuse sourceRef, destinationRef, publicationRef, expectedRemoteHead and binding identity wherever they already suffice. Independently evaluate whether operation kind can be derived from existing ref scope and how absent-ref creation must be represented before adding any field. Do not introduce a second target/ref/authority model or a compatibility path merely to restate existing facts. Keep shared SDK contracts free of named-agent, workday-role and Deployment-specific execution policy.
+
+Document the intended interface before the meaningful regression and implementation work that follows it. Cover exact requested-ref read-back, safe expected-state updates/creation, invalid or stale authority, and the real API/Deployment consumer boundary. API owns issuance and routing to the isolated target; Deployment owns physical origin materialization; the ordinary Agent Releaser owns integration/release behavior. Add only the minimum contract change supported by actual source and review evidence.
+
+Coordinate in shared topic retained-agent-release-recovery with the actual API own proposed ID api.simulation-remote-git-target-authorization and the Deployment canonical draft assignment_9RbSLofUaip3i1hMsptR5i5IiyoQXgFK:proposal. Do not invent peer estimates, accepted IDs or Decisions. Preserve the original Agent v13/Decision332473e7-130c-486f-a394-76b4f33c8d7e, reviewed products, failed deadline and unknown usage, and the reserved SDK Tester-on-BASE/Engineer chain. This objective accepts no acting work and claims no implementation or release.
